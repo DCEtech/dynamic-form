@@ -121,22 +121,19 @@ def nuevo_cliente():
 
 @app.route('/cliente/<nombre_cliente>')
 def formulario_cliente(nombre_cliente):
-    """Formulario específico para un cliente"""
     conn = get_db_connection()
 
-    # Buscar cliente por nombre
     cliente = conn.execute(
         'SELECT * FROM clientes WHERE slug = ?',
         (nombre_cliente,)
     ).fetchone()
 
     if not cliente:
-        # Crear nuevo cliente si no existe
         nombre_display = nombre_cliente.replace('-', ' ').title()
-        conn.execute('''
-                     INSERT INTO clientes (nombre_cliente, slug)
-                     VALUES (?, ?)
-                     ''', (nombre_display, nombre_cliente))
+        conn.execute(
+            'INSERT INTO clientes (nombre_cliente, slug) VALUES (?, ?)',
+            (nombre_display, nombre_cliente)
+        )
         conn.commit()
 
         cliente = conn.execute(
@@ -144,38 +141,35 @@ def formulario_cliente(nombre_cliente):
             (nombre_cliente,)
         ).fetchone()
 
-    # Obtener datos del formulario si existen
-    formulario = conn.execute(
-        'SELECT * FROM formularios_clientes WHERE cliente_id = ?',
-        (cliente['id'],)
-    ).fetchone()
+    conn.close()
 
-    # Preparar datos para el frontend
+    formulario_obj = Formulario.obtener_por_cliente(cliente['id'])
+
     formulario_data = {
         'clienteId': cliente['id'],
         'nombreCliente': nombre_cliente,
-        'pasoActual': formulario['paso_actual'] if formulario else 1,
+        'pasoActual': formulario_obj.paso_actual if formulario_obj else 1,
         'totalPasos': 6,
-        'porcentajeCompletado': formulario['porcentaje_completado'] if formulario else 0,
-        'porcentajeCompletadoStyled': f"{formulario['porcentaje_completado'] if formulario else 0}%",
-        'stepNames': step_names,  # Usar la variable global step_names
+        'porcentajeCompletado': formulario_obj.porcentaje_completado if formulario_obj else 0,
+        'porcentajeCompletadoStyled': f"{formulario_obj.porcentaje_completado if formulario_obj else 0}%",
+        'stepNames': step_names,
         'datosFormulario': {
-            'paso_1': json.loads(formulario['datos_empresa']) if formulario and formulario['datos_empresa'] else {},
-            'paso_2': json.loads(formulario['info_trasteros']) if formulario and formulario['info_trasteros'] else [],
-            'paso_3': json.loads(formulario['usuarios_app']) if formulario and formulario['usuarios_app'] else {},
-            'paso_4': json.loads(formulario['config_correo']) if formulario and formulario['config_correo'] else {},
-            'paso_5': json.loads(formulario['niveles_acceso']) if formulario and formulario['niveles_acceso'] else {},
-            'paso_6': json.loads(formulario['documentacion']) if formulario and formulario['documentacion'] else {}
+            'info_trasteros': formulario_obj.info_trasteros if formulario_obj else [],
+            'datos_empresa': formulario_obj.datos_empresa if formulario_obj else {},
+            'usuarios_app': formulario_obj.usuarios_app if formulario_obj else {},
+            'config_correo': formulario_obj.config_correo if formulario_obj else {},
+            'niveles_acceso': formulario_obj.niveles_acceso if formulario_obj else {},
+            'documentacion': formulario_obj.documentacion if formulario_obj else {}
         }
     }
 
-    conn.close()
-
-    return render_template('formulario.html',
-                           cliente=cliente,
-                           formulario=Formulario._from_row(formulario) if formulario else None,
-                           formulario_data=formulario_data,
-                           step_names=step_names)  # Usar la variable global step_names
+    return render_template(
+        'formulario.html',
+        cliente=cliente,
+        formulario=formulario_obj,
+        formulario_data=formulario_data,
+        step_names=step_names
+    )
 
 
 @app.route('/api/save', methods=['POST'])
