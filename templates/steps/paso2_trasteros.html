@@ -345,6 +345,10 @@
 
         if (Array.isArray(data) && data.length > 0) {
             data.forEach(t => addTrastero(t));
+
         }
+
+        // Botón agregar
+        document.getElementById('add-trastero').addEventListener('click', () => addTrastero());
     });
 </script>

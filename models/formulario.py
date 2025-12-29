@@ -96,7 +96,7 @@ class Formulario:
             info_trasteros=json.loads(row['info_trasteros'] or '[]'),
             usuarios_app=json.loads(row['usuarios_app'] or '[]'),
             config_correo=json.loads(row['config_correo'] or '{}'),
-            niveles_acceso=json.loads(row['niveles_acceso'] or '{}'),
+            niveles_acceso=json.loads(row['niveles_acceso'] or '[]'),
             documentacion=json.loads(row['documentacion'] or '{}'),
             paso_actual=row['paso_actual'],
             porcentaje_completado=row['porcentaje_completado'],
@@ -140,6 +140,12 @@ class Formulario:
         if paso == 3:
             if isinstance(datos, dict):
                 datos = datos.get('usuarios', [])
+            if not isinstance(datos, list):
+                datos = []
+
+        if paso == 5:
+            if isinstance(datos, dict):
+                datos = datos.get('niveles_acceso', [])
             if not isinstance(datos, list):
                 datos = []
 

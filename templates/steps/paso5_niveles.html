@@ -6,7 +6,8 @@
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
                     <strong>Configuración de Niveles de Acceso</strong><br>
-                    Defina los diferentes niveles de acceso y permisos para controlar qué puertas o áreas pueden acceder los usuarios.
+                    Defina los diferentes niveles de acceso y permisos para controlar qué puertas o áreas pueden acceder
+                    los usuarios.
                     Cada nivel puede tener múltiples puertas asignadas.
                 </div>
             </div>
@@ -40,13 +41,13 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
                             Nombre del Nivel *
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="Nombre descriptivo del nivel de acceso"></i>
                         </label>
-                        <input type="text" 
-                               class="form-control nivel-nombre" 
-                               name="nombre_nivel" 
+                        <input type="text"
+                               class="form-control nivel-nombre"
+                               name="nombre_nivel"
                                placeholder="Ej: Administrador, Usuario Básico, Supervisor"
                                required>
                         <div class="invalid-feedback">
@@ -57,8 +58,8 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
                             Prioridad del Nivel
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="Nivel de prioridad (1=máxima, 10=mínima)"></i>
                         </label>
                         <select class="form-select nivel-prioridad" name="prioridad_nivel">
@@ -78,13 +79,13 @@
                     <div class="col-12 mb-3">
                         <label class="form-label">
                             Descripción del Nivel *
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="Descripción detallada de qué permisos incluye este nivel"></i>
                         </label>
-                        <textarea class="form-control nivel-descripcion" 
-                                  name="descripcion_nivel" 
-                                  rows="3" 
+                        <textarea class="form-control nivel-descripcion"
+                                  name="descripcion_nivel"
+                                  rows="3"
                                   placeholder="Ej: Acceso completo a todas las áreas, incluyendo administración y configuración del sistema..."
                                   required></textarea>
                         <div class="invalid-feedback">
@@ -107,15 +108,16 @@
                     <div class="col-12 mb-3">
                         <label class="form-label">
                             Puertas Permitidas
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="Seleccione las puertas a las que este nivel tendrá acceso"></i>
                         </label>
                         <div class="puertas-grid">
                             <div class="row g-2">
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_principal" id="puerta_principal">
+                                        <input class="form-check-input" type="checkbox" name="puerta_principal"
+                                               id="puerta_principal">
                                         <label class="form-check-label" for="puerta_principal">
                                             <i class="bi bi-door-closed me-1"></i>Puerta Principal
                                         </label>
@@ -123,7 +125,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_trasera" id="puerta_trasera">
+                                        <input class="form-check-input" type="checkbox" name="puerta_trasera"
+                                               id="puerta_trasera">
                                         <label class="form-check-label" for="puerta_trasera">
                                             <i class="bi bi-door-closed me-1"></i>Puerta Trasera
                                         </label>
@@ -131,7 +134,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_garaje" id="puerta_garaje">
+                                        <input class="form-check-input" type="checkbox" name="puerta_garaje"
+                                               id="puerta_garaje">
                                         <label class="form-check-label" for="puerta_garaje">
                                             <i class="bi bi-car-front me-1"></i>Garaje
                                         </label>
@@ -139,7 +143,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_oficina" id="puerta_oficina">
+                                        <input class="form-check-input" type="checkbox" name="puerta_oficina"
+                                               id="puerta_oficina">
                                         <label class="form-check-label" for="puerta_oficina">
                                             <i class="bi bi-building me-1"></i>Oficina
                                         </label>
@@ -147,7 +152,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_almacen" id="puerta_almacen">
+                                        <input class="form-check-input" type="checkbox" name="puerta_almacen"
+                                               id="puerta_almacen">
                                         <label class="form-check-label" for="puerta_almacen">
                                             <i class="bi bi-archive me-1"></i>Almacén
                                         </label>
@@ -155,7 +161,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_emergencia" id="puerta_emergencia">
+                                        <input class="form-check-input" type="checkbox" name="puerta_emergencia"
+                                               id="puerta_emergencia">
                                         <label class="form-check-label" for="puerta_emergencia">
                                             <i class="bi bi-exclamation-triangle me-1"></i>Emergencia
                                         </label>
@@ -163,7 +170,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_sotano" id="puerta_sotano">
+                                        <input class="form-check-input" type="checkbox" name="puerta_sotano"
+                                               id="puerta_sotano">
                                         <label class="form-check-label" for="puerta_sotano">
                                             <i class="bi bi-arrow-down me-1"></i>Sótano
                                         </label>
@@ -171,7 +179,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="puerta_azotea" id="puerta_azotea">
+                                        <input class="form-check-input" type="checkbox" name="puerta_azotea"
+                                               id="puerta_azotea">
                                         <label class="form-check-label" for="puerta_azotea">
                                             <i class="bi bi-arrow-up me-1"></i>Azotea
                                         </label>
@@ -184,13 +193,14 @@
                     <div class="col-12 mb-3">
                         <label class="form-label">
                             Puertas Personalizadas
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="Agregue puertas adicionales específicas de su instalación"></i>
                         </label>
                         <div class="puertas-personalizadas">
                             <div class="input-group mb-2">
-                                <input type="text" class="form-control puerta-personalizada" placeholder="Nombre de puerta personalizada">
+                                <input type="text" class="form-control puerta-personalizada"
+                                       placeholder="Nombre de puerta personalizada">
                                 <button class="btn btn-outline-success add-puerta-personalizada" type="button">
                                     <i class="bi bi-plus"></i>
                                 </button>
@@ -211,12 +221,13 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
                             Acceso 24/7
-                            <i class="bi bi-question-circle tooltip-icon ms-1" 
-                               data-bs-toggle="tooltip" 
+                            <i class="bi bi-question-circle tooltip-icon ms-1"
+                               data-bs-toggle="tooltip"
                                title="¿Este nivel tiene acceso las 24 horas?"></i>
                         </label>
                         <div class="form-check form-switch">
-                            <input class="form-check-input acceso-24h" type="checkbox" name="acceso_24h" id="acceso_24h">
+                            <input class="form-check-input acceso-24h" type="checkbox" name="acceso_24h"
+                                   id="acceso_24h">
                             <label class="form-check-label" for="acceso_24h">
                                 Acceso las 24 horas
                             </label>
@@ -254,7 +265,8 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="miercoles" id="miercoles" checked>
+                                    <input class="form-check-input" type="checkbox" name="miercoles" id="miercoles"
+                                           checked>
                                     <label class="form-check-label" for="miercoles">Miércoles</label>
                                 </div>
                             </div>
@@ -319,7 +331,8 @@
     <div id="no-niveles-message" class="text-center py-5">
         <i class="bi bi-key display-1 text-muted mb-3"></i>
         <h5 class="text-muted">No hay niveles de acceso configurados</h5>
-        <p class="text-muted">Haga clic en "Agregar Nivel de Acceso" para comenzar a configurar los permisos del sistema.</p>
+        <p class="text-muted">Haga clic en "Agregar Nivel de Acceso" para comenzar a configurar los permisos del
+            sistema.</p>
     </div>
 
     <!-- Resumen total -->
@@ -351,114 +364,211 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    let nivelCounter = 0;
-    
-    // Función para agregar un nuevo nivel
-    function addNivel() {
-        nivelCounter++;
-        const template = document.getElementById('nivel-template');
-        const newNivel = template.cloneNode(true);
-        
-        // Configurar el nuevo nivel
-        newNivel.id = `nivel-${nivelCounter}`;
-        newNivel.style.display = 'block';
-        newNivel.querySelector('.nivel-number').textContent = nivelCounter;
-        
-        // Actualizar nombres de los campos e IDs únicos
-        const inputs = newNivel.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            const name = input.getAttribute('name');
-            if (name) {
-                input.setAttribute('name', `niveles[${nivelCounter-1}][${name}]`);
-                
-                // Actualizar IDs únicos
+    document.addEventListener('DOMContentLoaded', function () {
+        let nivelCounter = 0;
+
+        // Función para agregar un nuevo nivel
+        function addNivel(data = null) {
+            // =========================
+            // Índice / contador
+            // =========================
+            nivelCounter++;
+            const index = nivelCounter - 1;
+
+            // =========================
+            // DOM base
+            // =========================
+            const template = document.getElementById('nivel-template');
+            const container = document.getElementById('niveles-container');
+            const emptyMessage = document.getElementById('no-niveles-message');
+            const resumen = document.getElementById('resumen-niveles');
+
+            const el = template.cloneNode(true);
+
+            // =========================
+            // Configuración básica
+            // =========================
+            el.id = `nivel-${nivelCounter}`;
+            el.style.display = 'block';
+            el.querySelector('.nivel-number').textContent = nivelCounter;
+
+            // =========================
+            // Indexar names + IDs únicos
+            // =========================
+            el.querySelectorAll('input, select, textarea').forEach(input => {
+                const baseName = input.getAttribute('name');
+                if (baseName) {
+                    input.name = `niveles[${index}][${baseName}]`;
+                }
+
                 if (input.id) {
-                    const newId = input.id + '_' + nivelCounter;
+                    const baseId = input.id;
+                    const newId = `${baseId}_${nivelCounter}`;
                     input.id = newId;
-                    
-                    // Actualizar labels correspondientes
-                    const label = newNivel.querySelector(`label[for="${input.id.replace('_' + nivelCounter, '')}"]`);
+
+                    const label = el.querySelector(`label[for="${baseId}"]`);
                     if (label) label.setAttribute('for', newId);
                 }
+            });
+
+            // =========================
+            // 🔹 Rehidratación (si hay data)
+            // =========================
+            if (data) {
+                el.querySelector('.nivel-nombre').value =
+                    data.nombre ?? '';
+
+                el.querySelector('.nivel-prioridad').value =
+                    data.prioridad ?? '5';
+
+                el.querySelector('.nivel-descripcion').value =
+                    data.descripcion ?? '';
+
+                // Puertas estándar
+                if (Array.isArray(data.puertas)) {
+                    data.puertas.forEach(name => {
+                        const checkbox = el.querySelector(`[name="${name}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+
+                // Acceso 24h
+                const acceso24h = el.querySelector('.acceso-24h');
+                const horarios = el.querySelector('.horarios-restringidos');
+                const dias = el.querySelector('.dias-semana');
+
+                acceso24h.checked = Boolean(data.acceso_24h);
+
+                if (!acceso24h.checked) {
+                    horarios.style.display = 'block';
+                    dias.style.display = 'block';
+
+                    el.querySelector('.hora-inicio').value =
+                        data.hora_inicio ?? '08:00';
+
+                    el.querySelector('.hora-fin').value =
+                        data.hora_fin ?? '18:00';
+                }
             }
-        });
-        
-        // Agregar al contenedor
-        document.getElementById('niveles-container').appendChild(newNivel);
-        
-        // Configurar eventos
-        setupNivelEvents(newNivel);
-        
-        // Ocultar mensaje de no niveles
-        document.getElementById('no-niveles-message').style.display = 'none';
-        document.getElementById('resumen-niveles').style.display = 'block';
-        
-        updateResumenNiveles();
-    }
-    
-    // Función para configurar eventos de un nivel
-    function setupNivelEvents(nivelElement) {
-        // Evento para eliminar nivel
-        nivelElement.querySelector('.remove-nivel').addEventListener('click', function() {
-            nivelElement.remove();
+
+
+            // =========================
+            // Insertar en DOM
+            // =========================
+            container.appendChild(el);
+
+            // =========================
+            // Eventos
+            // =========================
+            setupNivelEvents(el);
+
+            // =========================
+            // Puertas personalizadas (después de eventos)
+            // =========================
+            if (data && Array.isArray(data.puertas_personalizadas)) {
+                const list = el.querySelector('.puertas-personalizadas-list');
+
+                data.puertas_personalizadas.forEach(puerta => {
+                    const puertaElement = document.createElement('div');
+                    puertaElement.className = 'form-check mb-1';
+                    puertaElement.innerHTML = `
+                <input class="form-check-input" type="checkbox" checked>
+                <label class="form-check-label">
+                    <i class="bi bi-door-closed me-1"></i>${puerta}
+                </label>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger ms-2 remove-puerta-personalizada">
+                    <i class="bi bi-x"></i>
+                </button>
+            `;
+
+                    puertaElement
+                        .querySelector('.remove-puerta-personalizada')
+                        .addEventListener('click', () => {
+                            puertaElement.remove();
+                            updateNivelResumen(el);
+                            updateResumenNiveles();
+                        });
+
+                    list.appendChild(puertaElement);
+                });
+            }
+
+            // =========================
+            // Estado global UI
+            // =========================
+            emptyMessage.style.display = 'none';
+            resumen.style.display = 'block';
+
+            updateNivelResumen(el);
             updateResumenNiveles();
-            
-            // Mostrar mensaje si no hay niveles
-            const niveles = document.querySelectorAll('.nivel-item:not(#nivel-template)');
-            if (niveles.length === 0) {
-                document.getElementById('no-niveles-message').style.display = 'block';
-                document.getElementById('resumen-niveles').style.display = 'none';
-            }
-        });
-        
-        // Contador de caracteres para descripción
-        const descripcionField = nivelElement.querySelector('.nivel-descripcion');
-        const charCount = nivelElement.querySelector('.char-count');
-        
-        descripcionField.addEventListener('input', function() {
-            const count = this.value.length;
-            charCount.textContent = count;
-            
-            if (count > 500) {
-                charCount.style.color = '#dc3545';
-                this.value = this.value.substring(0, 500);
-                charCount.textContent = '500';
-            } else {
-                charCount.style.color = '#6c757d';
-            }
-            
-            updateNivelResumen(nivelElement);
-        });
-        
-        // Toggle acceso 24/7
-        const acceso24h = nivelElement.querySelector('.acceso-24h');
-        const horariosRestringidos = nivelElement.querySelector('.horarios-restringidos');
-        const diasSemana = nivelElement.querySelector('.dias-semana');
-        
-        acceso24h.addEventListener('change', function() {
-            if (this.checked) {
-                horariosRestringidos.style.display = 'none';
-                diasSemana.style.display = 'none';
-            } else {
-                horariosRestringidos.style.display = 'block';
-                diasSemana.style.display = 'block';
-            }
-            updateNivelResumen(nivelElement);
-            updateResumenNiveles();
-        });
-        
-        // Agregar puerta personalizada
-        const addPuertaBtn = nivelElement.querySelector('.add-puerta-personalizada');
-        const puertaInput = nivelElement.querySelector('.puerta-personalizada');
-        const puertasList = nivelElement.querySelector('.puertas-personalizadas-list');
-        
-        addPuertaBtn.addEventListener('click', function() {
-            const nombrePuerta = puertaInput.value.trim();
-            if (nombrePuerta) {
-                const puertaElement = document.createElement('div');
-                puertaElement.className = 'form-check mb-1';
-                puertaElement.innerHTML = `
+
+            return el;
+        }
+
+
+        // Función para configurar eventos de un nivel
+        function setupNivelEvents(nivelElement) {
+            // Evento para eliminar nivel
+            nivelElement.querySelector('.remove-nivel').addEventListener('click', function () {
+                nivelElement.remove();
+                updateResumenNiveles();
+
+                // Mostrar mensaje si no hay niveles
+                const niveles = document.querySelectorAll('.nivel-item:not(#nivel-template)');
+                if (niveles.length === 0) {
+                    document.getElementById('no-niveles-message').style.display = 'block';
+                    document.getElementById('resumen-niveles').style.display = 'none';
+                }
+            });
+
+            // Contador de caracteres para descripción
+            const descripcionField = nivelElement.querySelector('.nivel-descripcion');
+            const charCount = nivelElement.querySelector('.char-count');
+
+            descripcionField.addEventListener('input', function () {
+                const count = this.value.length;
+                charCount.textContent = count;
+
+                if (count > 500) {
+                    charCount.style.color = '#dc3545';
+                    this.value = this.value.substring(0, 500);
+                    charCount.textContent = '500';
+                } else {
+                    charCount.style.color = '#6c757d';
+                }
+
+                updateNivelResumen(nivelElement);
+            });
+
+            // Toggle acceso 24/7
+            const acceso24h = nivelElement.querySelector('.acceso-24h');
+            const horariosRestringidos = nivelElement.querySelector('.horarios-restringidos');
+            const diasSemana = nivelElement.querySelector('.dias-semana');
+
+            acceso24h.addEventListener('change', function () {
+                if (this.checked) {
+                    horariosRestringidos.style.display = 'none';
+                    diasSemana.style.display = 'none';
+                } else {
+                    horariosRestringidos.style.display = 'block';
+                    diasSemana.style.display = 'block';
+                }
+                updateNivelResumen(nivelElement);
+                updateResumenNiveles();
+            });
+
+            // Agregar puerta personalizada
+            const addPuertaBtn = nivelElement.querySelector('.add-puerta-personalizada');
+            const puertaInput = nivelElement.querySelector('.puerta-personalizada');
+            const puertasList = nivelElement.querySelector('.puertas-personalizadas-list');
+
+            addPuertaBtn.addEventListener('click', function () {
+                const nombrePuerta = puertaInput.value.trim();
+                if (nombrePuerta) {
+                    const puertaElement = document.createElement('div');
+                    puertaElement.className = 'form-check mb-1';
+                    puertaElement.innerHTML = `
                     <input class="form-check-input" type="checkbox" name="puerta_personalizada_${Date.now()}" checked>
                     <label class="form-check-label">
                         <i class="bi bi-door-closed me-1"></i>${nombrePuerta}
@@ -467,107 +577,114 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="bi bi-x"></i>
                     </button>
                 `;
-                
-                puertasList.appendChild(puertaElement);
-                puertaInput.value = '';
-                
-                // Evento para eliminar puerta personalizada
-                puertaElement.querySelector('.remove-puerta-personalizada').addEventListener('click', function() {
-                    puertaElement.remove();
+
+                    puertasList.appendChild(puertaElement);
+                    puertaInput.value = '';
+
+                    // Evento para eliminar puerta personalizada
+                    puertaElement.querySelector('.remove-puerta-personalizada').addEventListener('click', function () {
+                        puertaElement.remove();
+                        updateNivelResumen(nivelElement);
+                    });
+
                     updateNivelResumen(nivelElement);
+                }
+            });
+
+            // Enter en input de puerta personalizada
+            puertaInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addPuertaBtn.click();
+                }
+            });
+
+            // Eventos para actualizar resumen
+            const inputs = nivelElement.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    updateNivelResumen(nivelElement);
+                    updateResumenNiveles();
                 });
-                
-                updateNivelResumen(nivelElement);
-            }
-        });
-        
-        // Enter en input de puerta personalizada
-        puertaInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addPuertaBtn.click();
-            }
-        });
-        
-        // Eventos para actualizar resumen
-        const inputs = nivelElement.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                updateNivelResumen(nivelElement);
-                updateResumenNiveles();
+                input.addEventListener('change', function () {
+                    updateNivelResumen(nivelElement);
+                    updateResumenNiveles();
+                });
             });
-            input.addEventListener('change', function() {
-                updateNivelResumen(nivelElement);
-                updateResumenNiveles();
-            });
-        });
-    }
-    
-    // Función para actualizar el resumen de un nivel
-    function updateNivelResumen(nivelElement) {
-        const nombre = nivelElement.querySelector('.nivel-nombre').value || '-';
-        const prioridad = nivelElement.querySelector('.nivel-prioridad').value || '5';
-        const acceso24h = nivelElement.querySelector('.acceso-24h').checked;
-        
-        // Contar puertas seleccionadas
-        const puertasSeleccionadas = nivelElement.querySelectorAll('input[type="checkbox"]:checked').length - 1; // -1 por el checkbox de 24h
-        
-        nivelElement.querySelector('.nivel-resumen-nombre').textContent = nombre;
-        
-        const prioridadBadge = nivelElement.querySelector('.nivel-resumen-prioridad');
-        prioridadBadge.textContent = prioridad;
-        
-        // Color del badge según prioridad
-        const prioridadColors = {
-            '1': 'bg-danger', '2': 'bg-danger', '3': 'bg-warning',
-            '4': 'bg-warning', '5': 'bg-info', '6': 'bg-info',
-            '7': 'bg-secondary', '8': 'bg-secondary', '9': 'bg-secondary', '10': 'bg-secondary'
-        };
-        prioridadBadge.className = `badge ${prioridadColors[prioridad] || 'bg-info'}`;
-        
-        nivelElement.querySelector('.nivel-resumen-puertas').textContent = `${puertasSeleccionadas} puertas`;
-        
-        // Horario
-        let horarioTexto = '24/7';
-        if (!acceso24h) {
-            const horaInicio = nivelElement.querySelector('.hora-inicio').value || '08:00';
-            const horaFin = nivelElement.querySelector('.hora-fin').value || '18:00';
-            horarioTexto = `${horaInicio} - ${horaFin}`;
         }
-        nivelElement.querySelector('.nivel-resumen-horario').textContent = horarioTexto;
-    }
-    
-    // Función para actualizar el resumen total
-    function updateResumenNiveles() {
-        const niveles = document.querySelectorAll('.nivel-item:not(#nivel-template)');
-        let totalNiveles = niveles.length;
-        let total24h = 0;
-        let totalRestringido = 0;
-        let totalPuertasConfig = 0;
-        
-        niveles.forEach(nivel => {
-            const acceso24h = nivel.querySelector('.acceso-24h').checked;
-            if (acceso24h) {
-                total24h++;
-            } else {
-                totalRestringido++;
+
+        // Función para actualizar el resumen de un nivel
+        function updateNivelResumen(nivelElement) {
+            const nombre = nivelElement.querySelector('.nivel-nombre').value || '-';
+            const prioridad = nivelElement.querySelector('.nivel-prioridad').value || '5';
+            const acceso24h = nivelElement.querySelector('.acceso-24h').checked;
+
+            // Contar puertas seleccionadas
+            const puertasSeleccionadas = nivelElement.querySelectorAll('input[type="checkbox"]:checked').length - 1; // -1 por el checkbox de 24h
+
+            nivelElement.querySelector('.nivel-resumen-nombre').textContent = nombre;
+
+            const prioridadBadge = nivelElement.querySelector('.nivel-resumen-prioridad');
+            prioridadBadge.textContent = prioridad;
+
+            // Color del badge según prioridad
+            const prioridadColors = {
+                '1': 'bg-danger', '2': 'bg-danger', '3': 'bg-warning',
+                '4': 'bg-warning', '5': 'bg-info', '6': 'bg-info',
+                '7': 'bg-secondary', '8': 'bg-secondary', '9': 'bg-secondary', '10': 'bg-secondary'
+            };
+            prioridadBadge.className = `badge ${prioridadColors[prioridad] || 'bg-info'}`;
+
+            nivelElement.querySelector('.nivel-resumen-puertas').textContent = `${puertasSeleccionadas} puertas`;
+
+            // Horario
+            let horarioTexto = '24/7';
+            if (!acceso24h) {
+                const horaInicio = nivelElement.querySelector('.hora-inicio').value || '08:00';
+                const horaFin = nivelElement.querySelector('.hora-fin').value || '18:00';
+                horarioTexto = `${horaInicio} - ${horaFin}`;
             }
-            
-            // Contar puertas configuradas
-            const puertasSeleccionadas = nivel.querySelectorAll('input[type="checkbox"]:checked').length - 1;
-            totalPuertasConfig += puertasSeleccionadas;
-        });
-        
-        document.getElementById('total-niveles').textContent = totalNiveles;
-        document.getElementById('total-24h').textContent = total24h;
-        document.getElementById('total-restringido').textContent = totalRestringido;
-        document.getElementById('total-puertas-config').textContent = totalPuertasConfig;
-    }
-    
-    // Evento para agregar nivel
-    document.getElementById('add-nivel').addEventListener('click', addNivel);
-    
-    // Agregar un nivel inicial
-    addNivel();
-});
+            nivelElement.querySelector('.nivel-resumen-horario').textContent = horarioTexto;
+        }
+
+        // Función para actualizar el resumen total
+        function updateResumenNiveles() {
+            const niveles = document.querySelectorAll('.nivel-item:not(#nivel-template)');
+            let totalNiveles = niveles.length;
+            let total24h = 0;
+            let totalRestringido = 0;
+            let totalPuertasConfig = 0;
+
+            niveles.forEach(nivel => {
+                const acceso24h = nivel.querySelector('.acceso-24h').checked;
+                if (acceso24h) {
+                    total24h++;
+                } else {
+                    totalRestringido++;
+                }
+
+                // Contar puertas configuradas
+                const puertasSeleccionadas = nivel.querySelectorAll('input[type="checkbox"]:checked').length - 1;
+                totalPuertasConfig += puertasSeleccionadas;
+            });
+
+            document.getElementById('total-niveles').textContent = totalNiveles;
+            document.getElementById('total-24h').textContent = total24h;
+            document.getElementById('total-restringido').textContent = totalRestringido;
+            document.getElementById('total-puertas-config').textContent = totalPuertasConfig;
+        }
+
+        // Evento para agregar nivel
+        document.getElementById('add-nivel').addEventListener('click', addNivel);
+
+
+        const data = window.formularioData?.datosFormulario?.niveles_acceso || [];
+
+        if (Array.isArray(data) && data.length > 0) {
+
+            data.forEach(n => addNivel(n));
+        } else {
+            addNivel();
+        }
+    });
 </script>

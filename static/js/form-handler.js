@@ -1002,7 +1002,7 @@ class FormularioCliente {
         } else if (step === 4) {
             stepData = datos.config_correo || datos.paso_4 || {};
         } else if (step === 5) {
-            stepData = datos.niveles_acceso || datos.paso_5 || {};
+            stepData = datos.niveles_acceso || datos.paso_5 || [];
         } else if (step === 6) {
             stepData = datos.documentacion || datos.paso_6 || {};
         }
@@ -1090,28 +1090,28 @@ class FormularioCliente {
         // =========================
         // PASO 5: niveles dinámicos
         // =========================
-        if (step === 5 && Array.isArray(stepData)) {
-            const container = document.getElementById('niveles-container');
-            if (!container) return;
-
-            container
-                .querySelectorAll('.nivel-item:not(#nivel-template)')
-                .forEach(el => el.remove());
-
-            stepData.forEach(nivel => {
-                if (typeof window.addNivel === 'function') {
-                    const el = window.addNivel();
-                    if (!el) return;
-
-                    el.querySelector('.nivel-nombre').value = nivel.nombre || '';
-                    el.querySelector('.nivel-prioridad').value = nivel.prioridad || '';
-                    el.querySelector('.nivel-descripcion').value = nivel.descripcion || '';
-                    el.querySelector('.acceso-24h').checked = !!nivel.acceso_24h;
-                }
-            });
-
-            return;
-        }
+        // if (step === 5 && Array.isArray(stepData)) {
+        //     const container = document.getElementById('niveles-container');
+        //     if (!container) return;
+        //
+        //     container
+        //         .querySelectorAll('.nivel-item:not(#nivel-template)')
+        //         .forEach(el => el.remove());
+        //
+        //     stepData.forEach(nivel => {
+        //         if (typeof window.addNivel === 'function') {
+        //             const el = window.addNivel();
+        //             if (!el) return;
+        //
+        //             el.querySelector('.nivel-nombre').value = nivel.nombre || '';
+        //             el.querySelector('.nivel-prioridad').value = nivel.prioridad || '';
+        //             el.querySelector('.nivel-descripcion').value = nivel.descripcion || '';
+        //             el.querySelector('.acceso-24h').checked = !!nivel.acceso_24h;
+        //         }
+        //     });
+        //
+        //     return;
+        // }
 
         // =========================
         // Otros pasos (inputs simples)

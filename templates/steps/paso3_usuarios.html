@@ -269,93 +269,93 @@
 
         // Función para agregar un nuevo usuario
         function addUsuario(data = null) {
-    if (usuarioCounter >= maxUsuarios) {
-        alert('Máximo 3 usuarios permitidos según las licencias adquiridas.');
-        return;
-    }
+            if (usuarioCounter >= maxUsuarios) {
+                alert('Máximo 3 usuarios permitidos según las licencias adquiridas.');
+                return;
+            }
 
-    usuarioCounter++;
+            usuarioCounter++;
 
-    const template = document.getElementById('usuario-template');
-    const el = template.cloneNode(true);
+            const template = document.getElementById('usuario-template');
+            const el = template.cloneNode(true);
 
-    // Configuración básica
-    el.id = `usuario-${usuarioCounter}`;
-    el.style.display = 'block';
-    el.querySelector('.usuario-number').textContent = usuarioCounter;
+            // Configuración básica
+            el.id = `usuario-${usuarioCounter}`;
+            el.style.display = 'block';
+            el.querySelector('.usuario-number').textContent = usuarioCounter;
 
-    // Indexar names + IDs únicos en checkboxes
-    el.querySelectorAll('input, select').forEach(input => {
-        const name = input.getAttribute('name');
-        if (name) {
-            input.setAttribute(
-                'name',
-                `usuarios[${usuarioCounter - 1}][${name}]`
-            );
+            // Indexar names + IDs únicos en checkboxes
+            el.querySelectorAll('input, select').forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    input.setAttribute(
+                        'name',
+                        `usuarios[${usuarioCounter - 1}][${name}]`
+                    );
+                }
+
+                if (input.type === 'checkbox') {
+                    const baseId = input.id;
+                    const newId = `${baseId}_${usuarioCounter}`;
+                    input.id = newId;
+
+                    const label = el.querySelector(`label[for="${baseId}"]`);
+                    if (label) label.setAttribute('for', newId);
+                }
+            });
+
+            // 🔹 Cargar datos iniciales (MISMO PATRÓN QUE addTrastero)
+            if (data) {
+                el.querySelector('.usuario-nombre').value =
+                    data.nombre_usuario || '';
+
+                el.querySelector('.usuario-email').value =
+                    data.email_usuario || '';
+
+                el.querySelector('.usuario-password').value =
+                    data.password_usuario || '';
+
+                el.querySelector('.usuario-confirm-password').value =
+                    data.confirm_password_usuario || '';
+
+                el.querySelector('.usuario-rol').value =
+                    data.rol_usuario || 'usuario';
+
+                el.querySelector('.usuario-departamento').value =
+                    data.departamento_usuario || '';
+
+                // Permisos
+                if (data.permisos) {
+                    el.querySelector('[name*="permisos_facturacion"]').checked =
+                        !!data.permisos.facturacion;
+
+                    el.querySelector('[name*="permisos_reportes"]').checked =
+                        !!data.permisos.reportes;
+
+                    el.querySelector('[name*="permisos_configuracion"]').checked =
+                        !!data.permisos.configuracion;
+                }
+            }
+
+            // Agregar al DOM
+            document.getElementById('usuarios-container').appendChild(el);
+
+            // Eventos
+            setupUsuarioEvents(el);
+
+            // UI global
+            document.getElementById('no-usuarios-message').style.display = 'none';
+            document.getElementById('resumen-usuarios').style.display = 'block';
+
+            if (usuarioCounter >= maxUsuarios) {
+                const btn = document.getElementById('add-usuario');
+                btn.disabled = true;
+                btn.innerHTML =
+                    '<i class="bi bi-exclamation-triangle me-2"></i>Máximo alcanzado';
+            }
+
+            updateResumenUsuarios();
         }
-
-        if (input.type === 'checkbox') {
-            const baseId = input.id;
-            const newId = `${baseId}_${usuarioCounter}`;
-            input.id = newId;
-
-            const label = el.querySelector(`label[for="${baseId}"]`);
-            if (label) label.setAttribute('for', newId);
-        }
-    });
-
-    // 🔹 Cargar datos iniciales (MISMO PATRÓN QUE addTrastero)
-    if (data) {
-        el.querySelector('.usuario-nombre').value =
-            data.nombre_usuario || '';
-
-        el.querySelector('.usuario-email').value =
-            data.email_usuario || '';
-
-        el.querySelector('.usuario-password').value =
-            data.password_usuario || '';
-
-        el.querySelector('.usuario-confirm-password').value =
-            data.confirm_password_usuario || '';
-
-        el.querySelector('.usuario-rol').value =
-            data.rol_usuario || 'usuario';
-
-        el.querySelector('.usuario-departamento').value =
-            data.departamento_usuario || '';
-
-        // Permisos
-        if (data.permisos) {
-            el.querySelector('[name*="permisos_facturacion"]').checked =
-                !!data.permisos.facturacion;
-
-            el.querySelector('[name*="permisos_reportes"]').checked =
-                !!data.permisos.reportes;
-
-            el.querySelector('[name*="permisos_configuracion"]').checked =
-                !!data.permisos.configuracion;
-        }
-    }
-
-    // Agregar al DOM
-    document.getElementById('usuarios-container').appendChild(el);
-
-    // Eventos
-    setupUsuarioEvents(el);
-
-    // UI global
-    document.getElementById('no-usuarios-message').style.display = 'none';
-    document.getElementById('resumen-usuarios').style.display = 'block';
-
-    if (usuarioCounter >= maxUsuarios) {
-        const btn = document.getElementById('add-usuario');
-        btn.disabled = true;
-        btn.innerHTML =
-            '<i class="bi bi-exclamation-triangle me-2"></i>Máximo alcanzado';
-    }
-
-    updateResumenUsuarios();
-}
 
         // Función para configurar eventos de un usuario
         function setupUsuarioEvents(usuarioElement) {
@@ -538,7 +538,6 @@
         }
 
 
-
         // =========================
         // 🔥 REHIDRATAR DESDE BACKEND
         // =========================
@@ -548,7 +547,7 @@
         if (Array.isArray(data) && data.length > 0) {
             data.forEach(u => addUsuario(u));
         } else {
-          addUsuario();
+            addUsuario();
         }
 
         // Evento para agregar usuario
