@@ -269,196 +269,232 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let uploadedFiles = {
-            contratos: [],
-            planos: [],
-            logos: [],
-            adicionales: []
-        };
+            let uploadedFiles = {
+                contratos: [],
+                planos: [],
+                logos: [],
+                adicional: []
+            };
 
-        window.uploadedFilesPaso6 = uploadedFiles;
 
-        // Configurar áreas de upload
-        setupUploadArea('contratos', ['docx']);
-        setupUploadArea('planos', ['jpg', 'jpeg', 'png', 'pdf']);
-        setupUploadArea('adicional', ['pdf', 'docx', 'jpg', 'jpeg', 'png']);
-        setupLogoUpload('logo');
-        setupLogoUpload('logo-alt');
+            window.uploadedFilesPaso6 = uploadedFiles;
 
-        // Contador de caracteres para notas
-        const notasField = document.getElementById('notas_adicionales');
-        const charCountNotas = document.querySelector('.char-count-notas');
-
-        notasField.addEventListener('input', function () {
-            const count = this.value.length;
-            charCountNotas.textContent = count;
-
-            if (count > 1000) {
-                charCountNotas.style.color = '#dc3545';
-                this.value = this.value.substring(0, 1000);
-                charCountNotas.textContent = '1000';
-            } else {
-                charCountNotas.style.color = '#6c757d';
+            function normalizarTipo(tipo) {
+                const map = {
+                    contratos: 'contratos',
+                    planos: 'planos',
+                    adicional: 'adicional',
+                    adicionales: 'adicional',
+                    logo_principal: 'logo_principal',
+                    logo_alternativo: 'logo_alternativo'
+                };
+                return map[tipo] || null;
             }
-        });
 
-        function setupUploadArea(type, allowedExtensions) {
-            const uploadArea = document.getElementById(`${type}-upload`);
-            const fileInput = document.getElementById(`${type}-input`);
-            const filesContainer = document.getElementById(`${type}-files`);
 
-            // Drag and drop
-            uploadArea.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                this.classList.add('drag-over');
-            });
+            // Configurar áreas de upload
+            setupUploadArea('contratos', ['docx']);
+            setupUploadArea('planos', ['jpg', 'jpeg', 'png', 'pdf']);
+            setupUploadArea('adicional', ['pdf', 'docx', 'jpg', 'jpeg', 'png']);
+            setupLogoUpload('logo');
+            setupLogoUpload('logo-alt');
 
-            uploadArea.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                this.classList.remove('drag-over');
-            });
 
-            uploadArea.addEventListener('drop', function (e) {
-                e.preventDefault();
-                this.classList.remove('drag-over');
+            // Contador de caracteres para notas
+            const notasField = document.getElementById('notas_adicionales');
+            const charCountNotas = document.querySelector('.char-count-notas');
 
-                const files = Array.from(e.dataTransfer.files);
-                handleFiles(files, type, allowedExtensions);
-            });
+            // 🟢 HIDRATAR textarea desde backend al refrescar
+            if (notasField) {
+                const notasGuardadas =
+                    window.formularioData?.datosFormulario?.documentacion?.notas_adicionales;
 
-            // File input change
-            fileInput.addEventListener('change', function (e) {
-                const files = Array.from(e.target.files);
-                handleFiles(files, type, allowedExtensions);
-            });
-        }
+                if (notasGuardadas) {
+                    notasField.value = notasGuardadas;
 
-        function setupLogoUpload(type) {
-            const uploadArea = document.getElementById(`${type}-upload`);
-            const fileInput = document.getElementById(`${type}-input`);
-            const uploadContent = uploadArea.querySelector('.upload-content');
-            const logoPreview = uploadArea.querySelector('.logo-preview');
-            const removeBtn = uploadArea.querySelector('.remove-logo');
-
-            fileInput.addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (file) {
-                    if (validateFile(file, ['jpg', 'jpeg', 'png'], 2)) {
-                        displayLogoPreview(file, uploadContent, logoPreview);
-
-                        // 🔼 subir al backend
-                        uploadFileToBackend(file, type === 'logo' ? 'logo_principal' : 'logo_alternativo');
-
-                        uploadedFiles.logos.push(file);
-                        updateResumen();
+                    if (charCountNotas) {
+                        charCountNotas.textContent = notasGuardadas.length;
+                        charCountNotas.style.color = '#6c757d';
                     }
+                }
+            }
+
+            notasField.addEventListener('input', function () {
+                const count = this.value.length;
+                charCountNotas.textContent = count;
+
+                if (count > 1000) {
+                    charCountNotas.style.color = '#dc3545';
+                    this.value = this.value.substring(0, 1000);
+                    charCountNotas.textContent = '1000';
+                } else {
+                    charCountNotas.style.color = '#6c757d';
                 }
             });
 
-            removeBtn.addEventListener('click', function () {
-                logoPreview.style.display = 'none';
-                uploadContent.style.display = 'block';
-                fileInput.value = '';
+            function setupUploadArea(type, allowedExtensions) {
+                const uploadArea = document.getElementById(`${type}-upload`);
+                const fileInput = document.getElementById(`${type}-input`);
+                const filesContainer = document.getElementById(`${type}-files`);
 
-                // Remover del array
-                const fileName = logoPreview.querySelector('img').alt;
-                uploadedFiles.logos = uploadedFiles.logos.filter(f => f.name !== fileName);
-                updateResumen();
-            });
-        }
-
-        function handleFiles(files, type, allowedExtensions) {
-            const validFiles = [];
-
-            files.forEach(file => {
-                if (!validateFile(file, allowedExtensions)) return;
-
-                // Guardamos en memoria (como antes)
-                validFiles.push(file);
-
-                // 🔼 Subimos al backend
-                uploadFileToBackend(file, type);
-            });
-
-            if (validFiles.length > 0) {
-                uploadedFiles[type] = uploadedFiles[type] || [];
-                uploadedFiles[type].push(...validFiles);
-
-                displayFiles(validFiles, type);
-                updateResumen();
-            }
-        }
-
-        function validateFile(file, allowedExtensions, maxSizeMB = 5) {
-            const extension = file.name.split('.').pop().toLowerCase();
-            const sizeMB = file.size / (1024 * 1024);
-
-            if (!allowedExtensions.includes(extension)) {
-                showToast(`Formato de archivo no permitido: ${extension}`, 'error');
-                return false;
-            }
-
-            if (sizeMB > maxSizeMB) {
-                showToast(`El archivo es demasiado grande: ${sizeMB.toFixed(1)}MB (máximo: ${maxSizeMB}MB)`, 'error');
-                return false;
-            }
-
-            return true;
-        }
-
-        function uploadFileToBackend(file, type) {
-            if (!window.formularioData?.clienteId) {
-                console.warn('No hay cliente_id, no se sube el archivo');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('cliente_id', window.formularioData.clienteId);
-            formData.append('tipo', type);
-
-            fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.success) {
-                        throw new Error(data.error || 'Error al subir archivo');
-                    }
-
-                    // Marcar archivo como subido
-                    file._uploaded = true;
-                    file._serverFilename = data.filename;
-
-                    console.log('Archivo subido:', data);
-                })
-                .catch(err => {
-                    console.error(err);
-                    showToast(`Error subiendo archivo: ${file.name}`, 'error');
+                // Drag and drop
+                uploadArea.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    this.classList.add('drag-over');
                 });
-        }
 
-        function displayFiles(files, type) {
-            const container = document.getElementById(`${type}-files`);
+                uploadArea.addEventListener('dragleave', function (e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+                });
 
-            files.forEach(file => {
-                const fileElement = createFileElement(file, type);
-                container.appendChild(fileElement);
-            });
-        }
+                uploadArea.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
 
-        function createFileElement(file, type) {
-            const div = document.createElement('div');
-            div.className = 'uploaded-file d-flex align-items-center justify-content-between p-3 border rounded mb-2';
+                    const files = Array.from(e.dataTransfer.files);
+                    handleFiles(files, type, allowedExtensions);
+                });
 
-            const fileInfo = document.createElement('div');
-            fileInfo.className = 'd-flex align-items-center';
+                // File input change
+                fileInput.addEventListener('change', function (e) {
+                    const files = Array.from(e.target.files);
+                    handleFiles(files, type, allowedExtensions);
+                });
+            }
 
-            const icon = getFileIcon(file.name);
-            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            function setupLogoUpload(type) {
+                const uploadArea = document.getElementById(`${type}-upload`);
+                const fileInput = document.getElementById(`${type}-input`);
+                const uploadContent = uploadArea.querySelector('.upload-content');
+                const logoPreview = uploadArea.querySelector('.logo-preview');
+                const removeBtn = uploadArea.querySelector('.remove-logo');
 
-            fileInfo.innerHTML = `
+                fileInput.addEventListener('change', function (e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        if (validateFile(file, ['jpg', 'jpeg', 'png'], 2)) {
+                            displayLogoPreview(file, uploadContent, logoPreview);
+
+                            // 🔼 subir al backend
+                            uploadFileToBackend(file, type === 'logo' ? 'logo_principal' : 'logo_alternativo');
+
+                            uploadedFiles.logos.push(file);
+                            updateResumen();
+                        }
+                    }
+                });
+
+                removeBtn.addEventListener('click', function () {
+                    logoPreview.style.display = 'none';
+                    uploadContent.style.display = 'block';
+                    fileInput.value = '';
+
+                    // Remover del array
+                    const fileName = logoPreview.querySelector('img').alt;
+                    uploadedFiles.logos = uploadedFiles.logos.filter(f => f.name !== fileName);
+                    updateResumen();
+                });
+            }
+
+            function handleFiles(files, type, allowedExtensions) {
+                const validFiles = [];
+
+                files.forEach(file => {
+                    if (!validateFile(file, allowedExtensions)) return;
+
+                    // Guardamos en memoria (como antes)
+                    validFiles.push(file);
+
+                    // 🔼 Subimos al backend
+                    uploadFileToBackend(file, type);
+                });
+
+                if (validFiles.length > 0) {
+                    uploadedFiles[type] = uploadedFiles[type] || [];
+                    uploadedFiles[type].push(...validFiles);
+
+                    displayFiles(validFiles, type);
+                    updateResumen();
+                }
+            }
+
+            function validateFile(file, allowedExtensions, maxSizeMB = 5) {
+                const extension = file.name.split('.').pop().toLowerCase();
+                const sizeMB = file.size / (1024 * 1024);
+
+                if (!allowedExtensions.includes(extension)) {
+                    showToast(`Formato de archivo no permitido: ${extension}`, 'error');
+                    return false;
+                }
+
+                if (sizeMB > maxSizeMB) {
+                    showToast(`El archivo es demasiado grande: ${sizeMB.toFixed(1)}MB (máximo: ${maxSizeMB}MB)`, 'error');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function uploadFileToBackend(file, type) {
+                if (!window.formularioData?.clienteId) {
+                    console.warn('No hay cliente_id, no se sube el archivo');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('cliente_id', window.formularioData.clienteId);
+                formData.append('tipo', type);
+
+                fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.error || 'Error al subir archivo');
+                        }
+
+                        // Marcar archivo como subido
+                        file._uploaded = true;
+                        file._serverFilename = data.filename;
+
+                        console.log('Archivo subido:', data);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showToast(`Error subiendo archivo: ${file.name}`, 'error');
+                    });
+            }
+
+            function displayFiles(files, type) {
+                const container = document.getElementById(`${type}-files`);
+
+                if (!container) {
+                    console.warn(`Contenedor no existe: ${type}-files`);
+                    return;
+                }
+
+                files.forEach(file => {
+                    const fileElement = createFileElement(file, type);
+                    container.appendChild(fileElement);
+                });
+            }
+
+
+            function createFileElement(file, type) {
+                const div = document.createElement('div');
+                div.className = 'uploaded-file d-flex align-items-center justify-content-between p-3 border rounded mb-2';
+
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'd-flex align-items-center';
+
+                const icon = getFileIcon(file.name);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+                fileInfo.innerHTML = `
             <i class="bi ${icon} me-3 fs-4 text-primary"></i>
             <div>
                 <div class="fw-bold">${file.name}</div>
@@ -466,95 +502,170 @@
             </div>
         `;
 
-            const removeBtn = document.createElement('button');
-            removeBtn.className = 'btn btn-sm btn-outline-danger';
-            removeBtn.innerHTML = '<i class="bi bi-trash"></i>';
-            removeBtn.addEventListener('click', function () {
-                div.remove();
-                removeFileFromArray(file.name, type);
-                updateResumen();
-            });
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'btn btn-sm btn-outline-danger';
+                removeBtn.innerHTML = '<i class="bi bi-trash"></i>';
+                removeBtn.addEventListener('click', function () {
+                    div.remove();
+                    removeFileFromArray(file.name, type);
+                    updateResumen();
+                });
 
-            div.appendChild(fileInfo);
-            div.appendChild(removeBtn);
+                div.appendChild(fileInfo);
+                div.appendChild(removeBtn);
 
-            return div;
-        }
-
-        function displayLogoPreview(file, uploadContent, logoPreview) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = logoPreview.querySelector('img');
-                img.src = e.target.result;
-                img.alt = file.name;
-
-                uploadContent.style.display = 'none';
-                logoPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function getFileIcon(fileName) {
-            const extension = fileName.split('.').pop().toLowerCase();
-            const icons = {
-                'pdf': 'bi-file-earmark-pdf',
-                'docx': 'bi-file-earmark-word',
-                'jpg': 'bi-file-earmark-image',
-                'jpeg': 'bi-file-earmark-image',
-                'png': 'bi-file-earmark-image'
-            };
-
-            return icons[extension] || 'bi-file-earmark';
-        }
-
-        function removeFileFromArray(fileName, type) {
-            if (uploadedFiles[type]) {
-                uploadedFiles[type] = uploadedFiles[type].filter(f => f.name !== fileName);
+                return div;
             }
-        }
 
-        function updateResumen() {
-            const counts = {
-                contratos: uploadedFiles.contratos?.length || 0,
-                planos: uploadedFiles.planos?.length || 0,
-                logos: uploadedFiles.logos?.length || 0,
-                adicionales: uploadedFiles.adicionales?.length || 0
-            };
+            function displayLogoPreview(file, uploadContent, logoPreview) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = logoPreview.querySelector('img');
+                    img.src = e.target.result;
+                    img.alt = file.name;
 
-            document.getElementById('count-contratos').textContent = `${counts.contratos} archivos`;
-            document.getElementById('count-planos').textContent = `${counts.planos} archivos`;
-            document.getElementById('count-logos').textContent = `${counts.logos} archivos`;
-            document.getElementById('count-adicionales').textContent = `${counts.adicionales} archivos`;
+                    uploadContent.style.display = 'none';
+                    logoPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
 
-            const totalFiles = Object.values(counts).reduce((a, b) => a + b, 0);
-            document.getElementById('total-archivos').textContent = totalFiles;
+            function getFileIcon(fileName) {
+                const extension = fileName.split('.').pop().toLowerCase();
+                const icons = {
+                    'pdf': 'bi-file-earmark-pdf',
+                    'docx': 'bi-file-earmark-word',
+                    'jpg': 'bi-file-earmark-image',
+                    'jpeg': 'bi-file-earmark-image',
+                    'png': 'bi-file-earmark-image'
+                };
 
-            // Calcular tamaño total
-            let totalSize = 0;
-            Object.values(uploadedFiles).forEach(fileArray => {
-                if (fileArray) {
-                    fileArray.forEach(file => {
-                        totalSize += file.size;
-                    });
+                return icons[extension] || 'bi-file-earmark';
+            }
+
+            function removeFileFromArray(fileName, type) {
+                if (uploadedFiles[type]) {
+                    uploadedFiles[type] = uploadedFiles[type].filter(f => f.name !== fileName);
                 }
-            });
-
-            const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-            document.getElementById('total-tamaño').textContent = `${totalSizeMB} MB`;
-        }
-
-        function showToast(message, type = 'info') {
-            // Reutilizar función del formulario principal
-            if (window.formularioCliente && window.formularioCliente.showToast) {
-                window.formularioCliente.showToast(message, type);
-            } else {
-                alert(message); // Fallback
             }
-        }
 
-        // Inicializar resumen
-        updateResumen();
-    });
+            function updateResumen() {
+                const counts = {
+                    contratos: uploadedFiles.contratos?.length || 0,
+                    planos: uploadedFiles.planos?.length || 0,
+                    logos: uploadedFiles.logos?.length || 0,
+                    adicional: uploadedFiles.adicional?.length || 0
+                };
+
+                document.getElementById('count-contratos').textContent = `${counts.contratos} archivos`;
+                document.getElementById('count-planos').textContent = `${counts.planos} archivos`;
+                document.getElementById('count-logos').textContent = `${counts.logos} archivos`;
+                document.getElementById('count-adicionales').textContent =
+                    `${counts.adicional} archivos`;
+
+                const totalFiles = Object.values(counts).reduce((a, b) => a + b, 0);
+                document.getElementById('total-archivos').textContent = totalFiles;
+
+                // Calcular tamaño total
+                let totalSize = 0;
+                Object.values(uploadedFiles).forEach(fileArray => {
+                    if (fileArray) {
+                        fileArray.forEach(file => {
+                            totalSize += file.size;
+                        });
+                    }
+                });
+
+                const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+                document.getElementById('total-tamaño').textContent = `${totalSizeMB} MB`;
+            }
+
+            const formularioId = window.formularioData?.formulario_id;
+            console.log('formularioId', formularioId);
+
+            if (formularioId) {
+                fetch(`/api/formulario/${formularioId}/archivos`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.archivos || !Array.isArray(data.archivos)) return;
+
+                        data.archivos
+                            .filter(a => a.paso_formulario === 6)
+                            .forEach(archivo => {
+
+                                const tipo = normalizarTipo(archivo.tipo_archivo);
+                                if (!tipo) return;
+
+                                const fakeFile = {
+                                    name: archivo.nombre_original,
+                                    _uploaded: true,
+                                    _serverFilename: archivo.nombre_archivo,
+                                    size: 0
+                                };
+
+                                // 🟢 LOGOS → preview (NO lista)
+                                if (tipo === 'logo_principal' || tipo === 'logo_alternativo') {
+                                    const uploadArea = document.getElementById(
+                                        tipo === 'logo_principal'
+                                            ? 'logo-upload'
+                                            : 'logo-alt-upload'
+                                    );
+
+                                    if (!uploadArea) {
+                                        console.warn('Upload area logo no encontrada');
+                                        return;
+                                    }
+
+                                    const uploadContent = uploadArea.querySelector('.upload-content');
+                                    const logoPreview = uploadArea.querySelector('.logo-preview');
+                                    const img = logoPreview?.querySelector('img');
+
+                                    if (!img) {
+                                        console.warn('Img preview logo no encontrada');
+                                        return;
+                                    }
+
+                                    img.src = `/uploads/${archivo.nombre_archivo}`; // ajusta si cambia la ruta
+                                    img.alt = archivo.nombre_original;
+
+                                    uploadContent.style.display = 'none';
+                                    logoPreview.style.display = 'block';
+
+                                    uploadedFiles.logos.push(fakeFile);
+                                    return;
+                                }
+
+                                // 🟢 ARCHIVOS NORMALES (lista)
+                                if (!uploadedFiles[tipo]) {
+                                    uploadedFiles[tipo] = [];
+                                }
+
+                                uploadedFiles[tipo].push(fakeFile);
+                                displayFiles([fakeFile], tipo);
+                            });
+
+                        updateResumen();
+                    })
+                    .catch(err => {
+                        console.error('Error cargando archivos paso 6', err);
+                    });
+            }
+
+
+            function showToast(message, type = 'info') {
+                // Reutilizar función del formulario principal
+                if (window.formularioCliente && window.formularioCliente.showToast) {
+                    window.formularioCliente.showToast(message, type);
+                } else {
+                    alert(message); // Fallback
+                }
+            }
+
+            // Inicializar resumen
+            updateResumen();
+        }
+    )
+    ;
 </script>
 
 <style>

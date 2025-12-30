@@ -146,6 +146,7 @@ def formulario_cliente(nombre_cliente):
     formulario_obj = Formulario.obtener_por_cliente(cliente['id'])
 
     formulario_data = {
+        'formulario_id': formulario_obj.id if formulario_obj else None,
         'clienteId': cliente['id'],
         'nombreCliente': nombre_cliente,
         'pasoActual': formulario_obj.paso_actual if formulario_obj else 1,
@@ -224,7 +225,7 @@ def upload_file():
             return jsonify({'error': 'No se encontró archivo'}), 400
 
         file = request.files['file']
-        cliente_id = request.form.get('cliente_id')
+        cliente_id = request.form.get('cliente_id')  # se usa SOLO para localizar el formulario
         tipo_archivo = request.form.get('tipo', 'general')
 
         if not cliente_id:
@@ -249,7 +250,7 @@ def upload_file():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # 🔎 Obtener formulario activo
+        # 🔎 Obtener formulario activo del cliente
         cursor.execute("""
                        SELECT id
                        FROM formularios_clientes
@@ -264,7 +265,7 @@ def upload_file():
 
         formulario_id = row['id']
 
-        # ✅ Insertar en archivos_clientes (SIN cliente_id)
+        # ✅ INSERT SIN cliente_id
         cursor.execute("""
                        INSERT INTO archivos_clientes (formulario_id,
                                                       nombre_original,
@@ -292,39 +293,65 @@ def upload_file():
         return jsonify({
             'success': True,
             'filename': unique_filename,
-            'original_name': filename
+            'original_name': filename,
+            'formulario_id': formulario_id
         })
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/cliente/<cliente_id>/archivos')
-def get_client_files(cliente_id):
-    """Obtener archivos de un cliente"""
-    try:
-        conn = get_db_connection()
-        archivos = conn.execute('''
-                                SELECT *
-                                FROM archivos_clientes
-                                WHERE cliente_id = ?
-                                ORDER BY fecha_subida DESC
-                                ''', (cliente_id,)).fetchall()
-        conn.close()
+@app.route('/api/formulario/<int:formulario_id>/archivos')
+def get_form_files(formulario_id):
+    conn = get_db_connection()
+    archivos = conn.execute("""
+                            SELECT *
+                            FROM archivos_clientes
+                            WHERE formulario_id = ?
+                            ORDER BY fecha_subida DESC
+                            """, (formulario_id,)).fetchall()
+    conn.close()
 
-        archivos_list = []
-        for archivo in archivos:
-            archivos_list.append({
-                'id': archivo['id'],
-                'nombre_original': archivo['nombre_original'],
-                'tipo_archivo': archivo['tipo_archivo'],
-                'fecha_subida': archivo['fecha_subida']
-            })
+    return jsonify({
+        'archivos': [
+            {
+                'id': a['id'],
+                'nombre_original': a['nombre_original'],
+                'nombre_archivo': a['nombre_archivo'],
+                'tipo_archivo': a['tipo_archivo'],
+                'paso_formulario': a['paso_formulario']
+            }
+            for a in archivos
+        ]
+    })
 
-        return jsonify({'archivos': archivos_list})
 
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+# @app.route('/api/cliente/<cliente_id>/archivos')
+# def get_client_files(cliente_id):
+#     """Obtener archivos de un cliente"""
+#     try:
+#         conn = get_db_connection()
+#         archivos = conn.execute('''
+#                                 SELECT *
+#                                 FROM archivos_clientes
+#                                 WHERE cliente_id = ?
+#                                 ORDER BY fecha_subida DESC
+#                                 ''', (cliente_id,)).fetchall()
+#         conn.close()
+#
+#         archivos_list = []
+#         for archivo in archivos:
+#             archivos_list.append({
+#                 'id': archivo['id'],
+#                 'nombre_original': archivo['nombre_original'],
+#                 'tipo_archivo': archivo['tipo_archivo'],
+#                 'fecha_subida': archivo['fecha_subida']
+#             })
+#
+#         return jsonify({'archivos': archivos_list})
+#
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/test-email', methods=['POST'])
