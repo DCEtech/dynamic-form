@@ -855,7 +855,7 @@ class FormularioCliente {
         if (!this.clienteId) return;
 
         if (this.currentStep === 6) {
-            console.info('Paso 6: saveCurrentStep bloqueado, solo uploads');
+            console.info('Paso 6: guardado manual, no autosave');
             return;
         }
 
@@ -1180,17 +1180,51 @@ class FormularioCliente {
         return false;
     }
 
-    completeForm() {
+    async completeForm() {
+        if (this.isSubmitting) return;
         this.isSubmitting = true;
 
-        // Mostrar modal de confirmación o completar directamente
-        this.showToast('¡Formulario completado exitosamente!', 'success');
+        try {
+            this.updateSaveStatus('saving');
 
-        // Redirigir o mostrar página de éxito
-        setTimeout(() => {
-            window.location.href = `/`;
-        }, 2000);
+            const response = await fetch(
+                `/api/cliente/${this.clienteId}/completar`,
+                {method: 'POST'}
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Error al completar el formulario');
+            }
+
+            // ✅ Progreso REAL desde backend
+            this.updateProgress(100);
+
+            // ✅ Sincronizar estado global
+            if (result.formulario) {
+                window.formularioData.porcentajeCompletado =
+                    result.formulario.porcentaje_completado;
+
+                window.formularioData.pasoActual =
+                    result.formulario.paso_actual;
+            }
+
+            this.updateSaveStatus('saved');
+            this.showToast('¡Formulario completado exitosamente!', 'success');
+
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+
+        } catch (error) {
+            console.error(error);
+            this.isSubmitting = false;
+            this.updateSaveStatus('error');
+            this.showToast('Error al completar el formulario', 'error');
+        }
     }
+
 
     showSaveError() {
         this.showToast('Error al guardar los datos. Por favor, inténtelo de nuevo.', 'error');

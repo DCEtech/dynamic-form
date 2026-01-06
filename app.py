@@ -392,37 +392,21 @@ def test_email_config():
 @app.route('/api/cliente/<cliente_id>/completar', methods=['POST'])
 def completar_formulario(cliente_id):
     """Marcar formulario como completado"""
-    try:
-        conn = get_db_connection()
+    formulario = Formulario.obtener_por_cliente(cliente_id)
 
-        # Actualizar estado del formulario
-        conn.execute('''
-                     UPDATE formularios
-                     SET completado            = 1,
-                         porcentaje_completado = 100,
-                         fecha_completado      = ?,
-                         fecha_actualizacion   = ?
-                     WHERE cliente_id = ?
-                     ''', (datetime.now(), datetime.now(), cliente_id))
+    if not formulario:
+        return jsonify({'error': 'Formulario no encontrado'}), 404
 
-        # Actualizar cliente
-        conn.execute('''
-                     UPDATE clientes
-                     SET estado              = 'completado',
-                         fecha_actualizacion = ?
-                     WHERE id = ?
-                     ''', (datetime.now(), cliente_id))
+    # Marcar como finalizado
+    formulario.paso_actual = 6
+    formulario.porcentaje_completado = 100
+    formulario._guardar_en_bd()
 
-        conn.commit()
-        conn.close()
-
-        return jsonify({
-            'success': True,
-            'mensaje': 'Formulario completado exitosamente'
-        })
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    return jsonify({
+        'success': True,
+        'mensaje': 'Formulario completado correctamente',
+        'formulario': formulario.to_dict()
+    })
 
 
 @app.route('/api/clientes')
