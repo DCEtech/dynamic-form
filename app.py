@@ -11,7 +11,8 @@ from datetime import datetime
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from werkzeug.utils import secure_filename
-import sqlite3
+from database.init_db import get_connection
+# import sqlite3
 
 # Importar configuración y modelos
 import config
@@ -45,122 +46,159 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def get_db_connection():
-    """Obtener conexión a la base de datos"""
-    conn = sqlite3.connect(app.config['DATABASE_PATH'])
-    conn.row_factory = sqlite3.Row
-    return conn
+# def get_db_connection():
+#     """Obtener conexión a la base de datos"""
+#     conn = sqlite3.connect(app.config['DATABASE_PATH'])
+#     conn.row_factory = sqlite3.Row
+#     return conn
 
 
-def init_db():
-    """Inicializar la base de datos"""
-    with app.app_context():
-        conn = get_db_connection()
-        with open('database/schema.sql', 'r', encoding='utf-8') as f:
-            conn.executescript(f.read())
-        conn.close()
+# def init_db():
+#     """Inicializar la base de datos"""
+#     with app.app_context():
+#         conn = get_db_connection()
+#         with open('database/schema.sql', 'r', encoding='utf-8') as f:
+#             conn.executescript(f.read())
+#         conn.close()
 
 
 @app.route('/')
 def index():
-    """Página principal - Lista de clientes"""
-    conn = get_db_connection()
+    clientes = Cliente.listar_todos(solo_activos=True)
 
-    # Obtener todos los clientes con su progreso
-    clientes = conn.execute('''
-                            SELECT c.*,
-                                   COALESCE(f.paso_actual, 1)                        as paso_actual,
-                                   COALESCE(f.porcentaje_completado, 0)              as porcentaje_completado,
-                                   COALESCE(f.fecha_actualizacion, c.fecha_creacion) as ultima_actualizacion
-                            FROM clientes c
-                                     LEFT JOIN formularios_clientes f ON c.id = f.cliente_id
-                            ORDER BY c.fecha_creacion DESC
-                            ''').fetchall()
+    clientes_view = []
 
-    conn.close()
+    for cliente in clientes:
+        formulario = cliente.obtener_formulario()
 
-    return render_template('index.html', clientes=clientes)
+        clientes_view.append({
+            'id': cliente.id,
+            'nombre_cliente': cliente.nombre_cliente,
+            'slug': cliente.slug,
+            'fecha_creacion': cliente.fecha_creacion,
+            'paso_actual': formulario.paso_actual if formulario else 1,
+            'porcentaje_completado': formulario.porcentaje_completado if formulario else 0,
+            'ultima_actualizacion': formulario.fecha_actualizacion if formulario else cliente.fecha_creacion
+        })
+
+    return render_template('index.html', clientes=clientes_view)
+
+
+# def index():
+#     """Página principal - Lista de clientes"""
+#     conn = get_db_connection()
+#
+#     # Obtener todos los clientes con su progreso
+#     clientes = conn.execute('''
+#                             SELECT c.*,
+#                                    COALESCE(f.paso_actual, 1)                        as paso_actual,
+#                                    COALESCE(f.porcentaje_completado, 0)              as porcentaje_completado,
+#                                    COALESCE(f.fecha_actualizacion, c.fecha_creacion) as ultima_actualizacion
+#                             FROM clientes c
+#                                      LEFT JOIN formularios_clientes f ON c.id = f.cliente_id
+#                             ORDER BY c.fecha_creacion DESC
+#                             ''').fetchall()
+#
+#     conn.close()
+#
+#     return render_template('index.html', clientes=clientes)
 
 
 @app.route('/cliente/nuevo', methods=['POST'])
 def nuevo_cliente():
-    """Crear un nuevo cliente y redirigir a su formulario"""
-    conn = get_db_connection()
-
-    # Generar un nombre y slug únicos
     base_name = "Nueva Empresa"
     slug_base = "nueva-empresa"
 
-    # Buscar si ya existen empresas con ese nombre
-    existing_clients = conn.execute(
-        "SELECT nombre_cliente FROM clientes WHERE nombre_cliente LIKE ?",
-        (f"{base_name}%",)
-    ).fetchall()
+    clientes_existentes = Cliente.listar_todos(solo_activos=False)
+    cantidad = len([
+        c for c in clientes_existentes
+        if c.nombre_cliente.startswith(base_name)
+    ])
 
-    # Generar un nombre único
-    new_name = f"{base_name} {len(existing_clients) + 1}"
-    new_slug = f"{slug_base}-{len(existing_clients) + 1}"
+    nombre = f"{base_name} {cantidad + 1}"
+    slug = f"{slug_base}-{cantidad + 1}"
 
-    # Crear nuevo cliente
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO clientes (nombre_cliente, slug) VALUES (?, ?)",
-        (new_name, new_slug)
-    )
-    conn.commit()
-    cliente_id = cursor.lastrowid
+    cliente = Cliente.crear(nombre, slug)
+
+    if not cliente:
+        flash("Error creando el cliente", "error")
+        return redirect(url_for('index'))
 
     # Crear formulario asociado
-    Formulario.crear(cliente_id)
+    Formulario.crear(cliente.id)
 
-    conn.close()
+    flash(f"Se ha creado el nuevo cliente '{nombre}'.", "success")
+    return redirect(url_for('formulario_cliente', nombre_cliente=cliente.slug))
 
-    flash(f"Se ha creado el nuevo cliente '{new_name}'.", "success")
-    return redirect(url_for('formulario_cliente', nombre_cliente=new_slug))
+
+# def nuevo_cliente():
+#     """Crear un nuevo cliente y redirigir a su formulario"""
+#     conn = get_db_connection()
+#
+#     # Generar un nombre y slug únicos
+#     base_name = "Nueva Empresa"
+#     slug_base = "nueva-empresa"
+#
+#     # Buscar si ya existen empresas con ese nombre
+#     existing_clients = conn.execute(
+#         "SELECT nombre_cliente FROM clientes WHERE nombre_cliente LIKE ?",
+#         (f"{base_name}%",)
+#     ).fetchall()
+#
+#     # Generar un nombre único
+#     new_name = f"{base_name} {len(existing_clients) + 1}"
+#     new_slug = f"{slug_base}-{len(existing_clients) + 1}"
+#
+#     # Crear nuevo cliente
+#     cursor = conn.cursor(dictionary=True)
+#
+#     cursor.execute(
+#         "INSERT INTO clientes (nombre_cliente, slug) VALUES (?, ?)",
+#         (new_name, new_slug)
+#     )
+#     conn.commit()
+#     cliente_id = cursor.lastrowid
+#
+#     # Crear formulario asociado
+#     Formulario.crear(cliente_id)
+#
+#     conn.close()
+#
+#     flash(f"Se ha creado el nuevo cliente '{new_name}'.", "success")
+#     return redirect(url_for('formulario_cliente', nombre_cliente=new_slug))
 
 
 @app.route('/cliente/<nombre_cliente>')
 def formulario_cliente(nombre_cliente):
-    conn = get_db_connection()
-
-    cliente = conn.execute(
-        'SELECT * FROM clientes WHERE slug = ?',
-        (nombre_cliente,)
-    ).fetchone()
+    # 🔎 Obtener cliente por slug
+    cliente = Cliente.obtener_por_slug(nombre_cliente)
 
     if not cliente:
-        nombre_display = nombre_cliente.replace('-', ' ').title()
-        conn.execute(
-            'INSERT INTO clientes (nombre_cliente, slug) VALUES (?, ?)',
-            (nombre_display, nombre_cliente)
-        )
-        conn.commit()
+        flash("Cliente no encontrado", "error")
+        return redirect(url_for('index'))
 
-        cliente = conn.execute(
-            'SELECT * FROM clientes WHERE slug = ?',
-            (nombre_cliente,)
-        ).fetchone()
+    # 📄 Obtener formulario
+    formulario_obj = Formulario.obtener_por_cliente(cliente.id)
 
-    conn.close()
-
-    formulario_obj = Formulario.obtener_por_cliente(cliente['id'])
+    if not formulario_obj:
+        formulario_obj = Formulario.crear(cliente.id)
 
     formulario_data = {
-        'formulario_id': formulario_obj.id if formulario_obj else None,
-        'clienteId': cliente['id'],
-        'nombreCliente': nombre_cliente,
-        'pasoActual': formulario_obj.paso_actual if formulario_obj else 1,
+        'formulario_id': formulario_obj.id,
+        'clienteId': cliente.id,
+        'nombreCliente': cliente.slug,
+        'pasoActual': formulario_obj.paso_actual,
         'totalPasos': 6,
-        'porcentajeCompletado': formulario_obj.porcentaje_completado if formulario_obj else 0,
-        'porcentajeCompletadoStyled': f"{formulario_obj.porcentaje_completado if formulario_obj else 0}%",
+        'porcentajeCompletado': formulario_obj.porcentaje_completado,
+        'porcentajeCompletadoStyled': f"{formulario_obj.porcentaje_completado}%",
         'stepNames': step_names,
         'datosFormulario': {
-            'info_trasteros': formulario_obj.info_trasteros if formulario_obj else [],
-            'datos_empresa': formulario_obj.datos_empresa if formulario_obj else {},
-            'usuarios_app': formulario_obj.usuarios_app if formulario_obj else {},
-            'config_correo': formulario_obj.config_correo if formulario_obj else {},
-            'niveles_acceso': formulario_obj.niveles_acceso if formulario_obj else {},
-            'documentacion': formulario_obj.documentacion if formulario_obj else {}
+            'datos_empresa': formulario_obj.datos_empresa,
+            'info_trasteros': formulario_obj.info_trasteros,
+            'usuarios_app': formulario_obj.usuarios_app,
+            'config_correo': formulario_obj.config_correo,
+            'niveles_acceso': formulario_obj.niveles_acceso,
+            'documentacion': formulario_obj.documentacion
         }
     }
 
@@ -171,6 +209,59 @@ def formulario_cliente(nombre_cliente):
         formulario_data=formulario_data,
         step_names=step_names
     )
+
+
+# def formulario_cliente(nombre_cliente):
+#     conn = get_db_connection()
+#
+#     cliente = conn.execute(
+#         'SELECT * FROM clientes WHERE slug = ?',
+#         (nombre_cliente,)
+#     ).fetchone()
+#
+#     if not cliente:
+#         nombre_display = nombre_cliente.replace('-', ' ').title()
+#         conn.execute(
+#             'INSERT INTO clientes (nombre_cliente, slug) VALUES (?, ?)',
+#             (nombre_display, nombre_cliente)
+#         )
+#         conn.commit()
+#
+#         cliente = conn.execute(
+#             'SELECT * FROM clientes WHERE slug = ?',
+#             (nombre_cliente,)
+#         ).fetchone()
+#
+#     conn.close()
+#
+#     formulario_obj = Formulario.obtener_por_cliente(cliente['id'])
+#
+#     formulario_data = {
+#         'formulario_id': formulario_obj.id if formulario_obj else None,
+#         'clienteId': cliente['id'],
+#         'nombreCliente': nombre_cliente,
+#         'pasoActual': formulario_obj.paso_actual if formulario_obj else 1,
+#         'totalPasos': 6,
+#         'porcentajeCompletado': formulario_obj.porcentaje_completado if formulario_obj else 0,
+#         'porcentajeCompletadoStyled': f"{formulario_obj.porcentaje_completado if formulario_obj else 0}%",
+#         'stepNames': step_names,
+#         'datosFormulario': {
+#             'info_trasteros': formulario_obj.info_trasteros if formulario_obj else [],
+#             'datos_empresa': formulario_obj.datos_empresa if formulario_obj else {},
+#             'usuarios_app': formulario_obj.usuarios_app if formulario_obj else {},
+#             'config_correo': formulario_obj.config_correo if formulario_obj else {},
+#             'niveles_acceso': formulario_obj.niveles_acceso if formulario_obj else {},
+#             'documentacion': formulario_obj.documentacion if formulario_obj else {}
+#         }
+#     }
+#
+#     return render_template(
+#         'formulario.html',
+#         cliente=cliente,
+#         formulario=formulario_obj,
+#         formulario_data=formulario_data,
+#         step_names=step_names
+#     )
 
 
 @app.route('/api/save', methods=['POST'])
@@ -225,7 +316,7 @@ def upload_file():
             return jsonify({'error': 'No se encontró archivo'}), 400
 
         file = request.files['file']
-        cliente_id = request.form.get('cliente_id')  # se usa SOLO para localizar el formulario
+        cliente_id = request.form.get('cliente_id')
         tipo_archivo = request.form.get('tipo', 'general')
 
         if not cliente_id:
@@ -237,6 +328,11 @@ def upload_file():
         if not allowed_file(file.filename):
             return jsonify({'error': 'Tipo de archivo no permitido'}), 400
 
+        # 🔎 Obtener formulario vía MODELO (MySQL)
+        formulario = Formulario.obtener_por_cliente(cliente_id)
+        if not formulario:
+            return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
+
         filename = secure_filename(file.filename)
 
         unique_filename = (
@@ -247,83 +343,167 @@ def upload_file():
         file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
         file.save(file_path)
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        # 📦 Tamaño real del archivo
+        tamano_bytes = os.path.getsize(file_path)
 
-        # 🔎 Obtener formulario activo del cliente
-        cursor.execute("""
-                       SELECT id
-                       FROM formularios_clientes
-                       WHERE cliente_id = ?
-                       ORDER BY fecha_creacion DESC LIMIT 1
-                       """, (cliente_id,))
+        # 💾 Insertar en MySQL
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
 
-        row = cursor.fetchone()
-        if not row:
-            conn.close()
-            return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
-
-        formulario_id = row['id']
-
-        # ✅ INSERT SIN cliente_id
-        cursor.execute("""
-                       INSERT INTO archivos_clientes (formulario_id,
-                                                      nombre_original,
-                                                      nombre_archivo,
-                                                      tipo_archivo,
-                                                      tamaño_bytes,
-                                                      ruta_archivo,
-                                                      paso_formulario,
-                                                      fecha_subida)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                       """, (
-                           formulario_id,
-                           filename,
-                           unique_filename,
-                           tipo_archivo,
-                           file.content_length or file.seek(0, os.SEEK_END) or file.tell(),
-                           file_path,
-                           6,
-                           datetime.now()
-                       ))
+        cursor.execute(
+            """
+            INSERT INTO archivos_clientes (formulario_id,
+                                           nombre_original,
+                                           nombre_archivo,
+                                           tipo_archivo,
+                                           tamano_bytes,
+                                           ruta_archivo,
+                                           paso_formulario,
+                                           fecha_subida)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                formulario.id,
+                filename,
+                unique_filename,
+                tipo_archivo,
+                tamano_bytes,
+                file_path,
+                6,
+                datetime.now()
+            )
+        )
 
         conn.commit()
+        cursor.close()
         conn.close()
 
         return jsonify({
             'success': True,
             'filename': unique_filename,
             'original_name': filename,
-            'formulario_id': formulario_id
+            'formulario_id': formulario.id
         })
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        import traceback
+        app.logger.error(traceback.format_exc())
+        return jsonify({'error': 'Error al subir archivo', 'detalle': str(e)}), 500
+
+
+# def upload_file():
+#     try:
+#         if 'file' not in request.files:
+#             return jsonify({'error': 'No se encontró archivo'}), 400
+#
+#         file = request.files['file']
+#         cliente_id = request.form.get('cliente_id')  # se usa SOLO para localizar el formulario
+#         tipo_archivo = request.form.get('tipo', 'general')
+#
+#         if not cliente_id:
+#             return jsonify({'error': 'cliente_id requerido'}), 400
+#
+#         if file.filename == '':
+#             return jsonify({'error': 'No se seleccionó archivo'}), 400
+#
+#         if not allowed_file(file.filename):
+#             return jsonify({'error': 'Tipo de archivo no permitido'}), 400
+#
+#         filename = secure_filename(file.filename)
+#
+#         unique_filename = (
+#             f"{cliente_id}_{tipo_archivo}_"
+#             f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+#         )
+#
+#         file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
+#         file.save(file_path)
+#
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#
+#         # 🔎 Obtener formulario activo del cliente
+#         cursor.execute("""
+#                        SELECT id
+#                        FROM formularios_clientes
+#                        WHERE cliente_id = ?
+#                        ORDER BY fecha_creacion DESC LIMIT 1
+#                        """, (cliente_id,))
+#
+#         row = cursor.fetchone()
+#         if not row:
+#             conn.close()
+#             return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
+#
+#         formulario_id = row['id']
+#
+#         # ✅ INSERT SIN cliente_id
+#         cursor.execute("""
+#                        INSERT INTO archivos_clientes (formulario_id,
+#                                                       nombre_original,
+#                                                       nombre_archivo,
+#                                                       tipo_archivo,
+#                                                       tamaño_bytes,
+#                                                       ruta_archivo,
+#                                                       paso_formulario,
+#                                                       fecha_subida)
+#                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+#                        """, (
+#                            formulario_id,
+#                            filename,
+#                            unique_filename,
+#                            tipo_archivo,
+#                            file.content_length or file.seek(0, os.SEEK_END) or file.tell(),
+#                            file_path,
+#                            6,
+#                            datetime.now()
+#                        ))
+#
+#         conn.commit()
+#         conn.close()
+#
+#         return jsonify({
+#             'success': True,
+#             'filename': unique_filename,
+#             'original_name': filename,
+#             'formulario_id': formulario_id
+#         })
+#
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/formulario/<int:formulario_id>/archivos')
 def get_form_files(formulario_id):
-    conn = get_db_connection()
-    archivos = conn.execute("""
-                            SELECT *
-                            FROM archivos_clientes
-                            WHERE formulario_id = ?
-                            ORDER BY fecha_subida DESC
-                            """, (formulario_id,)).fetchall()
-    conn.close()
+    formulario = Formulario.obtener_por_id(formulario_id)
+    if not formulario:
+        return jsonify({'archivos': []})
 
-    return jsonify({
-        'archivos': [
-            {
-                'id': a['id'],
-                'nombre_original': a['nombre_original'],
-                'nombre_archivo': a['nombre_archivo'],
-                'tipo_archivo': a['tipo_archivo'],
-                'paso_formulario': a['paso_formulario']
-            }
-            for a in archivos
-        ]
-    })
+    return jsonify({'archivos': formulario.obtener_archivos()})
+
+
+# def get_form_files(formulario_id):
+#     conn = get_db_connection()
+#     archivos = conn.execute("""
+#                             SELECT *
+#                             FROM archivos_clientes
+#                             WHERE formulario_id = ?
+#                             ORDER BY fecha_subida DESC
+#                             """, (formulario_id,)).fetchall()
+#     conn.close()
+#
+#     return jsonify({
+#         'archivos': [
+#             {
+#                 'id': a['id'],
+#                 'nombre_original': a['nombre_original'],
+#                 'nombre_archivo': a['nombre_archivo'],
+#                 'tipo_archivo': a['tipo_archivo'],
+#                 'paso_formulario': a['paso_formulario']
+#             }
+#             for a in archivos
+#         ]
+#     })
 
 
 # @app.route('/api/cliente/<cliente_id>/archivos')
@@ -413,34 +593,58 @@ def completar_formulario(cliente_id):
 def get_clientes():
     """API para obtener lista de clientes"""
     try:
-        conn = get_db_connection()
-        clientes = conn.execute('''
-                                SELECT c.*,
-                                       COALESCE(f.paso_actual, 1)           as paso_actual,
-                                       COALESCE(f.porcentaje_completado, 0) as porcentaje_completado,
-                                       COALESCE(f.completado, 0)            as completado
-                                FROM clientes c
-                                         LEFT JOIN formularios f ON c.id = f.cliente_id
-                                ORDER BY c.fecha_creacion DESC
-                                ''').fetchall()
-        conn.close()
+        clientes = Cliente.listar_todos(solo_activos=True)
 
         clientes_list = []
         for cliente in clientes:
+            formulario = cliente.obtener_formulario()
             clientes_list.append({
-                'id': cliente['id'],
-                'nombre_url': cliente['nombre_url'],
-                'estado': cliente['estado'],
-                'paso_actual': cliente['paso_actual'],
-                'porcentaje_completado': cliente['porcentaje_completado'],
-                'completado': bool(cliente['completado']),
-                'fecha_creacion': cliente['fecha_creacion']
+                'id': cliente.id,
+                'nombre_url': cliente.slug,  # antes nombre_url, ahora usamos slug
+                'estado': 'activo' if cliente.activo else 'inactivo',
+                'paso_actual': formulario.paso_actual if formulario else 1,
+                'porcentaje_completado': formulario.porcentaje_completado if formulario else 0,
+                'completado': cliente.completado,
+                'fecha_creacion': cliente.fecha_creacion
             })
 
         return jsonify({'clientes': clientes_list})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# def get_clientes():
+#     """API para obtener lista de clientes"""
+#     try:
+#         conn = get_db_connection()
+#         clientes = conn.execute('''
+#                                 SELECT c.*,
+#                                        COALESCE(f.paso_actual, 1)           as paso_actual,
+#                                        COALESCE(f.porcentaje_completado, 0) as porcentaje_completado,
+#                                        COALESCE(f.completado, 0)            as completado
+#                                 FROM clientes c
+#                                          LEFT JOIN formularios f ON c.id = f.cliente_id
+#                                 ORDER BY c.fecha_creacion DESC
+#                                 ''').fetchall()
+#         conn.close()
+#
+#         clientes_list = []
+#         for cliente in clientes:
+#             clientes_list.append({
+#                 'id': cliente['id'],
+#                 'nombre_url': cliente['nombre_url'],
+#                 'estado': cliente['estado'],
+#                 'paso_actual': cliente['paso_actual'],
+#                 'porcentaje_completado': cliente['porcentaje_completado'],
+#                 'completado': bool(cliente['completado']),
+#                 'fecha_creacion': cliente['fecha_creacion']
+#             })
+#
+#         return jsonify({'clientes': clientes_list})
+#
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 
 def calcular_porcentaje_completado(datos_formulario):
@@ -514,7 +718,7 @@ def date_filter(value):
 
 if __name__ == '__main__':
     # Inicializar base de datos si no existe
-    if not os.path.exists(app.config['DATABASE_PATH']):
-        init_db()
+    # if not os.path.exists(app.config['DATABASE_PATH']):
+    #     init_db()
 
     app.run(debug=True, host='0.0.0.0', port=8080)

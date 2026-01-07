@@ -41,12 +41,13 @@ class Formulario:
             Formulario: Instancia del formulario creado
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             """INSERT INTO formularios_clientes (cliente_id, datos_empresa, info_trasteros,
                                                  usuarios_app, config_correo, niveles_acceso, documentacion)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+               VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """,
             (cliente_id, '{}', '[]', '{}', '{}', '{}', '{}')
         )
         formulario_id = cursor.lastrowid
@@ -59,9 +60,9 @@ class Formulario:
     def obtener_por_id(cls, formulario_id: int) -> Optional['Formulario']:
         """Obtiene un formulario por su ID"""
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
-        cursor.execute("SELECT * FROM formularios_clientes WHERE id = ?", (formulario_id,))
+        cursor.execute("SELECT * FROM formularios_clientes WHERE id = %s", (formulario_id,))
         row = cursor.fetchone()
         conn.close()
 
@@ -73,10 +74,10 @@ class Formulario:
     def obtener_por_cliente(cls, cliente_id: int) -> Optional['Formulario']:
         """Obtiene el formulario de un cliente específico"""
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
-            "SELECT * FROM formularios_clientes WHERE cliente_id = ? ORDER BY fecha_creacion DESC LIMIT 1",
+            "SELECT * FROM formularios_clientes WHERE cliente_id = %s ORDER BY fecha_creacion DESC LIMIT 1",
             (cliente_id,)
         )
         row = cursor.fetchone()
@@ -215,20 +216,21 @@ class Formulario:
     def _guardar_en_bd(self) -> bool:
         """Guarda el formulario en la base de datos"""
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         try:
             cursor.execute(
                 """UPDATE formularios_clientes
-                   SET datos_empresa         = ?,
-                       info_trasteros        = ?,
-                       usuarios_app          = ?,
-                       config_correo         = ?,
-                       niveles_acceso        = ?,
-                       documentacion         = ?,
-                       paso_actual           = ?,
-                       porcentaje_completado = ?
-                   WHERE id = ?""",
+                   SET datos_empresa         = %s,
+                       info_trasteros        = %s,
+                       usuarios_app          = %s,
+                       config_correo         = %s,
+                       niveles_acceso        = %s,
+                       documentacion         = %s,
+                       paso_actual           = %s,
+                       porcentaje_completado = %s
+                   WHERE id = %s
+                """,
                 (
                     json.dumps(self.datos_empresa, ensure_ascii=False),
                     json.dumps(self.info_trasteros, ensure_ascii=False),
@@ -271,12 +273,12 @@ class Formulario:
     def obtener_archivos(self) -> List[Dict]:
         """Obtiene la lista de archivos subidos para este formulario"""
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             """SELECT *
                FROM archivos_clientes
-               WHERE formulario_id = ?
+               WHERE formulario_id = %s
                ORDER BY fecha_subida DESC""",
             (self.id,)
         )
@@ -289,7 +291,7 @@ class Formulario:
                 'nombre_original': row['nombre_original'],
                 'nombre_archivo': row['nombre_archivo'],
                 'tipo_archivo': row['tipo_archivo'],
-                'tamaño_bytes': row['tamaño_bytes'],
+                'tamano_bytes': row['tamano_bytes'],
                 'ruta_archivo': row['ruta_archivo'],
                 'paso_formulario': row['paso_formulario'],
                 'fecha_subida': row['fecha_subida']
