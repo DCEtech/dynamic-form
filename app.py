@@ -12,6 +12,7 @@ from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from werkzeug.utils import secure_filename
 from database.init_db import get_connection
+from slugify import slugify
 # import sqlite3
 
 # Importar configuración y modelos
@@ -278,6 +279,35 @@ def save_form_data():
         if not all([cliente_id, paso]) or datos is None:
             return jsonify({'error': 'Datos incompletos (cliente_id, paso o datos faltantes)'}), 400
 
+        cliente_actualizado = None
+
+        if paso == 1:
+            datos_empresa = datos or {}
+            nombre_nuevo = datos_empresa.get('nombre')
+
+            if nombre_nuevo:
+                cliente = Cliente.obtener_por_id(cliente_id)
+
+                if cliente and cliente.nombre_cliente != nombre_nuevo:
+                    slug_base = slugify(nombre_nuevo)
+                    slug_final = slug_base
+                    contador = 1
+
+                    while Cliente.existe_slug(slug_final, excluir_id=cliente.id):
+                        contador += 1
+                        slug_final = f"{slug_base}-{contador}"
+
+                    Cliente.actualizar_nombre_y_slug(
+                        cliente_id=cliente.id,
+                        nombre_cliente=nombre_nuevo,
+                        slug=slug_final
+                    )
+
+                    cliente_actualizado = {
+                        "nombre": nombre_nuevo,
+                        "slug": slug_final
+                    }
+
         # Obtener el formulario existente para este cliente
         formulario_obj = Formulario.obtener_por_cliente(cliente_id)
 
@@ -300,8 +330,11 @@ def save_form_data():
             'success': True,
             'porcentaje': formulario_obj_actualizado.porcentaje_completado,
             'mensaje': 'Datos guardados correctamente',
-            'formulario_data_actualizada': formulario_obj_actualizado.to_dict()
+            'formulario_data_actualizada': formulario_obj_actualizado.to_dict(),
+            'cliente_actualizado': cliente_actualizado
         })
+
+
 
     except Exception as e:
         import traceback

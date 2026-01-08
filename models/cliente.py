@@ -80,6 +80,62 @@ class Cliente:
         return None
 
     @classmethod
+    def existe_slug(cls, slug: str, excluir_id: int = None) -> bool:
+        """
+        Verifica si un slug ya existe en la base de datos.
+        Permite excluir un cliente específico (útil al actualizar).
+        """
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        if excluir_id:
+            cursor.execute(
+                "SELECT 1 FROM clientes WHERE slug = %s AND id != %s",
+                (slug, excluir_id)
+            )
+        else:
+            cursor.execute(
+                "SELECT 1 FROM clientes WHERE slug = %s",
+                (slug,)
+            )
+
+        existe = cursor.fetchone() is not None
+        conn.close()
+
+        return existe
+
+    @classmethod
+    def actualizar_nombre_y_slug(
+            cls,
+            cliente_id: int,
+            nombre_cliente: str,
+            slug: str
+    ) -> bool:
+        """
+        Actualiza únicamente el nombre y el slug del cliente.
+        """
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute(
+                """
+                UPDATE clientes
+                SET nombre_cliente = %s,
+                    slug           = %s
+                WHERE id = %s
+                """,
+                (nombre_cliente, slug, cliente_id)
+            )
+            conn.commit()
+            return True
+        except Exception as e:
+            print("Error actualizando nombre y slug del cliente:", e)
+            return False
+        finally:
+            conn.close()
+
+    @classmethod
     def obtener_por_slug(cls, slug: str) -> Optional['Cliente']:
         """Obtiene un cliente por su slug"""
         conn = get_connection()

@@ -878,6 +878,51 @@ class FormularioCliente {
 
             const result = await response.json();
 
+            // ===============================
+            // 🔄 Actualizar nombre del cliente
+            // ===============================
+            if (result.cliente_actualizado) {
+                const nuevoNombre = result.cliente_actualizado.nombre;
+
+                // Sidebar (card izquierda)
+                const sidebarTitle = document.querySelector('.card-header h5');
+                if (sidebarTitle) {
+                    sidebarTitle.innerHTML = `
+            <i class="bi bi-building me-2"></i>
+            ${nuevoNombre}
+        `;
+                }
+
+                // Título del documento
+                document.title = `${nuevoNombre} - Formulario`;
+            }
+
+            if (result.cliente_actualizado?.slug) {
+                const nuevoSlug = result.cliente_actualizado.slug;
+
+                const url = new URL(window.location.href);
+
+                // Reemplazar el slug manteniendo el resto de la URL
+                const partes = url.pathname.split('/');
+
+                // Asumimos ruta tipo /cliente/<slug>/formulario
+                const slugIndex = partes.indexOf('cliente') + 1;
+
+                if (slugIndex > 0 && partes[slugIndex]) {
+                    partes[slugIndex] = nuevoSlug;
+                    const nuevaRuta = partes.join('/');
+
+                    window.history.replaceState(
+                        {slug: nuevoSlug},
+                        '',
+                        nuevaRuta + url.search
+                    );
+
+                    console.log('🔁 URL actualizada a:', nuevaRuta);
+                }
+            }
+
+
             if (!response.ok) {
                 throw new Error(result.mensaje || 'Error al guardar');
             }
