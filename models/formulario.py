@@ -2,9 +2,7 @@
 Modelo Formulario para gestionar los datos del formulario dinámico
 """
 
-import sqlite3
 import json
-from datetime import datetime
 from typing import Optional, Dict, List, Any
 from database.init_db import get_connection
 
@@ -245,7 +243,8 @@ class Formulario:
             )
             conn.commit()
             return True
-        except sqlite3.Error:
+        except Exception as e:
+            print("Error guardando en DB:", e)
             return False
         finally:
             conn.close()

@@ -2,9 +2,6 @@
 Modelo Cliente para el formulario dinámico
 """
 
-import sqlite3
-import json
-from datetime import datetime
 from typing import Optional, Dict, List
 from database.init_db import get_connection
 
@@ -54,7 +51,8 @@ class Cliente:
             # Retornar instancia del cliente creado
             return cls.obtener_por_id(cliente_id)
 
-        except sqlite3.IntegrityError:
+        except Exception as e:
+            print("Error creando cliente:", e)
             return None
         finally:
             conn.close()
@@ -149,7 +147,8 @@ class Cliente:
             )
             conn.commit()
             return True
-        except sqlite3.Error:
+        except Exception as e:
+            print("Error actualizando datos del cliente:", e)
             return False
         finally:
             conn.close()
