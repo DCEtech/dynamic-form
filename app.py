@@ -7,6 +7,7 @@ import os
 import logging
 import json
 import uuid
+from crypt import methods
 from datetime import datetime
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
@@ -19,6 +20,7 @@ from slugify import slugify
 import config
 from models.cliente import Cliente
 from models.formulario import Formulario
+from services.storage import StorageService
 
 # Configuración de la aplicación
 app = Flask(__name__)
@@ -40,6 +42,8 @@ step_names = [
     "Niveles de Acceso",
     "Documentación"
 ]
+
+storage = StorageService()
 
 
 def allowed_file(filename):
@@ -373,11 +377,20 @@ def upload_file():
             f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
         )
 
-        file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
-        file.save(file_path)
+        # 📂 Carpeta en Nextcloud
+        folder = f"clientes/{formulario.id}"
 
-        # 📦 Tamaño real del archivo
-        tamano_bytes = os.path.getsize(file_path)
+        # ☁️ Subir a Nextcloud vía StorageService
+        storage_path = storage.save(
+            file.stream,
+            unique_filename,
+            folder
+        )
+
+        # 📦 Tamaño real del archivo (sin filesystem)
+        file.stream.seek(0, os.SEEK_END)
+        tamano_bytes = file.stream.tell()
+        file.stream.seek(0)
 
         # 💾 Insertar en MySQL
         conn = get_connection()
@@ -401,7 +414,7 @@ def upload_file():
                 unique_filename,
                 tipo_archivo,
                 tamano_bytes,
-                file_path,
+                storage_path,
                 6,
                 datetime.now()
             )
@@ -415,6 +428,7 @@ def upload_file():
             'success': True,
             'filename': unique_filename,
             'original_name': filename,
+            'storage_path': storage_path,
             'formulario_id': formulario.id
         })
 
@@ -505,6 +519,10 @@ def upload_file():
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
 
+@app.route('api/archivo/id', methods=['DELETE'])
+def remove_file():
+    pass
+
 
 @app.route('/api/formulario/<int:formulario_id>/archivos')
 def get_form_files(formulario_id):
@@ -565,41 +583,6 @@ def get_form_files(formulario_id):
 #
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/test-email', methods=['POST'])
-def test_email_config():
-    """Probar configuración de email"""
-    try:
-        data = request.get_json()
-
-        # Aquí iría la lógica para probar la conexión SMTP
-        # Por ahora simulamos el test
-
-        servidor = data.get('servidor_saliente')
-        puerto = data.get('puerto')
-        usuario = data.get('usuario_email')
-
-        if not all([servidor, puerto, usuario]):
-            return jsonify({'error': 'Configuración incompleta'}), 400
-
-        # Simulación de test exitoso (70% de probabilidad)
-        import random
-        success = random.random() > 0.3
-
-        if success:
-            return jsonify({
-                'success': True,
-                'mensaje': 'Conexión exitosa al servidor de correo'
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'error': 'No se pudo conectar al servidor. Verifique la configuración.'
-            })
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/cliente/<cliente_id>/completar', methods=['POST'])
