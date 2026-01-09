@@ -153,53 +153,161 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">
-                            Descripción Adicional
-                            <i class="bi bi-question-circle tooltip-icon ms-1"
-                               data-bs-toggle="tooltip"
-                               title="Características especiales del trastero (opcional)"></i>
-                        </label>
-                        <textarea class="form-control trastero-descripcion"
-                                  name="descripcion"
-                                  rows="2"
-                                  placeholder="Ej: Planta baja, acceso directo, climatizado..."></textarea>
+
+                </div>
+
+                {#                <!-- Resumen del trastero -->#}
+                {#                <div class="row mt-3">#}
+                {#                    <div class="col-12">#}
+                {#                        <div class="alert alert-light border">#}
+                {#                            <div class="row text-center">#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Número</strong><br>#}
+                {#                                    <span class="text-primary trastero-resumen-numero">-</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Superficie</strong><br>#}
+                {#                                    <span class="text-primary trastero-resumen-metros">0 m²</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Volumen</strong><br>#}
+                {#                                    <span class="text-primary trastero-resumen-cubicos">0 m³</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Sin IVA</strong><br>#}
+                {#                                    <span class="text-success trastero-resumen-sin-iva">0.00 €</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Con IVA</strong><br>#}
+                {#                                    <span class="text-success trastero-resumen-con-iva">0.00 €</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-2">#}
+                {#                                    <strong>Fianza</strong><br>#}
+                {#                                    <span class="text-warning trastero-resumen-fianza">0.00 €</span>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Agregar múltiples trasteros -->
+    <div class="modal fade" id="modalTrasteros" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-archive me-2"></i>
+                        Agregar trasteros en lote
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <!-- Metros cuadrados -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Metros Cuadrados *
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="modal_trastero_metros"
+                                       step="0.01"
+                                       min="0"
+                                       required>
+                                <span class="input-group-text">m²</span>
+                            </div>
+                        </div>
+
+                        <!-- Metros cúbicos -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Metros Cúbicos
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="modal_trastero_cubicos"
+                                       step="0.01"
+                                       min="0">
+                                <span class="input-group-text">m³</span>
+                            </div>
+                        </div>
+
+                        <!-- Precio sin IVA -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Precio sin IVA *
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="modal_trastero_precio"
+                                       step="0.01"
+                                       min="0"
+                                       required>
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+
+                        <!-- Fianza -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Fianza
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="modal_trastero_fianza"
+                                       step="0.01"
+                                       min="0">
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+
+                        <!-- Cantidad -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">
+                                Cantidad de trasteros *
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="modal_trastero_cantidad"
+                                   min="1"
+                                   value="1"
+                                   required>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-info mt-2">
+                        Se <span id="texto-trasteros-verbo">crearán</span>
+                        <strong><span id="texto-trasteros-cantidad">1</span> trastero<span
+                                id="texto-trasteros-plural">s</span></strong>
+                        con estas mismas características.
                     </div>
                 </div>
 
-                <!-- Resumen del trastero -->
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="alert alert-light border">
-                            <div class="row text-center">
-                                <div class="col-md-2">
-                                    <strong>Número</strong><br>
-                                    <span class="text-primary trastero-resumen-numero">-</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>Superficie</strong><br>
-                                    <span class="text-primary trastero-resumen-metros">0 m²</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>Volumen</strong><br>
-                                    <span class="text-primary trastero-resumen-cubicos">0 m³</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>Sin IVA</strong><br>
-                                    <span class="text-success trastero-resumen-sin-iva">0.00 €</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>Con IVA</strong><br>
-                                    <span class="text-success trastero-resumen-con-iva">0.00 €</span>
-                                </div>
-                                <div class="col-md-2">
-                                    <strong>Fianza</strong><br>
-                                    <span class="text-warning trastero-resumen-fianza">0.00 €</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="btnConfirmarTrasteros">
+                        Crear trasteros
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -211,32 +319,32 @@
         <p class="text-muted">Haga clic en "Agregar Trastero" para comenzar a configurar los trasteros disponibles.</p>
     </div>
 
-    <!-- Resumen total -->
-    <div id="resumen-total" class="card bg-primary text-white mt-4" style="display: none;">
-        <div class="card-body">
-            <h5 class="card-title">
-                <i class="bi bi-calculator me-2"></i>Resumen Total
-            </h5>
-            <div class="row text-center">
-                <div class="col-md-3">
-                    <h6>Total Trasteros</h6>
-                    <h4 id="total-trasteros">0</h4>
-                </div>
-                <div class="col-md-3">
-                    <h6>Superficie Total</h6>
-                    <h4 id="total-superficie">0 m²</h4>
-                </div>
-                <div class="col-md-3">
-                    <h6>Ingresos Mensuales (sin IVA)</h6>
-                    <h4 id="total-ingresos-sin-iva">0.00 €</h4>
-                </div>
-                <div class="col-md-3">
-                    <h6>Ingresos Mensuales (con IVA)</h6>
-                    <h4 id="total-ingresos-con-iva">0.00 €</h4>
-                </div>
-            </div>
-        </div>
-    </div>
+    {#    <!-- Resumen total -->#}
+    {#    <div id="resumen-total" class="card bg-primary text-white mt-4" style="display: none;">#}
+    {#        <div class="card-body">#}
+    {#            <h5 class="card-title">#}
+    {#                <i class="bi bi-calculator me-2"></i>Resumen Total#}
+    {#            </h5>#}
+    {#            <div class="row text-center">#}
+    {#                <div class="col-md-3">#}
+    {#                    <h6>Total Trasteros</h6>#}
+    {#                    <h4 id="total-trasteros">0</h4>#}
+    {#                </div>#}
+    {#                <div class="col-md-3">#}
+    {#                    <h6>Superficie Total</h6>#}
+    {#                    <h4 id="total-superficie">0 m²</h4>#}
+    {#                </div>#}
+    {#                <div class="col-md-3">#}
+    {#                    <h6>Ingresos Mensuales (sin IVA)</h6>#}
+    {#                    <h4 id="total-ingresos-sin-iva">0.00 €</h4>#}
+    {#                </div>#}
+    {#                <div class="col-md-3">#}
+    {#                    <h6>Ingresos Mensuales (con IVA)</h6>#}
+    {#                    <h4 id="total-ingresos-con-iva">0.00 €</h4>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
 </div>
 
 <script>
@@ -245,7 +353,37 @@
         const container = document.getElementById('trasteros-container');
         const template = document.getElementById('trastero-template');
         const emptyMessage = document.getElementById('no-trasteros-message');
-        const resumenTotal = document.getElementById('resumen-total');
+
+
+        const cantidadInput = document.getElementById('modal_trastero_cantidad');
+        const textoCantidad = document.getElementById('texto-trasteros-cantidad');
+        const textoPlural = document.getElementById('texto-trasteros-plural');
+        const textoVerbo = document.getElementById('texto-trasteros-verbo');
+
+        function actualizarTextoCantidad() {
+            let cantidad = parseInt(cantidadInput.value) || 1;
+
+            if (cantidad < 1) {
+                cantidad = 1;
+                cantidadInput.value = 1;
+            }
+
+            textoCantidad.textContent = cantidad;
+
+            if (cantidad === 1) {
+                textoPlural.style.display = 'none';
+                textoVerbo.textContent = 'creará';
+            } else {
+                textoPlural.style.display = 'inline';
+                textoVerbo.textContent = 'crearán';
+            }
+        }
+
+        cantidadInput.addEventListener('input', actualizarTextoCantidad);
+        cantidadInput.addEventListener('change', actualizarTextoCantidad);
+
+        // Inicializar al abrir el modal
+        actualizarTextoCantidad();
 
         // =========================
         // Crear trastero
@@ -278,19 +416,60 @@
                 el.querySelector('.trastero-precio-sin-iva').value = data.precio_sin_iva || '';
                 el.querySelector('.trastero-precio-con-iva').value = data.precio_con_iva || '';
                 el.querySelector('.trastero-fianza').value = data.fianza || '';
-                el.querySelector('.trastero-descripcion').value = data.descripcion || '';
             }
 
             // Eliminar
             el.querySelector('.remove-trastero').addEventListener('click', () => {
                 el.remove();
-                updateState();
+                updateEmptyMessage();
             });
 
             container.appendChild(el);
             setupEvents(el);
-            updateState();
+            updateEmptyMessage();
         }
+
+        function crearTrasterosDesdeModal() {
+
+            const cantidad = parseInt(
+                document.getElementById('modal_trastero_cantidad').value
+            );
+
+            if (!cantidad || cantidad < 1) {
+                alert('Ingrese una cantidad válida de trasteros');
+                return;
+            }
+
+            const dataBase = {
+                metros: document.getElementById('modal_trastero_metros').value,
+                metros_cubicos: document.getElementById('modal_trastero_cubicos').value,
+                precio_sin_iva: document.getElementById('modal_trastero_precio').value,
+                precio_con_iva: (
+                    parseFloat(document.getElementById('modal_trastero_precio').value || 0) * 1.21
+                ).toFixed(2),
+                fianza: document.getElementById('modal_trastero_fianza').value
+            };
+
+            for (let i = 0; i < cantidad; i++) {
+                addTrastero({
+                    ...dataBase,
+                    numero_trastero: `T${String(trasteroCounter + 1).padStart(3, '0')}`
+                });
+            }
+
+            // Cerrar modal
+            const modalEl = document.getElementById('modalTrasteros');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            // Limpiar campos del modal
+            document.getElementById('modal_trastero_metros').value = '';
+            document.getElementById('modal_trastero_cubicos').value = '';
+            document.getElementById('modal_trastero_precio').value = '';
+            document.getElementById('modal_trastero_fianza').value = '';
+            document.getElementById('modal_trastero_cantidad').value = 1;
+        }
+
 
         // =========================
         // Eventos
@@ -302,39 +481,30 @@
             sinIva.addEventListener('input', () => {
                 const v = parseFloat(sinIva.value) || 0;
                 conIva.value = (v * 1.21).toFixed(2);
-                updateResumenTotal();
+                updateEmptyMessage();
             });
 
             el.querySelectorAll('input, textarea').forEach(i =>
-                i.addEventListener('input', updateResumenTotal)
+                i.addEventListener('input', updateEmptyMessage)
             );
         }
 
         // =========================
         // Estado visual
         // =========================
-        function updateState() {
-            const trasteros = container.querySelectorAll('.trastero-item:not(#trastero-template)');
-            emptyMessage.style.display = trasteros.length === 0 ? 'block' : 'none';
-            resumenTotal.style.display = trasteros.length === 0 ? 'none' : 'block';
-            updateResumenTotal();
-        }
+
 
         // =========================
         // Resumen total
         // =========================
-        function updateResumenTotal() {
-            let total = 0, sinIva = 0, conIva = 0;
+        function updateEmptyMessage() {
+            const trasteros = container.querySelectorAll(
+                '.trastero-item:not(#trastero-template)'
+            );
 
-            container.querySelectorAll('.trastero-item:not(#trastero-template)').forEach(t => {
-                total++;
-                sinIva += parseFloat(t.querySelector('.trastero-precio-sin-iva').value) || 0;
-                conIva += parseFloat(t.querySelector('.trastero-precio-con-iva').value) || 0;
-            });
-
-            document.getElementById('total-trasteros').textContent = total;
-            document.getElementById('total-ingresos-sin-iva').textContent = sinIva.toFixed(2) + ' €';
-            document.getElementById('total-ingresos-con-iva').textContent = conIva.toFixed(2) + ' €';
+            emptyMessage.style.display = trasteros.length === 0
+                ? 'block'
+                : 'none';
         }
 
         // =========================
@@ -349,6 +519,16 @@
         }
 
         // Botón agregar
-        document.getElementById('add-trastero').addEventListener('click', () => addTrastero());
+        document
+            .getElementById('add-trastero')
+            .addEventListener('click', () => {
+                const modalEl = document.getElementById('modalTrasteros');
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            });
+
+        document
+            .getElementById('btnConfirmarTrasteros')
+            .addEventListener('click', crearTrasterosDesdeModal);
     });
 </script>

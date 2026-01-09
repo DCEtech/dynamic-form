@@ -36,6 +36,7 @@ class FormularioCliente {
         // Cargar datos existentes
         this.loadExistingData();
         console.log('Formulario inicializado correctamente');
+
     }
 
     initializeElements() {
@@ -445,7 +446,6 @@ class FormularioCliente {
                 precio_sin_iva: item.querySelector('.trastero-precio-sin-iva')?.value || '',
                 precio_con_iva: item.querySelector('.trastero-precio-con-iva')?.value || '',
                 fianza: item.querySelector('.trastero-fianza')?.value || '',
-                descripcion: item.querySelector('.trastero-descripcion')?.value || ''
             };
 
             // Si TODOS los campos están vacíos, no lo guardamos
