@@ -49,5 +49,34 @@ class StorageService:
 
         return r.status_code in (200, 204)
 
+    def create_public_share(self, storage_path):
+        """"
+        Crear un link publico en NextCloud para un archivo
+        """
+        url = f"{NEXTCLOUD_URL.replace('/remote.php/dav/files', '')}/ocs/v2.php/apps/files_sharing/api/v1/shares"
+
+        headers = {
+            "OCS-APIRequest": "true"
+        }
+
+        data = {
+            "path": f"/{storage_path}",
+            "shareType": 3,  # public link
+            "permissions": 1  # read only
+        }
+
+        r = requests.post(
+            url=url,
+            data=data,
+            headers=headers,
+            auth=HTTPBasicAuth(NEXTCLOUD_USER, NEXTCLOUD_PASSWORD)
+        )
+
+        if r.status_code not in (200, 2001):
+            raise Exception(f"Error creando share: {r.text}")
+
+        res = r.json()
+        return res["ocs"]["data"]["url"]
+
     def get_public_url(self, storage_path):  # -> str
         return f"{NEXTCLOUD_PUBLIC_BASE}{storage_path}"

@@ -420,7 +420,7 @@ def upload_file():
             unique_filename,
             folder
         )
-        public_url = storage.get_public_url(storage_path)
+        public_url = storage.create_public_share(storage_path)
 
         # 📦 Tamaño real del archivo (sin filesystem)
         file.stream.seek(0, os.SEEK_END)
@@ -439,6 +439,7 @@ def upload_file():
                                            tipo_archivo,
                                            tamano_bytes,
                                            ruta_archivo,
+                                           public_url,
                                            paso_formulario,
                                            fecha_subida)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -450,6 +451,7 @@ def upload_file():
                 tipo_archivo,
                 tamano_bytes,
                 storage_path,
+                public_url,
                 6,
                 datetime.now()
             )
