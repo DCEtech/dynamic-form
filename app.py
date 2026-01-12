@@ -442,7 +442,7 @@ def upload_file():
                                            public_url,
                                            paso_formulario,
                                            fecha_subida)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
                 formulario.id,
