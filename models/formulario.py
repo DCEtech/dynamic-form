@@ -7,6 +7,8 @@ from typing import Optional, Dict, List, Any
 from database.init_db import get_connection
 from services.storage import StorageService
 
+storage = StorageService()
+
 
 class Formulario:
     """Modelo para gestionar formularios de clientes"""
@@ -292,7 +294,7 @@ class Formulario:
                 'nombre_archivo': row['nombre_archivo'],
                 'tipo_archivo': row['tipo_archivo'],
                 'tamano_bytes': row['tamano_bytes'],
-                'ruta_archivo': StorageService.get_public_url(row['ruta_archivo']),
+                'ruta_archivo': storage.get_public_url(row['ruta_archivo']),
                 'paso_formulario': row['paso_formulario'],
                 'fecha_subida': row['fecha_subida']
             }

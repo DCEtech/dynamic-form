@@ -2,7 +2,7 @@
 """
 Aplicación Flask para el formulario dinámico de clientes
 """
-
+import io
 import os
 import logging
 import json
@@ -11,10 +11,12 @@ from crypt import methods
 from datetime import datetime
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
+from dotenv import load_dotenv
+
+load_dotenv()
 from werkzeug.utils import secure_filename
 from database.init_db import get_connection
 from slugify import slugify
-# import sqlite3
 
 # Importar configuración y modelos
 import config
@@ -69,6 +71,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
+    print(os.getenv("NEXTCLOUD_URL"))
     clientes = Cliente.listar_todos(solo_activos=True)
 
     clientes_view = []
@@ -346,6 +349,37 @@ def save_form_data():
         return jsonify({'error': 'Error interno del servidor. Detalles: ' + str(e)}), 500
 
 
+@app.route("/api/test-nextcloud", methods=['GET'])
+def test_nextcloud():
+    try:
+        storage = StorageService()
+
+        content = "Hola nextcloud desde Flask"
+        file_stream = io.BytesIO(content.encode("utf-8"))
+
+        remote_path = storage.save(
+            file_stream=file_stream,
+            file_name="prueba.txt",
+            folder="clientes/A-PruebaFormulario"
+        )
+
+        public_url = storage.get_public_url(remote_path)
+
+        return {
+            "success": True,
+            "remote_path": remote_path,
+            "public_url": public_url
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "success": False,
+            "error": str(e),
+            "trace": traceback.format_exc()
+        }, 500
+
+
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
     try:
@@ -378,7 +412,7 @@ def upload_file():
         )
 
         # 📂 Carpeta en Nextcloud
-        folder = f"clientes/{formulario.id}"
+        folder = f"clientes/A-PruebaFormulario/{formulario.id}"
 
         # ☁️ Subir a Nextcloud vía StorageService
         storage_path = storage.save(
@@ -386,6 +420,7 @@ def upload_file():
             unique_filename,
             folder
         )
+        public_url = storage.get_public_url(storage_path)
 
         # 📦 Tamaño real del archivo (sin filesystem)
         file.stream.seek(0, os.SEEK_END)
@@ -429,6 +464,7 @@ def upload_file():
             'filename': unique_filename,
             'original_name': filename,
             'storage_path': storage_path,
+            'public_url': public_url,
             'formulario_id': formulario.id
         })
 
@@ -519,7 +555,7 @@ def upload_file():
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
 
-@app.route('api/archivo/id', methods=['DELETE'])
+@app.route('/api/archivo/id', methods=['DELETE'])
 def remove_file():
     pass
 
