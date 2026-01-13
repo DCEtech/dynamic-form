@@ -128,9 +128,8 @@
                                title="Nivel de acceso del usuario en el sistema"></i>
                         </label>
                         <select class="form-select usuario-rol" name="rol_usuario">
-                            <option value="usuario">Usuario Estándar</option>
-                            <option value="supervisor">Supervisor</option>
-                            <option value="administrador">Administrador</option>
+                            <option value="estandar">Usuario Estándar</option>
+                            <option value="principal">Usuario Principal</option>
                         </select>
                     </div>
 
@@ -147,43 +146,6 @@
                                placeholder="Ej: Administración, Ventas, Operaciones">
                     </div>
 
-                    <div class="col-12 mb-3">
-                        <label class="form-label">
-                            Permisos Especiales
-                            <i class="bi bi-question-circle tooltip-icon ms-1"
-                               data-bs-toggle="tooltip"
-                               title="Permisos adicionales para este usuario"></i>
-                        </label>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permisos_facturacion"
-                                           id="permisos_facturacion">
-                                    <label class="form-check-label" for="permisos_facturacion">
-                                        Facturación
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permisos_reportes"
-                                           id="permisos_reportes">
-                                    <label class="form-check-label" for="permisos_reportes">
-                                        Reportes
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permisos_configuracion"
-                                           id="permisos_configuracion">
-                                    <label class="form-check-label" for="permisos_configuracion">
-                                        Configuración
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Resumen del usuario -->
@@ -201,7 +163,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Rol</strong><br>
-                                    <span class="badge bg-info usuario-resumen-rol">Usuario Estándar</span>
+                                    <span class="badge bg-info usuario-resumen-rol">-</span>
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Departamento</strong><br>
@@ -234,13 +196,10 @@
                     <h4 id="total-usuarios">0</h4>
                 </div>
                 <div class="col-md-3">
-                    <h6>Administradores</h6>
-                    <h4 id="total-administradores">0</h4>
+                    <h6>Principales</h6>
+                    <h4 id="total-principales">0</h4>
                 </div>
-                <div class="col-md-3">
-                    <h6>Supervisores</h6>
-                    <h4 id="total-supervisores">0</h4>
-                </div>
+
                 <div class="col-md-3">
                     <h6>Usuarios Estándar</h6>
                     <h4 id="total-usuarios-estandar">0</h4>
@@ -264,293 +223,290 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let usuarioCounter = 0;
-        const maxUsuarios = 3;
+            let usuarioCounter = 0;
+            const maxUsuarios = 3;
 
-        // Función para agregar un nuevo usuario
-        function addUsuario(data = null) {
-            if (usuarioCounter >= maxUsuarios) {
-                alert('Máximo 3 usuarios permitidos según las licencias adquiridas.');
-                return;
-            }
-
-            usuarioCounter++;
-
-            const template = document.getElementById('usuario-template');
-            const el = template.cloneNode(true);
-
-            // Configuración básica
-            el.id = `usuario-${usuarioCounter}`;
-            el.style.display = 'block';
-            el.querySelector('.usuario-number').textContent = usuarioCounter;
-
-            // Indexar names + IDs únicos en checkboxes
-            el.querySelectorAll('input, select').forEach(input => {
-                const name = input.getAttribute('name');
-                if (name) {
-                    input.setAttribute(
-                        'name',
-                        `usuarios[${usuarioCounter - 1}][${name}]`
-                    );
+            // Función para agregar un nuevo usuario
+            function addUsuario(data = null) {
+                if (usuarioCounter >= maxUsuarios) {
+                    alert('Máximo 3 usuarios permitidos según las licencias adquiridas.');
+                    return;
                 }
 
-                if (input.type === 'checkbox') {
-                    const baseId = input.id;
-                    const newId = `${baseId}_${usuarioCounter}`;
-                    input.id = newId;
+                usuarioCounter++;
 
-                    const label = el.querySelector(`label[for="${baseId}"]`);
-                    if (label) label.setAttribute('for', newId);
+                const template = document.getElementById('usuario-template');
+                const el = template.cloneNode(true);
+
+                // Configuración básica
+                el.id = `usuario-${usuarioCounter}`;
+                el.style.display = 'block';
+                el.querySelector('.usuario-number').textContent = usuarioCounter;
+
+                // Indexar names + IDs únicos en checkboxes
+                el.querySelectorAll('input, select').forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name) {
+                        input.setAttribute(
+                            'name',
+                            `usuarios[${usuarioCounter - 1}][${name}]`
+                        );
+                    }
+
+                    if (input.type === 'checkbox') {
+                        const baseId = input.id;
+                        const newId = `${baseId}_${usuarioCounter}`;
+                        input.id = newId;
+
+                        const label = el.querySelector(`label[for="${baseId}"]`);
+                        if (label) label.setAttribute('for', newId);
+                    }
+                });
+
+                // 🔹 Cargar datos iniciales (MISMO PATRÓN QUE addTrastero)
+                if (data) {
+                    el.querySelector('.usuario-nombre').value =
+                        data.nombre_usuario || '';
+
+                    el.querySelector('.usuario-email').value =
+                        data.email_usuario || '';
+
+                    el.querySelector('.usuario-password').value =
+                        data.password_usuario || '';
+
+                    el.querySelector('.usuario-confirm-password').value =
+                        data.confirm_password_usuario || '';
+
+                    el.querySelector('.usuario-rol').value =
+                        data.rol_usuario || 'usuario';
+
+                    el.querySelector('.usuario-departamento').value =
+                        data.departamento_usuario || '';
+
                 }
-            });
 
-            // 🔹 Cargar datos iniciales (MISMO PATRÓN QUE addTrastero)
-            if (data) {
-                el.querySelector('.usuario-nombre').value =
-                    data.nombre_usuario || '';
 
-                el.querySelector('.usuario-email').value =
-                    data.email_usuario || '';
+                // Agregar al DOM
+                document.getElementById('usuarios-container').appendChild(el);
 
-                el.querySelector('.usuario-password').value =
-                    data.password_usuario || '';
+                // Eventos
+                setupUsuarioEvents(el);
 
-                el.querySelector('.usuario-confirm-password').value =
-                    data.confirm_password_usuario || '';
+                // UI global
+                document.getElementById('no-usuarios-message').style.display = 'none';
+                document.getElementById('resumen-usuarios').style.display = 'block';
 
-                el.querySelector('.usuario-rol').value =
-                    data.rol_usuario || 'usuario';
-
-                el.querySelector('.usuario-departamento').value =
-                    data.departamento_usuario || '';
-
-                // Permisos
-                if (data.permisos) {
-                    el.querySelector('[name*="permisos_facturacion"]').checked =
-                        !!data.permisos.facturacion;
-
-                    el.querySelector('[name*="permisos_reportes"]').checked =
-                        !!data.permisos.reportes;
-
-                    el.querySelector('[name*="permisos_configuracion"]').checked =
-                        !!data.permisos.configuracion;
+                if (usuarioCounter >= maxUsuarios) {
+                    const btn = document.getElementById('add-usuario');
+                    btn.disabled = true;
+                    btn.innerHTML =
+                        '<i class="bi bi-exclamation-triangle me-2"></i>Máximo alcanzado';
                 }
-            }
-
-            // Agregar al DOM
-            document.getElementById('usuarios-container').appendChild(el);
-
-            // Eventos
-            setupUsuarioEvents(el);
-
-            // UI global
-            document.getElementById('no-usuarios-message').style.display = 'none';
-            document.getElementById('resumen-usuarios').style.display = 'block';
-
-            if (usuarioCounter >= maxUsuarios) {
-                const btn = document.getElementById('add-usuario');
-                btn.disabled = true;
-                btn.innerHTML =
-                    '<i class="bi bi-exclamation-triangle me-2"></i>Máximo alcanzado';
-            }
-
-            updateResumenUsuarios();
-        }
-
-        // Función para configurar eventos de un usuario
-        function setupUsuarioEvents(usuarioElement) {
-            // Evento para eliminar usuario
-            usuarioElement.querySelector('.remove-usuario').addEventListener('click', function () {
-                usuarioElement.remove();
-                usuarioCounter--;
-
-                // Reactivar botón de agregar
-                const addBtn = document.getElementById('add-usuario');
-                addBtn.disabled = false;
-                addBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Agregar Usuario';
 
                 updateResumenUsuarios();
+            }
 
-                // Mostrar mensaje si no hay usuarios
-                const usuarios = document.querySelectorAll('.usuario-item:not(#usuario-template)');
-                if (usuarios.length === 0) {
-                    document.getElementById('no-usuarios-message').style.display = 'block';
-                    document.getElementById('resumen-usuarios').style.display = 'none';
-                }
-            });
+            // Función para configurar eventos de un usuario
+            function setupUsuarioEvents(usuarioElement) {
+                // Evento para eliminar usuario
+                usuarioElement.querySelector('.remove-usuario').addEventListener('click', function () {
+                    usuarioElement.remove();
+                    usuarioCounter--;
 
-            // Toggle password visibility
-            const toggleBtn = usuarioElement.querySelector('.toggle-password');
-            const passwordField = usuarioElement.querySelector('.usuario-password');
+                    // Reactivar botón de agregar
+                    const addBtn = document.getElementById('add-usuario');
+                    addBtn.disabled = false;
+                    addBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Agregar Usuario';
 
-            toggleBtn.addEventListener('click', function () {
-                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordField.setAttribute('type', type);
-
-                const icon = this.querySelector('i');
-                icon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
-            });
-
-            // Password strength indicator
-            passwordField.addEventListener('input', function () {
-                updatePasswordStrength(usuarioElement);
-            });
-
-            // Confirm password validation
-            const confirmField = usuarioElement.querySelector('.usuario-confirm-password');
-            confirmField.addEventListener('input', function () {
-                validatePasswordMatch(usuarioElement);
-            });
-
-            // Email uniqueness validation
-            const emailField = usuarioElement.querySelector('.usuario-email');
-            emailField.addEventListener('blur', function () {
-                validateEmailUniqueness(this);
-            });
-
-            // Eventos para actualizar resumen
-            const inputs = usuarioElement.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.addEventListener('input', function () {
-                    updateUsuarioResumen(usuarioElement);
                     updateResumenUsuarios();
+
+                    // Mostrar mensaje si no hay usuarios
+                    const usuarios = document.querySelectorAll('.usuario-item:not(#usuario-template)');
+                    if (usuarios.length === 0) {
+                        document.getElementById('no-usuarios-message').style.display = 'block';
+                        document.getElementById('resumen-usuarios').style.display = 'none';
+                    }
                 });
-            });
-        }
 
-        // Función para actualizar la fortaleza de la contraseña
-        function updatePasswordStrength(usuarioElement) {
-            const password = usuarioElement.querySelector('.usuario-password').value;
-            const progressBar = usuarioElement.querySelector('.password-strength .progress-bar');
-            const strengthText = usuarioElement.querySelector('.strength-text');
+                // Toggle password visibility
+                const toggleBtn = usuarioElement.querySelector('.toggle-password');
+                const passwordField = usuarioElement.querySelector('.usuario-password');
 
-            let strength = 0;
-            let text = 'Muy débil';
-            let color = 'bg-danger';
+                toggleBtn.addEventListener('click', function () {
+                    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordField.setAttribute('type', type);
 
-            if (password.length >= 8) strength += 25;
-            if (/[a-z]/.test(password)) strength += 25;
-            if (/[A-Z]/.test(password)) strength += 25;
-            if (/\d/.test(password)) strength += 25;
+                    const icon = this.querySelector('i');
+                    icon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+                });
 
-            if (strength >= 100) {
-                text = 'Muy fuerte';
-                color = 'bg-success';
-            } else if (strength >= 75) {
-                text = 'Fuerte';
-                color = 'bg-info';
-            } else if (strength >= 50) {
-                text = 'Moderada';
-                color = 'bg-warning';
-            } else if (strength >= 25) {
-                text = 'Débil';
-                color = 'bg-warning';
+                // Password strength indicator
+                passwordField.addEventListener('input', function () {
+                    updatePasswordStrength(usuarioElement);
+                });
+
+                // Confirm password validation
+                const confirmField = usuarioElement.querySelector('.usuario-confirm-password');
+                confirmField.addEventListener('input', function () {
+                    validatePasswordMatch(usuarioElement);
+                });
+
+                // Email uniqueness validation
+                const emailField = usuarioElement.querySelector('.usuario-email');
+                emailField.addEventListener('blur', function () {
+                    validateEmailUniqueness(this);
+                });
+
+                // Eventos para actualizar resumen
+                const inputs = usuarioElement.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', function () {
+                        updateUsuarioResumen(usuarioElement);
+                        updateResumenUsuarios();
+                    });
+                });
             }
 
-            progressBar.style.width = strength + '%';
-            progressBar.className = `progress-bar ${color}`;
-            strengthText.textContent = text;
-        }
+            // Función para actualizar la fortaleza de la contraseña
+            function updatePasswordStrength(usuarioElement) {
+                const password = usuarioElement.querySelector('.usuario-password').value;
+                const progressBar = usuarioElement.querySelector('.password-strength .progress-bar');
+                const strengthText = usuarioElement.querySelector('.strength-text');
 
-        // Función para validar coincidencia de contraseñas
-        function validatePasswordMatch(usuarioElement) {
-            const password = usuarioElement.querySelector('.usuario-password').value;
-            const confirm = usuarioElement.querySelector('.usuario-confirm-password').value;
-            const confirmField = usuarioElement.querySelector('.usuario-confirm-password');
+                let strength = 0;
+                let text = 'Muy débil';
+                let color = 'bg-danger';
 
-            if (confirm && password !== confirm) {
-                confirmField.classList.add('is-invalid');
-                confirmField.classList.remove('is-valid');
-            } else if (confirm) {
-                confirmField.classList.add('is-valid');
-                confirmField.classList.remove('is-invalid');
-            }
-        }
+                if (password.length >= 8) strength += 25;
+                if (/[a-z]/.test(password)) strength += 25;
+                if (/[A-Z]/.test(password)) strength += 25;
+                if (/\d/.test(password)) strength += 25;
 
-        // Función para validar unicidad del email
-        function validateEmailUniqueness(emailField) {
-            const email = emailField.value.trim();
-            if (!email) return;
-
-            const allEmails = Array.from(document.querySelectorAll('.usuario-email'))
-                .filter(field => field !== emailField)
-                .map(field => field.value.trim());
-
-            if (allEmails.includes(email)) {
-                emailField.classList.add('is-invalid');
-                emailField.classList.remove('is-valid');
-
-                let feedback = emailField.parentNode.querySelector('.invalid-feedback');
-                if (feedback) {
-                    feedback.textContent = 'Este email ya está siendo usado por otro usuario.';
+                if (strength >= 100) {
+                    text = 'Muy fuerte';
+                    color = 'bg-success';
+                } else if (strength >= 75) {
+                    text = 'Fuerte';
+                    color = 'bg-info';
+                } else if (strength >= 50) {
+                    text = 'Moderada';
+                    color = 'bg-warning';
+                } else if (strength >= 25) {
+                    text = 'Débil';
+                    color = 'bg-warning';
                 }
-            } else if (email) {
-                emailField.classList.add('is-valid');
-                emailField.classList.remove('is-invalid');
-            }
-        }
 
-        // Función para actualizar el resumen de un usuario
-        function updateUsuarioResumen(usuarioEl) {
-            if (!usuarioEl) return;
-
-            const nombreInput = usuarioEl.querySelector('.usuario-nombre');
-            const emailInput = usuarioEl.querySelector('.usuario-email');
-
-            const resumenNombre = usuarioEl.querySelector('.usuario-resumen-nombre');
-            const resumenEmail = usuarioEl.querySelector('.usuario-resumen-email');
-
-            // ⚠️ Si el resumen aún no existe, NO hacemos nada
-            if (!resumenNombre || !resumenEmail) {
-                return;
+                progressBar.style.width = strength + '%';
+                progressBar.className = `progress-bar ${color}`;
+                strengthText.textContent = text;
             }
 
-            resumenNombre.textContent = nombreInput?.value || '—';
-            resumenEmail.textContent = emailInput?.value || '—';
-        }
+            // Función para validar coincidencia de contraseñas
+            function validatePasswordMatch(usuarioElement) {
+                const password = usuarioElement.querySelector('.usuario-password').value;
+                const confirm = usuarioElement.querySelector('.usuario-confirm-password').value;
+                const confirmField = usuarioElement.querySelector('.usuario-confirm-password');
 
-        // Función para actualizar el resumen total
-        function updateResumenUsuarios() {
-            const usuarios = document.querySelectorAll('.usuario-item:not(#usuario-template)');
-            let totalUsuarios = usuarios.length;
-            let totalAdministradores = 0;
-            let totalSupervisores = 0;
-            let totalUsuariosEstandar = 0;
-
-            usuarios.forEach(usuario => {
-                const rol = usuario.querySelector('.usuario-rol').value;
-                switch (rol) {
-                    case 'administrador':
-                        totalAdministradores++;
-                        break;
-                    case 'supervisor':
-                        totalSupervisores++;
-                        break;
-                    default:
-                        totalUsuariosEstandar++;
+                if (confirm && password !== confirm) {
+                    confirmField.classList.add('is-invalid');
+                    confirmField.classList.remove('is-valid');
+                } else if (confirm) {
+                    confirmField.classList.add('is-valid');
+                    confirmField.classList.remove('is-invalid');
                 }
-            });
+            }
 
-            document.getElementById('total-usuarios').textContent = totalUsuarios;
-            document.getElementById('total-administradores').textContent = totalAdministradores;
-            document.getElementById('total-supervisores').textContent = totalSupervisores;
-            document.getElementById('total-usuarios-estandar').textContent = totalUsuariosEstandar;
+            // Función para validar unicidad del email
+            function validateEmailUniqueness(emailField) {
+                const email = emailField.value.trim();
+                if (!email) return;
+
+                const allEmails = Array.from(document.querySelectorAll('.usuario-email'))
+                    .filter(field => field !== emailField)
+                    .map(field => field.value.trim());
+
+                if (allEmails.includes(email)) {
+                    emailField.classList.add('is-invalid');
+                    emailField.classList.remove('is-valid');
+
+                    let feedback = emailField.parentNode.querySelector('.invalid-feedback');
+                    if (feedback) {
+                        feedback.textContent = 'Este email ya está siendo usado por otro usuario.';
+                    }
+                } else if (email) {
+                    emailField.classList.add('is-valid');
+                    emailField.classList.remove('is-invalid');
+                }
+            }
+
+            // Función para actualizar el resumen de un usuario
+            function updateUsuarioResumen(usuarioEl) {
+                if (!usuarioEl) return;
+
+                const nombreInput = usuarioEl.querySelector('.usuario-nombre');
+                const emailInput = usuarioEl.querySelector('.usuario-email');
+                const rolInput = usuarioEl.querySelector('.usuario-rol');
+                const departamentoInput = usuarioEl.querySelector('.usuario-departamento');
+
+                const resumenNombre = usuarioEl.querySelector('.usuario-resumen-nombre');
+                const resumenEmail = usuarioEl.querySelector('.usuario-resumen-email');
+                const resumenRol = usuarioEl.querySelector('.usuario-resumen-rol');
+                const resumenDepartamento = usuarioEl.querySelector('.usuario-resumen-departamento');
+
+                // ⚠️ Si el resumen aún no existe, NO hacemos nada
+                if (!resumenNombre || !resumenEmail) {
+                    return;
+                }
+
+                resumenNombre.textContent = nombreInput?.value || '—';
+                resumenEmail.textContent = emailInput?.value || '—';
+                resumenRol.textContent = rolInput?.value || '—';
+                resumenDepartamento.textContent = departamentoInput?.value || '—';
+            }
+
+            // Función para actualizar el resumen total
+            function updateResumenUsuarios() {
+                const usuarios = document.querySelectorAll('.usuario-item:not(#usuario-template)');
+                let totalUsuarios = usuarios.length;
+                let totalUsuariosPrincipal = 0;
+                let totalUsuariosEstandar = 0;
+
+                usuarios.forEach(usuario => {
+                    const rol = usuario.querySelector('.usuario-rol').value;
+                    switch (rol) {
+                        case 'estandar':
+                            totalUsuariosEstandar++;
+                            break;
+                        case 'principal':
+                            totalUsuariosPrincipal++;
+                            break;
+                        default:
+                            totalUsuariosEstandar++;
+                    }
+                });
+
+                document.getElementById('total-usuarios').textContent = totalUsuarios;
+                document.getElementById('total-principales').textContent = totalUsuariosPrincipal;
+                document.getElementById('total-usuarios-estandar').textContent = totalUsuariosEstandar;
+            }
+
+
+            // =========================
+            // 🔥 REHIDRATAR DESDE BACKEND
+            // =========================
+
+            const data = window.formularioData?.datosFormulario?.usuarios_app || [];
+
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(u => addUsuario(u));
+            } else {
+                addUsuario();
+            }
+
+            // Evento para agregar usuario
+            document.getElementById('add-usuario').addEventListener('click', addUsuario);
+
         }
-
-
-        // =========================
-        // 🔥 REHIDRATAR DESDE BACKEND
-        // =========================
-
-        const data = window.formularioData?.datosFormulario?.usuarios_app || [];
-
-        if (Array.isArray(data) && data.length > 0) {
-            data.forEach(u => addUsuario(u));
-        } else {
-            addUsuario();
-        }
-
-        // Evento para agregar usuario
-        document.getElementById('add-usuario').addEventListener('click', addUsuario);
-    });
+    )
+    ;
 </script>
