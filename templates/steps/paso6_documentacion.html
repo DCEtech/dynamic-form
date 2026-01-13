@@ -404,6 +404,7 @@
                     if (!validateFile(file, allowedExtensions)) return;
 
                     // Guardamos en memoria (como antes)
+                    file._uploading = true;
                     validFiles.push(file);
 
                     // 🔼 Subimos al backend
@@ -411,10 +412,10 @@
                 });
 
                 if (validFiles.length > 0) {
-                    uploadedFiles[type] = uploadedFiles[type] || [];
                     uploadedFiles[type].push(...validFiles);
+                    renderFiles(type);
 
-                    displayFiles(validFiles, type);
+                    renderFiles(validFiles, type);
                     updateResumen();
                 }
             }
@@ -460,26 +461,32 @@
                         // Marcar archivo como subido
                         file._uploaded = true;
                         file._serverFilename = data.filename;
+                        file.public_url = data.public_url;
+                        file._uploading = false;
+
+                        renderFiles(type);
+                        updateResumen();
 
                         console.log('Archivo subido:', data);
                     })
                     .catch(err => {
+                        file._uploading = false;
+                        file._error = true;
+                        renderFiles(type);
                         console.error(err);
                         showToast(`Error subiendo archivo: ${file.name}`, 'error');
                     });
             }
 
-            function displayFiles(files, type) {
+
+            function renderFiles(type) {
                 const container = document.getElementById(`${type}-files`);
+                if (!container) return;
 
-                if (!container) {
-                    console.warn(`Contenedor no existe: ${type}-files`);
-                    return;
-                }
+                container.innerHTML = '';
 
-                files.forEach(file => {
-                    const fileElement = createFileElement(file, type);
-                    container.appendChild(fileElement);
+                (uploadedFiles[type] || []).forEach(file => {
+                    container.appendChild(createFileElement(file, type));
                 });
             }
 
@@ -487,20 +494,49 @@
             function createFileElement(file, type) {
                 const div = document.createElement('div');
                 div.className = 'uploaded-file d-flex align-items-center justify-content-between p-3 border rounded mb-2';
+                div.dataset.filename = file._serverFilename || file.name;
 
                 const fileInfo = document.createElement('div');
                 fileInfo.className = 'd-flex align-items-center';
 
                 const icon = getFileIcon(file.name);
-                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+                const sizeMB = file.size && file.size > 0
+                    ? (file.size / (1024 * 1024)).toFixed(2)
+                    : null;
+
+                let fileLabel = '';
+
+                if (file._uploading) {
+                    fileLabel = `
+            <span class="fw-bold text-muted">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Subiendo...
+            </span>`;
+                } else if (file._error) {
+                    fileLabel = `
+            <span class="fw-bold text-danger">
+                <i class="bi bi-x-circle me-1"></i>
+                Error al subir
+            </span>`;
+                } else if (file.public_url) {
+                    fileLabel = `
+            <a href="${file.public_url}" target="_blank" class="fw-bold text-decoration-none">
+                ${file.name}
+            </a>`;
+                } else {
+                    fileLabel = `<span class="fw-bold">${file.name}</span>`;
+                }
 
                 fileInfo.innerHTML = `
-            <i class="bi ${icon} me-3 fs-4 text-primary"></i>
-            <div>
-                <div class="fw-bold">${file.name}</div>
-                <small class="text-muted">${sizeMB} MB</small>
-            </div>
-        `;
+        <i class="bi ${icon} me-3 fs-4 text-primary"></i>
+        <div>
+            <div>${fileLabel}</div>
+            <small class="text-muted">
+                ${sizeMB ? sizeMB + ' MB' : 'En la nube'}
+            </small>
+        </div>
+    `;
 
                 const removeBtn = document.createElement('button');
                 removeBtn.className = 'btn btn-sm btn-outline-danger';
@@ -598,6 +634,7 @@
 
                                 const fakeFile = {
                                     name: archivo.nombre_original,
+                                    public_url: archivo.public_url,
                                     _uploaded: true,
                                     _serverFilename: archivo.nombre_archivo,
                                     size: 0
@@ -625,7 +662,7 @@
                                         return;
                                     }
 
-                                    img.src = `/uploads/${archivo.nombre_archivo}`; // ajusta si cambia la ruta
+                                    img.src = archivo.public_url; // ajusta si cambia la ruta
                                     img.alt = archivo.nombre_original;
 
                                     uploadContent.style.display = 'none';
@@ -641,7 +678,7 @@
                                 }
 
                                 uploadedFiles[tipo].push(fakeFile);
-                                displayFiles([fakeFile], tipo);
+                                renderFiles(tipo);
                             });
 
                         updateResumen();
@@ -699,6 +736,12 @@
         max-width: 150px;
         max-height: 150px;
         object-fit: contain;
+    }
+
+    .uploaded-file a {
+        pointer-events: auto;
+        position: relative;
+        z-index: 5;
     }
 
     .uploaded-file {

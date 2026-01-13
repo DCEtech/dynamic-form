@@ -295,6 +295,7 @@ class Formulario:
                 'tipo_archivo': row['tipo_archivo'],
                 'tamano_bytes': row['tamano_bytes'],
                 'ruta_archivo': storage.get_public_url(row['ruta_archivo']),
+                'public_url': row['public_url'],
                 'paso_formulario': row['paso_formulario'],
                 'fecha_subida': row['fecha_subida']
             }
