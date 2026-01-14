@@ -39,7 +39,11 @@ class StorageService:
 
         return remote_path
 
-    def delete(self, storage_path):  # -> bool
+    def delete(self, storage_path) -> bool:
+
+        """
+        Elimina un archivo de Nextcloud usando WebDAV
+        """
         url = f"{NEXTCLOUD_URL}/{NEXTCLOUD_USER}/{storage_path}"
 
         r = requests.delete(

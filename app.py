@@ -382,6 +382,8 @@ def test_nextcloud():
 
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
+    storage_path = None
+
     try:
         if 'file' not in request.files:
             return jsonify({'error': 'No se encontró archivo'}), 400
@@ -399,49 +401,35 @@ def upload_file():
         if not allowed_file(file.filename):
             return jsonify({'error': 'Tipo de archivo no permitido'}), 400
 
-        # 🔎 Obtener formulario vía MODELO (MySQL)
         formulario = Formulario.obtener_por_cliente(cliente_id)
         if not formulario:
             return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
 
         filename = secure_filename(file.filename)
+        unique_filename = f"{cliente_id}_{tipo_archivo}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
 
-        unique_filename = (
-            f"{cliente_id}_{tipo_archivo}_"
-            f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
-        )
-
-        # 📂 Carpeta en Nextcloud
         folder = f"clientes/A-PruebaFormulario/{formulario.id}"
 
-        # ☁️ Subir a Nextcloud vía StorageService
-        storage_path = storage.save(
-            file.stream,
-            unique_filename,
-            folder
-        )
+        # Subir archivo
+        storage_path = storage.save(file.stream, unique_filename, folder)
+
+        # Crear share público
         public_url = storage.create_public_share(storage_path)
 
-        # 📦 Tamaño real del archivo (sin filesystem)
+        # Tamaño real
         file.stream.seek(0, os.SEEK_END)
         tamano_bytes = file.stream.tell()
         file.stream.seek(0)
 
-        # 💾 Insertar en MySQL
+        # Guardar en DB
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             """
-            INSERT INTO archivos_clientes (formulario_id,
-                                           nombre_original,
-                                           nombre_archivo,
-                                           tipo_archivo,
-                                           tamano_bytes,
-                                           ruta_archivo,
-                                           public_url,
-                                           paso_formulario,
-                                           fecha_subida)
+            INSERT INTO archivos_clientes (formulario_id, nombre_original, nombre_archivo,
+                                           tipo_archivo, tamano_bytes, ruta_archivo,
+                                           public_url, paso_formulario, fecha_subida)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
@@ -467,10 +455,18 @@ def upload_file():
             'original_name': filename,
             'storage_path': storage_path,
             'public_url': public_url,
-            'formulario_id': formulario.id
+            'formulario_id': formulario.id,
+            'archivo_id': cursor.lastrowid
         })
 
     except Exception as e:
+        # ROLLBACK CLOUD
+        if storage_path:
+            try:
+                storage.delete(storage_path)
+            except Exception as cleanup_err:
+                app.logger.error(f"Fallo limpiando archivo huérfano {storage_path}: {cleanup_err}")
+
         import traceback
         app.logger.error(traceback.format_exc())
         return jsonify({'error': 'Error al subir archivo', 'detalle': str(e)}), 500
@@ -557,9 +553,40 @@ def upload_file():
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/archivo/id', methods=['DELETE'])
-def remove_file():
-    pass
+@app.route('/api/formulario/<int:formulario_id>/archivo/<int:archivo_id>', methods=['DELETE'])
+def remove_file(formulario_id, archivo_id):
+    formulario = Formulario.obtener_por_id(formulario_id)
+    if not formulario:
+        return jsonify({'success': False, 'error': 'Formulario no encontrado'}), 404
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM archivos_clientes WHERE id = %s AND formulario_id = %s",
+        (archivo_id, formulario_id)
+    )
+
+    archivo = cursor.fetchone()
+
+    if not archivo:
+        conn.close()
+        return jsonify({'success': False, 'error': 'Archivo no pertenece a este formulario'}), 404
+
+    try:
+        # borrar en Nextcloud
+        storage.delete(archivo['ruta_archivo'])
+
+        # borrar en DB
+        cursor.execute("DELETE FROM archivos_clientes WHERE id = %s", (archivo_id,))
+        conn.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        conn.close()
 
 
 @app.route('/api/formulario/<int:formulario_id>/archivos')

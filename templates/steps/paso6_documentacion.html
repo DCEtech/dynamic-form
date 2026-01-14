@@ -460,9 +460,10 @@
 
                         // Marcar archivo como subido
                         file._uploaded = true;
-                        file._serverFilename = data.filename;
+                        file._serverFileName = data.filename;
                         file.public_url = data.public_url;
                         file._uploading = false;
+                        file._serverFileId = data.archivo_id;
 
                         renderFiles(type);
                         updateResumen();
@@ -494,7 +495,7 @@
             function createFileElement(file, type) {
                 const div = document.createElement('div');
                 div.className = 'uploaded-file d-flex align-items-center justify-content-between p-3 border rounded mb-2';
-                div.dataset.filename = file._serverFilename || file.name;
+                div.dataset.filename = file._serverFileName || file.name;
 
                 const fileInfo = document.createElement('div');
                 fileInfo.className = 'd-flex align-items-center';
@@ -539,12 +540,37 @@
     `;
 
                 const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
                 removeBtn.className = 'btn btn-sm btn-outline-danger';
                 removeBtn.innerHTML = '<i class="bi bi-trash"></i>';
                 removeBtn.addEventListener('click', function () {
-                    div.remove();
-                    removeFileFromArray(file.name, type);
-                    updateResumen();
+                    if (!file._uploaded || !file._serverFileId) {
+                        // Si aún no se subió o no tiene id, solo lo quitamos local
+                        div.remove();
+                        removeFileFromArray(file._serverFileId, type);
+                        resetFileInput(type);
+                        updateResumen();
+                        return;
+                    }
+
+                    fetch(`/api/formulario/${window.formularioData.formulario_id}/archivo/${file._serverFileId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.success) {
+                                throw new Error(data.error || 'No se pudo eliminar el archivo');
+                            }
+
+                            div.remove();
+                            removeFileFromArray(file._serverFileId, type);
+                            resetFileInput(type);
+                            updateResumen();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            showToast('Error eliminando archivo en el servidor', 'error');
+                        });
                 });
 
                 div.appendChild(fileInfo);
@@ -579,10 +605,17 @@
                 return icons[extension] || 'bi-file-earmark';
             }
 
-            function removeFileFromArray(fileName, type) {
+            function removeFileFromArray(serverFileId, type) {
                 if (uploadedFiles[type]) {
-                    uploadedFiles[type] = uploadedFiles[type].filter(f => f.name !== fileName);
+                    uploadedFiles[type] = uploadedFiles[type].filter(
+                        f => f._serverFileId !== serverFileId
+                    );
                 }
+            }
+
+            function resetFileInput(type) {
+                const input = document.getElementById(`${type}-input`);
+                if (input) input.value = '';
             }
 
             function updateResumen() {
@@ -636,7 +669,8 @@
                                     name: archivo.nombre_original,
                                     public_url: archivo.public_url,
                                     _uploaded: true,
-                                    _serverFilename: archivo.nombre_archivo,
+                                    _serverFileName: archivo.nombre_archivo,
+                                    _serverFileId: archivo.id,
                                     size: 0
                                 };
 
