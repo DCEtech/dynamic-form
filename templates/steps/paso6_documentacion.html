@@ -105,7 +105,14 @@
                     </button>
                 </div>
                 <div class="logo-preview" style="display: none;">
-                    <img src="" alt="Logo preview" class="img-fluid rounded">
+                    <div class="logo-preview-wrapper">
+                        <img src="" alt="Logo preview" class="img-fluid rounded">
+
+                        <div class="logo-overlay">
+                            <div class="spinner-border text-light"></div>
+                        </div>
+                    </div>
+
                     <button type="button" class="btn btn-sm btn-outline-danger mt-2 remove-logo">
                         <i class="bi bi-trash"></i> Eliminar
                     </button>
@@ -133,7 +140,14 @@
                     </button>
                 </div>
                 <div class="logo-preview" style="display: none;">
-                    <img src="" alt="Logo alternativo preview" class="img-fluid rounded">
+                    <div class="logo-preview-wrapper">
+                        <img src="" alt="Logo preview" class="img-fluid rounded">
+
+                        <div class="logo-overlay">
+                            <div class="spinner-border text-light"></div>
+                        </div>
+                    </div>
+
                     <button type="button" class="btn btn-sm btn-outline-danger mt-2 remove-logo">
                         <i class="bi bi-trash"></i> Eliminar
                     </button>
@@ -375,6 +389,8 @@
                     if (file) {
                         if (validateFile(file, ['jpg', 'jpeg', 'png'], 2)) {
                             displayLogoPreview(file, uploadContent, logoPreview);
+                            logoPreview.classList.add('loading');
+                            file._uploading = true;
 
                             // 🔼 subir al backend
                             uploadFileToBackend(file, type === 'logo' ? 'logo_principal' : 'logo_alternativo');
@@ -386,14 +402,37 @@
                 });
 
                 removeBtn.addEventListener('click', function () {
-                    logoPreview.style.display = 'none';
-                    uploadContent.style.display = 'block';
-                    fileInput.value = '';
+                    const tipo = type === 'logo' ? 'logo_principal' : 'logo_alternativo';
 
-                    // Remover del array
-                    const fileName = logoPreview.querySelector('img').alt;
-                    uploadedFiles.logos = uploadedFiles.logos.filter(f => f.name !== fileName);
-                    updateResumen();
+                    const file = uploadedFiles.logos.find(f => f._tipo === tipo);
+
+                    if (!file || !file._serverFileId) {
+                        logoPreview.style.display = 'none';
+                        uploadContent.style.display = 'block';
+                        fileInput.value = '';
+                        updateResumen();
+                    }
+
+                    fetch(`/api/formulario/${window.formularioData.formulario_id}/archivo/${file._serverFileId}`, {
+                        method: 'DELETE'
+                    }).then(res => res.json())
+                        .then(data => {
+                            if (!data.success) throw new Error(data.error);
+
+                            // UI
+                            logoPreview.style.display = 'none';
+                            uploadContent.style.display = 'block';
+                            fileInput.value = '';
+
+                            // Memoria
+                            uploadedFiles.logos = uploadedFiles.logos.filter(f => f._serverFileId !== file._serverFileId);
+
+                            updateResumen();
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            showToast('Error eliminando el logo', 'error');
+                        });
                 });
             }
 
@@ -465,6 +504,19 @@
                         file._uploading = false;
                         file._serverFileId = data.archivo_id;
 
+                        if (type === 'logo_principal' || type === 'logo_alternativo') {
+                            const uploadArea = document.getElementById(
+                                type === 'logo_principal' ? 'logo-upload' : 'logo-alt-upload'
+                            );
+
+                            const logoPreview = uploadArea.querySelector('.logo-preview');
+                            logoPreview.classList.remove('loading');
+                            const img = logoPreview.querySelector('img');
+
+                            img.style.cursor = 'pointer';
+                            img.onclick = () => window.open(file.public_url, '_blank');
+                        }
+
                         renderFiles(type);
                         updateResumen();
 
@@ -473,6 +525,14 @@
                     .catch(err => {
                         file._uploading = false;
                         file._error = true;
+                        if (type === 'logo_principal' || type === 'logo_alternativo') {
+                            const uploadArea = document.getElementById(
+                                type === 'logo_principal' ? 'logo-upload' : 'logo-alt-upload'
+                            );
+
+                            const logoPreview = uploadArea.querySelector('.logo-preview');
+                            logoPreview.classList.remove('loading');
+                        }
                         renderFiles(type);
                         console.error(err);
                         showToast(`Error subiendo archivo: ${file.name}`, 'error');
@@ -625,7 +685,7 @@
                     logos: uploadedFiles.logos?.length || 0,
                     adicional: uploadedFiles.adicional?.length || 0
                 };
-
+                console.log(counts.logos);
                 document.getElementById('count-contratos').textContent = `${counts.contratos} archivos`;
                 document.getElementById('count-planos').textContent = `${counts.planos} archivos`;
                 document.getElementById('count-logos').textContent = `${counts.logos} archivos`;
@@ -671,38 +731,33 @@
                                     _uploaded: true,
                                     _serverFileName: archivo.nombre_archivo,
                                     _serverFileId: archivo.id,
+                                    _tipo: archivo.tipo_archivo,
                                     size: 0
                                 };
 
                                 // 🟢 LOGOS → preview (NO lista)
                                 if (tipo === 'logo_principal' || tipo === 'logo_alternativo') {
-                                    const uploadArea = document.getElementById(
-                                        tipo === 'logo_principal'
-                                            ? 'logo-upload'
-                                            : 'logo-alt-upload'
-                                    );
+                                    uploadedFiles.logos.push(fakeFile);
 
-                                    if (!uploadArea) {
-                                        console.warn('Upload area logo no encontrada');
-                                        return;
-                                    }
+                                    const uploadArea = document.getElementById(
+                                        tipo === 'logo_principal' ? 'logo-upload' : 'logo-alt-upload'
+                                    );
 
                                     const uploadContent = uploadArea.querySelector('.upload-content');
                                     const logoPreview = uploadArea.querySelector('.logo-preview');
-                                    const img = logoPreview?.querySelector('img');
+                                    const img = logoPreview.querySelector('img');
 
-                                    if (!img) {
-                                        console.warn('Img preview logo no encontrada');
-                                        return;
-                                    }
+                                    const cleanUrl = fakeFile.public_url.split('?')[0];
 
-                                    img.src = archivo.public_url; // ajusta si cambia la ruta
-                                    img.alt = archivo.nombre_original;
+                                    img.src = cleanUrl + '/download';
+                                    img.alt = fakeFile.name;
 
                                     uploadContent.style.display = 'none';
                                     logoPreview.style.display = 'block';
 
-                                    uploadedFiles.logos.push(fakeFile);
+                                    img.style.cursor = 'pointer';
+                                    img.onclick = () => window.open(cleanUrl, '_blank');
+
                                     return;
                                 }
 
@@ -776,6 +831,25 @@
         pointer-events: auto;
         position: relative;
         z-index: 5;
+    }
+
+    .logo-preview-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .logo-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+    }
+
+    .logo-preview.loading .logo-overlay {
+        display: flex;
     }
 
     .uploaded-file {
