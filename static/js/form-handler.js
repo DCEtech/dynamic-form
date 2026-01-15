@@ -23,14 +23,22 @@ class FormularioCliente {
             this.clienteId = window.formularioData.clienteId;
             this.totalSteps = window.formularioData.totalPasos;
 
-            this.isCompleted = window.formularioData.completado === 1;
+            this.isCompleted =
+                window.formularioData.completado === 1 ||
+                window.formularioData.porcentajeCompletado === 100;
 
             if (this.isCompleted) {
                 this.isDirty = false;
+
+                // Forzar último paso visual
+                this.currentStep = this.totalSteps;
+
+                console.log('Formulario completo detectado → forzando paso', this.currentStep);
+            } else {
+                // Respetar backend si no está completo
+                this.currentStep = window.formularioData.pasoActual || 1;
             }
 
-            // Siempre respetamos el paso real guardado en backend
-            this.currentStep = window.formularioData.pasoActual || 1;
 
             // Ya no usamos "mode" para controlar navegación
             this.mode = 'wizard';
@@ -551,6 +559,10 @@ class FormularioCliente {
     }
 
     validateCurrentStep() {
+        if (this.isCompleted) {
+            return true;
+        }
+
 
         // Paso 2 → SOLO lógica de trasteros
         if (this.currentStep === 2) {
@@ -1121,14 +1133,31 @@ class FormularioCliente {
         if (typeof window.formularioData !== 'undefined' && window.formularioData.datosFormulario) {
             const datos = window.formularioData.datosFormulario;
 
-            console.log('datos ###', datos);
-
-            // Cargar datos según el paso actual
             this.loadStepData(this.currentStep, datos);
-            // Actualizar la barra de progreso con el porcentaje inicial
-            this.updateProgress(window.formularioData.porcentajeCompletado);
+
+            if (this.isCompleted) {
+                this.updateProgress(100);
+
+                const steps = document.querySelectorAll('.step-item');
+
+                steps.forEach(step => {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                });
+
+                const currentStepEl = document.querySelector(`.step-item[data-step="${this.currentStep}"]`);
+                if (currentStepEl) {
+                    currentStepEl.classList.add('active');
+                }
+            } else {
+                this.updateProgress(window.formularioData.porcentajeCompletado);
+            }
+
+            // Forzar sincronización inicial de botones
+            this.updateNavigation();
         }
     }
+
 
     loadStepData(step, datos) {
         if (!datos) return;

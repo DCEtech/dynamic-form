@@ -174,6 +174,11 @@ class Formulario:
         # Calcular porcentaje de completado
         self.porcentaje_completado = self._calcular_porcentaje()
 
+        # FORZAR último paso si está completo
+        if self.porcentaje_completado == 100:
+            self.paso_actual = 6
+            self.completado = 1
+
         # Guardar en base de datos
         return self._guardar_en_bd()
 
@@ -181,7 +186,6 @@ class Formulario:
         """Calcula el porcentaje de completado basado en los datos"""
         pasos_completados = 0
 
-        # Verificar cada paso
         if self._paso_completo(1, self.datos_empresa):
             pasos_completados += 1
         if self._paso_completo(2, self.info_trasteros):
@@ -195,38 +199,37 @@ class Formulario:
         if self._paso_completo(6, self.documentacion):
             pasos_completados += 1
 
-        return int((pasos_completados / 6) * 100)
+        porcentaje = int((pasos_completados / 6) * 100)
+
+        return porcentaje
 
     def _paso_completo(self, paso: int, datos: Any) -> bool:
         """Verifica si un paso está completo según sus campos obligatorios"""
-        campos_obligatorios = {
-            1: ['nombre', 'nif', 'direccion', 'codigo_postal', 'provincia', 'telefono', 'email'],
-            2: [],  # lista en si misma
-            3: ['usuarios'],  # Al menos un usuario
-            4: ['servidor_saliente', 'direccion_servidor', 'usuario_email', 'puerto'],
-            5: ['niveles'],  # Al menos un nivel
-            6: []  # Documentación es opcional
-        }
 
-        if paso not in campos_obligatorios:
-            return False
+        # Validaciones por tipo real de datos guardados
 
-        obligatorios = campos_obligatorios[paso]
+        if paso == 1:
+            campos_obligatorios = ['nombre', 'nif', 'direccion', 'codigo_postal', 'provincia', 'telefono', 'email']
+            return all(datos.get(campo) for campo in campos_obligatorios)
 
-        # Verificar campos obligatorios
-        for campo in obligatorios:
-            if campo not in datos or not datos[campo]:
-                return False
-
-        # Verificaciones especiales por paso
         if paso == 2:
             return isinstance(datos, list) and len(datos) > 0
-        elif paso == 3 and isinstance(datos.get('usuarios'), list):
-            return len(datos['usuarios']) > 0
-        elif paso == 5 and isinstance(datos.get('niveles'), list):
-            return len(datos['niveles']) > 0
 
-        return True
+        if paso == 3:
+            return isinstance(datos, list) and len(datos) > 0
+
+        if paso == 4:
+            campos_obligatorios = ['servidor_saliente', 'direccion_servidor', 'usuario_email', 'puerto']
+            return all(datos.get(campo) for campo in campos_obligatorios)
+
+        if paso == 5:
+            return isinstance(datos, list) and len(datos) > 0
+
+        if paso == 6:
+            # documentación es opcional pero cuenta como paso válido
+            return True
+
+        return False
 
     def _guardar_en_bd(self) -> bool:
         """Guarda el formulario en la base de datos"""
