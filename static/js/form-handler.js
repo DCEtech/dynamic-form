@@ -9,6 +9,10 @@ class FormularioCliente {
         this.clienteId = null;
         this.autoSaveInterval = null;
         this.isSubmitting = false;
+        this.isCompleted = false;
+        this.mode = 'wizard';
+        this.isDirty = false;
+        this.hasChanges = false;
 
         this.init();
     }
@@ -17,8 +21,19 @@ class FormularioCliente {
         // Obtener datos del formulario si están disponibles
         if (typeof window.formularioData !== 'undefined') {
             this.clienteId = window.formularioData.clienteId;
-            this.currentStep = window.formularioData.pasoActual;
             this.totalSteps = window.formularioData.totalPasos;
+
+            this.isCompleted = window.formularioData.completado === 1;
+
+            if (this.isCompleted) {
+                this.isDirty = false;
+            }
+
+            // Siempre respetamos el paso real guardado en backend
+            this.currentStep = window.formularioData.pasoActual || 1;
+
+            // Ya no usamos "mode" para controlar navegación
+            this.mode = 'wizard';
         }
 
         // Inicializar elementos DOM
@@ -68,69 +83,66 @@ class FormularioCliente {
             this.elements.btnPrevious.addEventListener('click', () => this.previousStep());
         }
 
-        // Navegación por pasos en sidebar - Solución simplificada y robusta
+        // Navegación por pasos en sidebar
         this.elements.stepItems.forEach((item, index) => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetStep = index + 1;
 
+                const targetStep = index + 1;
                 console.log(`Click en paso ${targetStep}. Paso actual: ${this.currentStep}`);
 
-                // Si es el mismo paso, no hacer nada
                 if (targetStep === this.currentStep) {
                     return;
                 }
 
-                // Si retrocedemos, permitir siempre
-                if (targetStep < this.currentStep) {
-                    console.log('Retrocediendo - permitido');
+                // Si el backend dice que ese paso existe → permitir
+                if (this.canNavigateToStep(targetStep)) {
+
+                    // Si estamos avanzando al siguiente inmediato → validar
+                    if (targetStep === this.currentStep + 1) {
+                        if (!this.validateCurrentStep()) {
+                            this.showToast(
+                                'Complete los campos obligatorios del paso actual',
+                                'error'
+                            );
+                            return;
+                        }
+                    }
+
                     this._navigateToStep(targetStep);
                     return;
                 }
 
-                // Si avanzamos, solo permitir al paso inmediatamente siguiente
-                if (targetStep === this.currentStep + 1) {
-                    console.log('Intentando avanzar al siguiente paso');
-
-                    // Validar campos obligatorios del paso actual
-                    if (!this.validateCurrentStep()) {
-                        this.showToast(
-                            'Complete los campos obligatorios del paso actual',
-                            'error'
-                        );
-                        return;
-                    }
-
-                    console.log('Todos los campos válidos - procediendo');
-                    this._navigateToStep(targetStep);
-                } else {
-                    // Intentar saltar varios pasos
-                    this.showToast('Debe completar los pasos en orden secuencial', 'warning');
-                }
+                // Intento de saltar a algo que no existe aún
+                this.showToast(
+                    'Debe completar los pasos anteriores antes de acceder a este',
+                    'warning'
+                );
             });
         });
 
         // Validación en tiempo real
-        if (this.elements.form) {
-            this.elements.form.addEventListener('input', (e) => {
-                this.validateField(e.target);
-                this.updateProgress();
-            });
+        this.elements.form.addEventListener('input', (e) => {
+            this.validateField(e.target);
 
-            this.elements.form.addEventListener('change', (e) => {
-                this.validateField(e.target);
-                this.updateProgress();
-            });
-        }
+            if (this.isCompleted) {
+                this.isDirty = true;
+            }
 
-        // Prevenir envío accidental del formulario
-        if (this.elements.form) {
-            this.elements.form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.nextStep();
-            });
-        }
+            this.updateProgress();
+            this.updateFinalButton();
+        });
 
+        this.elements.form.addEventListener('change', (e) => {
+            this.validateField(e.target);
+
+            if (this.isCompleted) {
+                this.isDirty = true;
+            }
+
+            this.updateProgress();
+            this.updateFinalButton();
+        });
     }
 
     initializeTooltips() {
@@ -233,82 +245,95 @@ class FormularioCliente {
     updateSidebar() {
         this.elements.stepItems.forEach((item, index) => {
             const step = index + 1;
-            item.classList.remove('active', 'completed');
+
             const badge = item.querySelector('.step-number-badge');
             const checkIcon = item.querySelector('.step-check-icon');
 
-            // Determinar si el paso está completado (para la UI, basándose en la información disponible del frontend)
-            // Verificar si hay datos según la estructura correcta de datos
-            let tieneDatos = false;
+            item.classList.remove('active', 'completed');
 
-            if (window.formularioData && window.formularioData.datosFormulario) {
-                switch (step) {
-                    case 1:
-                        tieneDatos = window.formularioData.datosFormulario.datos_empresa &&
-                            Object.keys(window.formularioData.datosFormulario.datos_empresa).length > 0;
-                        break;
-                    case 2:
-                        tieneDatos = window.formularioData.datosFormulario.info_trasteros &&
-                            Object.keys(window.formularioData.datosFormulario.info_trasteros).length > 0;
-                        break;
-                    case 3:
-                        tieneDatos = window.formularioData.datosFormulario.usuarios_app &&
-                            Object.keys(window.formularioData.datosFormulario.usuarios_app).length > 0;
-                        break;
-                    case 4:
-                        tieneDatos = window.formularioData.datosFormulario.config_correo &&
-                            Object.keys(window.formularioData.datosFormulario.config_correo).length > 0;
-                        break;
-                    case 5:
-                        tieneDatos = window.formularioData.datosFormulario.niveles_acceso &&
-                            Object.keys(window.formularioData.datosFormulario.niveles_acceso).length > 0;
-                        break;
-                    case 6:
-                        tieneDatos = window.formularioData.datosFormulario.documentacion &&
-                            Object.keys(window.formularioData.datosFormulario.documentacion).length > 0;
-                        break;
-                }
-            }
+            const canNavigate = this.canNavigateToStep(step);
 
+            // ============================
+            // PASO ACTUAL
+            // ============================
             if (step === this.currentStep) {
                 item.classList.add('active');
+
                 if (badge) {
-                    badge.classList.remove('bg-secondary');
+                    badge.classList.remove('d-none', 'bg-secondary');
                     badge.classList.add('bg-primary');
                     badge.textContent = step;
                 }
+
                 if (checkIcon) {
                     checkIcon.classList.add('d-none');
                 }
-            } else if (tieneDatos && step < this.currentStep) { // Si tiene datos y es un paso anterior
+
+                return;
+            }
+
+            // ============================
+            // PASO DESBLOQUEADO (COMPLETADO)
+            // ============================
+            if (canNavigate) {
                 item.classList.add('completed');
+
                 if (badge) {
                     badge.classList.add('d-none');
                 }
+
                 if (checkIcon) {
                     checkIcon.classList.remove('d-none');
                 }
-            } else { // Pasos futuros o pasos anteriores sin datos
-                if (badge) {
-                    badge.classList.remove('d-none', 'bg-primary');
-                    badge.classList.add('bg-secondary');
-                    badge.textContent = step;
-                }
-                if (checkIcon) {
-                    checkIcon.classList.add('d-none');
-                }
+
+                return;
+            }
+
+            // ============================
+            // PASO BLOQUEADO
+            // ============================
+            if (badge) {
+                badge.classList.remove('d-none', 'bg-primary');
+                badge.classList.add('bg-secondary');
+                badge.textContent = step;
+            }
+
+            if (checkIcon) {
+                checkIcon.classList.add('d-none');
             }
         });
     }
 
     updateNavigation() {
+
         // Botón anterior
         if (this.elements.btnPrevious) {
             this.elements.btnPrevious.disabled = this.currentStep <= 1;
         }
 
-        // Botón siguiente
+        // FORMULARIO COMPLETADO Y SIN CAMBIOS → solo vista
+        if (this.isCompleted && !this.hasChanges) {
+            if (this.elements.btnNext) {
+                this.elements.btnNext.style.display = 'none';
+            }
+            return;
+        }
+
+        // FORMULARIO COMPLETADO PERO EDITADO → mostrar Guardar
+        if (this.isCompleted && this.hasChanges) {
+            if (this.elements.btnNext) {
+                this.elements.btnNext.style.display = 'block';
+                this.elements.btnNext.innerHTML = '<i class="bi bi-save me-1"></i>Guardar cambios';
+                this.elements.btnNext.classList.remove('btn-primary', 'btn-success');
+                this.elements.btnNext.classList.add('btn-warning');
+            }
+            return;
+        }
+
+        // MODO WIZARD NORMAL
         if (this.elements.btnNext) {
+            this.elements.btnNext.style.display = 'block';
+
             if (this.currentStep === this.totalSteps) {
                 this.elements.btnNext.innerHTML = '<i class="bi bi-check-circle me-1"></i>Completar';
                 this.elements.btnNext.classList.remove('btn-primary');
@@ -1078,17 +1103,18 @@ class FormularioCliente {
         }
     }
 
-    updateProgress(percentage) {
-        if (percentage !== undefined) {
-            if (this.elements.progressBar) {
-                this.elements.progressBar.style.width = `${percentage}%`;
-                this.elements.progressBar.setAttribute('aria-valuenow', percentage);
-            }
-
-            if (this.elements.progressPercentage) {
-                this.elements.progressPercentage.textContent = `${percentage}%`;
-            }
+    updateProgress() {
+        // Si el backend dice que está completado, el progreso es fijo
+        if (this.isCompleted) {
+            this.elements.progressBar.style.width = '100%';
+            this.elements.progressPercentage.textContent = '100%';
+            return;
         }
+
+        // Wizard normal
+        const percent = Math.round((this.currentStep - 1) / (this.totalSteps - 1) * 100);
+        this.elements.progressBar.style.width = percent + '%';
+        this.elements.progressPercentage.textContent = percent + '%';
     }
 
     loadExistingData() {
@@ -1257,6 +1283,11 @@ class FormularioCliente {
     }
 
     canNavigateToStep(step) {
+
+        if (this.isCompleted) {
+            return true;
+        }
+
         // Permitir navegación a cualquier paso completado o al siguiente inmediato
         if (step <= this.currentStep + 1) {
             return true;
@@ -1320,6 +1351,9 @@ class FormularioCliente {
 
             // ✅ Progreso REAL desde backend
             this.updateProgress(100);
+            this.isCompleted = true;
+            this.hasChanges = false;
+            this.updateNavigation();
 
             // ✅ Sincronizar estado global
             if (result.formulario) {

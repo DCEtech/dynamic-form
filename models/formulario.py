@@ -16,7 +16,7 @@ class Formulario:
     def __init__(self, id=None, cliente_id=None, datos_empresa=None,
                  info_trasteros=None, usuarios_app=None, config_correo=None,
                  niveles_acceso=None, documentacion=None, paso_actual=1,
-                 porcentaje_completado=0, fecha_creacion=None, fecha_actualizacion=None):
+                 porcentaje_completado=0, completado=0, fecha_creacion=None, fecha_actualizacion=None):
         self.id = id
         self.cliente_id = cliente_id
         self.datos_empresa = datos_empresa or {}
@@ -27,6 +27,7 @@ class Formulario:
         self.documentacion = documentacion or {}
         self.paso_actual = paso_actual
         self.porcentaje_completado = porcentaje_completado
+        self.completado = completado
         self.fecha_creacion = fecha_creacion
         self.fecha_actualizacion = fecha_actualizacion
 
@@ -102,6 +103,7 @@ class Formulario:
             documentacion=json.loads(row['documentacion'] or '{}'),
             paso_actual=row['paso_actual'],
             porcentaje_completado=row['porcentaje_completado'],
+            completado=row['completado'],
             fecha_creacion=row['fecha_creacion'],
             fecha_actualizacion=row['fecha_actualizacion']
         )
@@ -241,7 +243,8 @@ class Formulario:
                        niveles_acceso        = %s,
                        documentacion         = %s,
                        paso_actual           = %s,
-                       porcentaje_completado = %s
+                       porcentaje_completado = %s,
+                       completado            = %s
                    WHERE id = %s
                 """,
                 (
@@ -253,6 +256,7 @@ class Formulario:
                     json.dumps(self.documentacion, ensure_ascii=False),
                     self.paso_actual,
                     self.porcentaje_completado,
+                    self.completado,
                     self.id
                 )
             )
@@ -282,7 +286,7 @@ class Formulario:
 
     def esta_completo(self) -> bool:
         """Verifica si el formulario está completamente lleno"""
-        return self.porcentaje_completado == 100
+        return self.completado == 1
 
     def obtener_archivos(self) -> List[Dict]:
         """Obtiene la lista de archivos subidos para este formulario"""
@@ -321,6 +325,7 @@ class Formulario:
             'cliente_id': self.cliente_id,
             'paso_actual': self.paso_actual,
             'porcentaje_completado': self.porcentaje_completado,
+            'completado': bool(self.completado),
             'datos_empresa': self.datos_empresa,
             'info_trasteros': self.info_trasteros,
             'usuarios_app': self.usuarios_app,
@@ -330,7 +335,7 @@ class Formulario:
             'fecha_creacion': self.fecha_creacion,
             'fecha_actualizacion': self.fecha_actualizacion,
             'archivos': self.obtener_archivos(),
-            'completo': self.esta_completo()
+
         }
 
     def __repr__(self):
