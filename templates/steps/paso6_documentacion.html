@@ -503,6 +503,7 @@
                         file.public_url = data.public_url;
                         file._uploading = false;
                         file._serverFileId = data.archivo_id;
+                        file._tipo = type;
 
                         if (type === 'logo_principal' || type === 'logo_alternativo') {
                             const uploadArea = document.getElementById(

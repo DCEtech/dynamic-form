@@ -151,7 +151,19 @@ class Formulario:
             if not isinstance(datos, list):
                 datos = []
 
-        setattr(self, campo, datos)
+        if paso == 6:
+            actual = getattr(self, campo) or {}
+            if not isinstance(actual, dict):
+                actual = {}
+
+            if not isinstance(datos, dict):
+                datos = {}
+
+            # Merge seguro
+            actual.update(datos)
+            setattr(self, campo, actual)
+        else:
+            setattr(self, campo, datos)
 
         # Actualizar paso actual si es mayor
         if paso > self.paso_actual:
