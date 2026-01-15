@@ -975,6 +975,80 @@ class FormularioCliente {
         }
     }
 
+    buildDocumentacionPayload() {
+        const notas = document.querySelector('#notas_adicionales')?.value || '';
+
+        const archivos = {
+            contratos: [],
+            planos: [],
+            logo_principal: [],
+            logo_alternativo: [],
+            adicional: []
+        };
+
+        if (window.uploadedFilesPaso6) {
+            // Archivos normales
+            ['contratos', 'planos', 'adicional'].forEach(tipo => {
+                (window.uploadedFilesPaso6[tipo] || []).forEach(file => {
+                    if (file._serverFileId) {
+                        archivos[tipo].push(file._serverFileId);
+                    }
+                });
+            });
+
+            // Logos
+            (window.uploadedFilesPaso6.logos || []).forEach(file => {
+                if (!file._serverFileId || !file._tipo) return;
+
+                if (file._tipo === 'logo_principal') {
+                    archivos.logo_principal.push(file._serverFileId);
+                }
+
+                if (file._tipo === 'logo_alternativo') {
+                    archivos.logo_alternativo.push(file._serverFileId);
+                }
+            });
+        }
+
+        return {
+            notas_adicionales: notas,
+            archivos: archivos
+        };
+    }
+
+    async saveStep6Notas() {
+        const payload = this.buildDocumentacionPayload();
+
+        this.updateSaveStatus('saving');
+
+        const response = await fetch('/api/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                cliente_id: this.clienteId,
+                paso: 6,
+                datos: payload
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            this.updateSaveStatus('error');
+            throw new Error(result.mensaje || 'Error guardando documentación');
+        }
+
+        // Sincronizar frontend con backend
+        if (!window.formularioData.datosFormulario) {
+            window.formularioData.datosFormulario = {};
+        }
+
+        window.formularioData.datosFormulario.documentacion =
+            result.formulario_data_actualizada.documentacion;
+
+        this.updateSaveStatus('saved');
+    }
+
     autoSave() {
         if (this.validateCurrentStep()) {
             this.saveCurrentStep().catch(error => {
@@ -1230,6 +1304,7 @@ class FormularioCliente {
         this.isSubmitting = true;
 
         try {
+            await this.saveStep6Notas();
             this.updateSaveStatus('saving');
 
             const response = await fetch(

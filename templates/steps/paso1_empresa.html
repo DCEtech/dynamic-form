@@ -13,26 +13,26 @@
         </div>
     </div>
 
-    <!-- Información Básica -->
+    <!-- Información Fiscal -->
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-building me-2"></i>Información Básica
+                <i class="bi bi-building me-2"></i>Información Fiscal
             </h5>
         </div>
-        
+
         <div class="col-md-6 mb-3">
             <label for="nombre_empresa" class="form-label">
-                Nombre de la Empresa *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
-                   title="Nombre completo de la empresa tal como aparece en documentos oficiales"></i>
+                Nombre de la Empresa o Autónomo *
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
+                   title="Nombre completo de la empresa o autónomo tal como aparece en documentos oficiales"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="nombre_empresa" 
-                   name="nombre" 
-                   placeholder="Ej: Trasteros Madrid S.L."
+            <input type="text"
+                   class="form-control"
+                   id="nombre_empresa"
+                   name="nombre"
+                   placeholder="Ej: Trasteros Madrid S.L. | Juan Perez"
                    required>
             <div class="invalid-feedback">
                 Por favor, ingrese el nombre de la empresa.
@@ -42,14 +42,14 @@
         <div class="col-md-6 mb-3">
             <label for="nif_empresa" class="form-label">
                 NIF/CIF *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Número de Identificación Fiscal (formato: 12345678A o A12345678)"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="nif_empresa" 
-                   name="nif" 
+            <input type="text"
+                   class="form-control"
+                   id="nif_empresa"
+                   name="nif"
                    placeholder="Ej: 12345678A"
                    pattern="^[0-9]{8}[A-Z]$|^[A-Z][0-9]{7}[A-Z0-9]$"
                    required>
@@ -61,14 +61,14 @@
         <div class="col-12 mb-3">
             <label for="direccion_empresa" class="form-label">
                 Dirección Completa *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Dirección completa incluyendo calle, número, piso, etc."></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="direccion_empresa" 
-                   name="direccion" 
+            <input type="text"
+                   class="form-control"
+                   id="direccion_empresa"
+                   name="direccion"
                    placeholder="Ej: Calle Mayor, 123, 2º A"
                    required>
             <div class="invalid-feedback">
@@ -79,14 +79,14 @@
         <div class="col-md-4 mb-3">
             <label for="codigo_postal" class="form-label">
                 Código Postal *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Código postal de 5 dígitos"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="codigo_postal" 
-                   name="codigo_postal" 
+            <input type="text"
+                   class="form-control"
+                   id="codigo_postal"
+                   name="codigo_postal"
                    placeholder="Ej: 28001"
                    pattern="^[0-9]{5}$"
                    maxlength="5"
@@ -99,8 +99,8 @@
         <div class="col-md-8 mb-3">
             <label for="provincia" class="form-label">
                 Provincia *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Seleccione la provincia donde se encuentra la empresa"></i>
             </label>
             <select class="form-select" id="provincia" name="provincia" required>
@@ -134,14 +134,14 @@
         <div class="col-md-6 mb-3">
             <label for="telefono" class="form-label">
                 Teléfono *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Teléfono de contacto (formato: +34 XXX XXX XXX)"></i>
             </label>
-            <input type="tel" 
-                   class="form-control" 
-                   id="telefono" 
-                   name="telefono" 
+            <input type="tel"
+                   class="form-control"
+                   id="telefono"
+                   name="telefono"
                    placeholder="Ej: +34 912 345 678"
                    pattern="^(\+34|0034|34)?[6789][0-9]{8}$"
                    required>
@@ -153,14 +153,14 @@
         <div class="col-md-6 mb-3">
             <label for="email" class="form-label">
                 Email Corporativo *
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Dirección de email principal de la empresa"></i>
             </label>
-            <input type="email" 
-                   class="form-control" 
-                   id="email" 
-                   name="email" 
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   name="email"
                    placeholder="Ej: info@empresa.com"
                    required>
             <div class="invalid-feedback">
@@ -171,14 +171,14 @@
         <div class="col-12 mb-3">
             <label for="web" class="form-label">
                 Página Web
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="URL de la página web de la empresa (opcional)"></i>
             </label>
-            <input type="url" 
-                   class="form-control" 
-                   id="web" 
-                   name="web" 
+            <input type="url"
+                   class="form-control"
+                   id="web"
+                   name="web"
                    placeholder="Ej: https://www.empresa.com">
             <div class="invalid-feedback">
                 Por favor, ingrese una URL válida.
@@ -197,28 +197,28 @@
         <div class="col-md-6 mb-3">
             <label for="nombre_banco" class="form-label">
                 Nombre del Banco
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Nombre de la entidad bancaria"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="nombre_banco" 
-                   name="nombre_banco" 
+            <input type="text"
+                   class="form-control"
+                   id="nombre_banco"
+                   name="nombre_banco"
                    placeholder="Ej: Banco Santander">
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="bic_switch" class="form-label">
                 BIC/SWIFT
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
-                   title="Código internacional del banco (8 o 11 caracteres)"></i>
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
+                   title="Es el identificador internacional del banco. Se puede encontrar en el app bancaria (sección 'Detalles de cuenta') o en los extractos mensuales. Debe contener de 8 a 11 caracteres"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="bic_switch" 
-                   name="bic_switch" 
+            <input type="text"
+                   class="form-control"
+                   id="bic_switch"
+                   name="bic_switch"
                    placeholder="Ej: BSCHESMM"
                    pattern="^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$">
             <div class="invalid-feedback">
@@ -229,14 +229,14 @@
         <div class="col-12 mb-3">
             <label for="cuenta_bancaria" class="form-label">
                 Cuenta Bancaria (IBAN)
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Número de cuenta en formato IBAN (ES + 22 dígitos)"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="cuenta_bancaria" 
-                   name="cuenta_bancaria" 
+            <input type="text"
+                   class="form-control"
+                   id="cuenta_bancaria"
+                   name="cuenta_bancaria"
                    placeholder="Ej: ES91 2100 0418 4502 0005 1332"
                    pattern="^ES[0-9]{2}[0-9]{4}[0-9]{4}[0-9]{1}[0-9]{1}[0-9]{10}$">
             <div class="invalid-feedback">
@@ -255,30 +255,30 @@
 
         <div class="col-md-6 mb-3">
             <label for="identificador_sepa" class="form-label">
-                Identificador Acreedor SEPA
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                Identificador Acreedor SEPA (Solicitar al Banco)
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Identificador único para domiciliaciones bancarias SEPA"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="identificador_sepa" 
-                   name="identificador_sepa" 
+            <input type="text"
+                   class="form-control"
+                   id="identificador_sepa"
+                   name="identificador_sepa"
                    placeholder="Ej: ES98ZZZ12345678">
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="numeracion_facturas" class="form-label">
                 Numeración de Facturas
-                <i class="bi bi-question-circle tooltip-icon ms-1" 
-                   data-bs-toggle="tooltip" 
+                <i class="bi bi-question-circle tooltip-icon ms-1"
+                   data-bs-toggle="tooltip"
                    title="Formato de numeración para las facturas (ej: FAC-2024-)"></i>
             </label>
-            <input type="text" 
-                   class="form-control" 
-                   id="numeracion_facturas" 
-                   name="numeracion_facturas" 
-                   placeholder="Ej: FAC-2024-">
+            <input type="text"
+                   class="form-control"
+                   id="numeracion_facturas"
+                   name="numeracion_facturas"
+                   placeholder="En caso de no indicar, comenzamos en 0">
         </div>
 
         <div class="col-md-6 mb-3">
@@ -292,7 +292,7 @@
                    class="form-control"
                    id="numeracion_facturas_rectificativas"
                    name="numeracion_facturas_rectificativas"
-                   placeholder="Ej: FAC-2024-">
+                   placeholder="En caso de no indicar, comenzamos en 0">
         </div>
     </div>
 </div>

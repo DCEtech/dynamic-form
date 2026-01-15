@@ -2,23 +2,27 @@
 """
 Aplicación Flask para el formulario dinámico de clientes
 """
-
+import io
 import os
 import logging
 import json
 import uuid
+from crypt import methods
 from datetime import datetime
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
+from dotenv import load_dotenv
+
+load_dotenv()
 from werkzeug.utils import secure_filename
 from database.init_db import get_connection
 from slugify import slugify
-# import sqlite3
 
 # Importar configuración y modelos
 import config
 from models.cliente import Cliente
 from models.formulario import Formulario
+from services.storage import StorageService
 
 # Configuración de la aplicación
 app = Flask(__name__)
@@ -40,6 +44,8 @@ step_names = [
     "Niveles de Acceso",
     "Documentación"
 ]
+
+storage = StorageService()
 
 
 def allowed_file(filename):
@@ -65,6 +71,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
+    print(os.getenv("NEXTCLOUD_URL"))
     clientes = Cliente.listar_todos(solo_activos=True)
 
     clientes_view = []
@@ -342,8 +349,41 @@ def save_form_data():
         return jsonify({'error': 'Error interno del servidor. Detalles: ' + str(e)}), 500
 
 
+@app.route("/api/test-nextcloud", methods=['GET'])
+def test_nextcloud():
+    try:
+        storage = StorageService()
+
+        content = "Hola nextcloud desde Flask"
+        file_stream = io.BytesIO(content.encode("utf-8"))
+
+        remote_path = storage.save(
+            file_stream=file_stream,
+            file_name="prueba.txt",
+            folder="clientes/A-PruebaFormulario"
+        )
+
+        public_url = storage.get_public_url(remote_path)
+
+        return {
+            "success": True,
+            "remote_path": remote_path,
+            "public_url": public_url
+        }
+
+    except Exception as e:
+        import traceback
+        return {
+            "success": False,
+            "error": str(e),
+            "trace": traceback.format_exc()
+        }, 500
+
+
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
+    storage_path = None
+
     try:
         if 'file' not in request.files:
             return jsonify({'error': 'No se encontró archivo'}), 400
@@ -361,39 +401,36 @@ def upload_file():
         if not allowed_file(file.filename):
             return jsonify({'error': 'Tipo de archivo no permitido'}), 400
 
-        # 🔎 Obtener formulario vía MODELO (MySQL)
         formulario = Formulario.obtener_por_cliente(cliente_id)
         if not formulario:
             return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
 
         filename = secure_filename(file.filename)
+        unique_filename = f"{cliente_id}_{tipo_archivo}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
 
-        unique_filename = (
-            f"{cliente_id}_{tipo_archivo}_"
-            f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
-        )
+        folder = f"clientes/A-PruebaFormulario/{formulario.id}"
 
-        file_path = os.path.join(UPLOAD_FOLDER, unique_filename)
-        file.save(file_path)
+        # Subir archivo
+        storage_path = storage.save(file.stream, unique_filename, folder)
 
-        # 📦 Tamaño real del archivo
-        tamano_bytes = os.path.getsize(file_path)
+        # Crear share público
+        public_url = storage.create_public_share(storage_path)
 
-        # 💾 Insertar en MySQL
+        # Tamaño real
+        file.stream.seek(0, os.SEEK_END)
+        tamano_bytes = file.stream.tell()
+        file.stream.seek(0)
+
+        # Guardar en DB
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
             """
-            INSERT INTO archivos_clientes (formulario_id,
-                                           nombre_original,
-                                           nombre_archivo,
-                                           tipo_archivo,
-                                           tamano_bytes,
-                                           ruta_archivo,
-                                           paso_formulario,
-                                           fecha_subida)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO archivos_clientes (formulario_id, nombre_original, nombre_archivo,
+                                           tipo_archivo, tamano_bytes, ruta_archivo,
+                                           public_url, paso_formulario, fecha_subida)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (
                 formulario.id,
@@ -401,7 +438,8 @@ def upload_file():
                 unique_filename,
                 tipo_archivo,
                 tamano_bytes,
-                file_path,
+                storage_path,
+                public_url,
                 6,
                 datetime.now()
             )
@@ -415,10 +453,20 @@ def upload_file():
             'success': True,
             'filename': unique_filename,
             'original_name': filename,
-            'formulario_id': formulario.id
+            'storage_path': storage_path,
+            'public_url': public_url,
+            'formulario_id': formulario.id,
+            'archivo_id': cursor.lastrowid
         })
 
     except Exception as e:
+        # ROLLBACK CLOUD
+        if storage_path:
+            try:
+                storage.delete(storage_path)
+            except Exception as cleanup_err:
+                app.logger.error(f"Fallo limpiando archivo huérfano {storage_path}: {cleanup_err}")
+
         import traceback
         app.logger.error(traceback.format_exc())
         return jsonify({'error': 'Error al subir archivo', 'detalle': str(e)}), 500
@@ -505,6 +553,41 @@ def upload_file():
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/formulario/<int:formulario_id>/archivo/<int:archivo_id>', methods=['DELETE'])
+def remove_file(formulario_id, archivo_id):
+    formulario = Formulario.obtener_por_id(formulario_id)
+    if not formulario:
+        return jsonify({'success': False, 'error': 'Formulario no encontrado'}), 404
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM archivos_clientes WHERE id = %s AND formulario_id = %s",
+        (archivo_id, formulario_id)
+    )
+
+    archivo = cursor.fetchone()
+
+    if not archivo:
+        conn.close()
+        return jsonify({'success': False, 'error': 'Archivo no pertenece a este formulario'}), 404
+
+    try:
+        # borrar en Nextcloud
+        storage.delete(archivo['ruta_archivo'])
+
+        # borrar en DB
+        cursor.execute("DELETE FROM archivos_clientes WHERE id = %s", (archivo_id,))
+        conn.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        conn.close()
+
 
 @app.route('/api/formulario/<int:formulario_id>/archivos')
 def get_form_files(formulario_id):
@@ -565,41 +648,6 @@ def get_form_files(formulario_id):
 #
 #     except Exception as e:
 #         return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/test-email', methods=['POST'])
-def test_email_config():
-    """Probar configuración de email"""
-    try:
-        data = request.get_json()
-
-        # Aquí iría la lógica para probar la conexión SMTP
-        # Por ahora simulamos el test
-
-        servidor = data.get('servidor_saliente')
-        puerto = data.get('puerto')
-        usuario = data.get('usuario_email')
-
-        if not all([servidor, puerto, usuario]):
-            return jsonify({'error': 'Configuración incompleta'}), 400
-
-        # Simulación de test exitoso (70% de probabilidad)
-        import random
-        success = random.random() > 0.3
-
-        if success:
-            return jsonify({
-                'success': True,
-                'mensaje': 'Conexión exitosa al servidor de correo'
-            })
-        else:
-            return jsonify({
-                'success': False,
-                'error': 'No se pudo conectar al servidor. Verifique la configuración.'
-            })
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/api/cliente/<cliente_id>/completar', methods=['POST'])

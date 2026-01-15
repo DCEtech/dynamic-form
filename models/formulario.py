@@ -5,6 +5,9 @@ Modelo Formulario para gestionar los datos del formulario dinámico
 import json
 from typing import Optional, Dict, List, Any
 from database.init_db import get_connection
+from services.storage import StorageService
+
+storage = StorageService()
 
 
 class Formulario:
@@ -148,7 +151,19 @@ class Formulario:
             if not isinstance(datos, list):
                 datos = []
 
-        setattr(self, campo, datos)
+        if paso == 6:
+            actual = getattr(self, campo) or {}
+            if not isinstance(actual, dict):
+                actual = {}
+
+            if not isinstance(datos, dict):
+                datos = {}
+
+            # Merge seguro
+            actual.update(datos)
+            setattr(self, campo, actual)
+        else:
+            setattr(self, campo, datos)
 
         # Actualizar paso actual si es mayor
         if paso > self.paso_actual:
@@ -291,7 +306,8 @@ class Formulario:
                 'nombre_archivo': row['nombre_archivo'],
                 'tipo_archivo': row['tipo_archivo'],
                 'tamano_bytes': row['tamano_bytes'],
-                'ruta_archivo': row['ruta_archivo'],
+                'ruta_archivo': storage.get_public_url(row['ruta_archivo']),
+                'public_url': row['public_url'],
                 'paso_formulario': row['paso_formulario'],
                 'fecha_subida': row['fecha_subida']
             }

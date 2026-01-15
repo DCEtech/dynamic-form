@@ -114,7 +114,7 @@
 
         <div class="col-md-6 mb-3">
             <label for="usuario_email" class="form-label">
-                Usuario (Dirección Email) *
+                Dirección Email *
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
                    title="Email que se usará para autenticar en el servidor SMTP"></i>
@@ -162,7 +162,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-bell me-2"></i>Notificaciones SSOLID
+                <i class="bi bi-bell me-2"></i>Notificaciones Email
             </h5>
         </div>
 
@@ -171,7 +171,7 @@
                 Email para Notificaciones del Sistema *
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Email donde recibirá notificaciones sobre actualizaciones, mantenimientos, etc."></i>
+                   title="En este email se recibiran todas las notificaciones y eventos"></i>
             </label>
             <input type="email"
                    class="form-control"
@@ -183,64 +183,11 @@
                 Por favor, ingrese un email válido para notificaciones.
             </div>
             <small class="text-muted">
-                Este email recibirá notificaciones importantes sobre el software: actualizaciones, cambios de usuarios,
-                mantenimientos, averías, etc.
+                En este email se recibiran todas las notificaciones y eventos.
             </small>
         </div>
     </div>
 
-    <!-- Configuración Adicional -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <h5 class="text-primary mb-3">
-                <i class="bi bi-sliders me-2"></i>Configuración Adicional
-            </h5>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="nombre_remitente" class="form-label">
-                Nombre del Remitente
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Nombre que aparecerá como remitente en los emails"></i>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="nombre_remitente"
-                   name="nombre_remitente"
-                   placeholder="Ej: Sistema Trasteros">
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="email_respuesta" class="form-label">
-                Email de Respuesta
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Email al que llegarán las respuestas (opcional)"></i>
-            </label>
-            <input type="email"
-                   class="form-control"
-                   id="email_respuesta"
-                   name="email_respuesta"
-                   placeholder="Ej: noreply@empresa.com">
-        </div>
-
-        <div class="col-12 mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="habilitar_notificaciones"
-                       name="habilitar_notificaciones" checked>
-                <label class="form-check-label" for="habilitar_notificaciones">
-                    <i class="bi bi-check-circle text-success me-1"></i>
-                    Habilitar envío de notificaciones automáticas
-                </label>
-            </div>
-            <small class="text-muted">
-                Permite al sistema enviar emails automáticos como confirmaciones, recordatorios, etc.
-            </small>
-        </div>
-    </div>
-
-    <!-- Test de Conexión -->
 
     <!-- Resumen de Configuración -->
     <div class="row">
@@ -391,50 +338,6 @@
         }
     }
 
-    {#// Test de conexión#}
-    {#document.getElementById('test-connection').addEventListener('click', function() {#}
-    {#    const button = this;#}
-    {#    const resultDiv = document.getElementById('test-result');#}
-    {#    #}
-    {#    // Deshabilitar botón y mostrar loading#}
-    {#    button.disabled = true;#}
-    {#    button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Probando...';#}
-    {#    #}
-    {#    // Simular test de conexión (en producción sería una llamada AJAX)#}
-    {#    setTimeout(() => {#}
-    {#        const isSuccess = Math.random() > 0.3; // 70% de éxito simulado#}
-    {#        #}
-    {#        resultDiv.style.display = 'block';#}
-    {#        #}
-    {#        if (isSuccess) {#}
-    {#            resultDiv.innerHTML = `#}
-    {#                <div class="alert alert-success">#}
-    {#                    <i class="bi bi-check-circle me-2"></i>#}
-    {#                    <strong>¡Conexión exitosa!</strong> El servidor de correo está configurado correctamente.#}
-    {#                </div>#}
-    {#            `;#}
-    {#        } else {#}
-    {#            resultDiv.innerHTML = `#}
-    {#                <div class="alert alert-danger">#}
-    {#                    <i class="bi bi-exclamation-triangle me-2"></i>#}
-    {#                    <strong>Error de conexión.</strong> Verifique los datos del servidor y las credenciales.#}
-    {#                </div>#}
-    {#            `;#}
-    {#        }#}
-    {#        #}
-    {#        // Restaurar botón#}
-    {#        button.disabled = false;#}
-    {#        button.innerHTML = '<i class="bi bi-send me-2"></i>Enviar Email de Prueba';#}
-    {#    }, 2000);#}
-    {##}
-    {#// Función para mostrar toast#}
-    {#function showToast(message, type = 'info') {#}
-    {#    // Crear toast dinámicamente (reutilizar del formulario principal)#}
-    {#    if (window.formularioCliente && window.formularioCliente.showToast) {#}
-    {#        window.formularioCliente.showToast(message, type);#}
-    {#    } else {#}
-    {#        alert(message); // Fallback#}
-    {#    }#}
 
     // Inicializar resumen
     updateResumen();
