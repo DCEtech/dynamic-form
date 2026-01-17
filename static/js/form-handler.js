@@ -21,27 +21,18 @@ class FormularioCliente {
         // Obtener datos del formulario si están disponibles
         if (typeof window.formularioData !== 'undefined') {
             this.clienteId = window.formularioData.clienteId;
-            this.totalSteps = window.formularioData.totalPasos;
 
-            this.isCompleted =
+            // Forzamos que sea booleano puro
+            this.isCompleted = window.formularioData.completado === true ||
                 window.formularioData.completado === 1 ||
-                window.formularioData.porcentajeCompletado === 100;
+                window.formularioData.completado === "1";
 
             if (this.isCompleted) {
-                this.isDirty = false;
-
-                // Forzar último paso visual
-                this.currentStep = this.totalSteps;
-
-                console.log('Formulario completo detectado → forzando paso', this.currentStep);
+                this.currentStep = window.formularioData.pasoActual || 1;
+                console.log('Modo lectura: Formulario completado');
             } else {
-                // Respetar backend si no está completo
                 this.currentStep = window.formularioData.pasoActual || 1;
             }
-
-
-            // Ya no usamos "mode" para controlar navegación
-            this.mode = 'wizard';
         }
 
         // Inicializar elementos DOM
@@ -253,61 +244,39 @@ class FormularioCliente {
     updateSidebar() {
         this.elements.stepItems.forEach((item, index) => {
             const step = index + 1;
-
             const badge = item.querySelector('.step-number-badge');
             const checkIcon = item.querySelector('.step-check-icon');
 
             item.classList.remove('active', 'completed');
 
-            const canNavigate = this.canNavigateToStep(step);
-
-            // ============================
-            // PASO ACTUAL
-            // ============================
+            // 1. Lógica del Paso Actual (Siempre azul para saber dónde estoy)
             if (step === this.currentStep) {
                 item.classList.add('active');
-
                 if (badge) {
                     badge.classList.remove('d-none', 'bg-secondary');
                     badge.classList.add('bg-primary');
-                    badge.textContent = step;
                 }
-
-                if (checkIcon) {
-                    checkIcon.classList.add('d-none');
-                }
-
-                return;
+                if (checkIcon) checkIcon.classList.add('d-none');
+                return; // Saltamos al siguiente paso del bucle
             }
 
-            // ============================
-            // PASO DESBLOQUEADO (COMPLETADO)
-            // ============================
-            if (canNavigate) {
+            // 2. Lógica de Pasos Completados (Checks verdes)
+            const nombresPasos = ['datos_empresa', 'info_trasteros', 'usuarios_app', 'config_correo', 'niveles_acceso', 'documentacion'];
+            const pasoKey = nombresPasos[step - 1];
+            const estaValidado = window.formularioData.estado_pasos && window.formularioData.estado_pasos[pasoKey];
+
+            // REGLA DE ORO: Si está validado Y (es un paso anterior O el formulario está terminado)
+            if (estaValidado && (step < this.currentStep || this.isCompleted)) {
                 item.classList.add('completed');
-
+                if (badge) badge.classList.add('d-none');
+                if (checkIcon) checkIcon.classList.remove('d-none');
+            } else {
+                // 3. Paso bloqueado o pendiente
                 if (badge) {
-                    badge.classList.add('d-none');
+                    badge.classList.remove('d-none', 'bg-primary');
+                    badge.classList.add('bg-secondary');
                 }
-
-                if (checkIcon) {
-                    checkIcon.classList.remove('d-none');
-                }
-
-                return;
-            }
-
-            // ============================
-            // PASO BLOQUEADO
-            // ============================
-            if (badge) {
-                badge.classList.remove('d-none', 'bg-primary');
-                badge.classList.add('bg-secondary');
-                badge.textContent = step;
-            }
-
-            if (checkIcon) {
-                checkIcon.classList.add('d-none');
+                if (checkIcon) checkIcon.classList.add('d-none');
             }
         });
     }
@@ -915,6 +884,11 @@ class FormularioCliente {
 
             const result = await response.json();
 
+            if (result.estado_pasos) {
+                window.formularioData.estado_pasos = result.estado_pasos;
+            }
+            this.updateSidebar(); // Refrescar visualmente los checks
+
             // ===============================
             // 🔄 Actualizar nombre del cliente
             // ===============================
@@ -981,6 +955,7 @@ class FormularioCliente {
             }
 
             const df = window.formularioData.datosFormulario;
+            console.log('df', df);
 
             if (result.formulario_data_actualizada) {
                 if (result.formulario_data_actualizada.datos_empresa !== undefined) {
@@ -1115,18 +1090,35 @@ class FormularioCliente {
         }
     }
 
-    updateProgress() {
-        // Si el backend dice que está completado, el progreso es fijo
+    updateProgress(serverPercentage = null) {
+        // 1. Si el formulario ya está marcado como completado globalmente
         if (this.isCompleted) {
             this.elements.progressBar.style.width = '100%';
             this.elements.progressPercentage.textContent = '100%';
             return;
         }
 
-        // Wizard normal
-        const percent = Math.round((this.currentStep - 1) / (this.totalSteps - 1) * 100);
-        this.elements.progressBar.style.width = percent + '%';
-        this.elements.progressPercentage.textContent = percent + '%';
+        // 2. Si recibimos el porcentaje real del backend (lo más certero)
+        if (serverPercentage !== null) {
+            this.elements.progressBar.style.width = serverPercentage + '%';
+            this.elements.progressPercentage.textContent = serverPercentage + '%';
+            return;
+        }
+
+        // 3. Si no hay dato del servidor, calculamos según pasos validados en window.formularioData
+        if (window.formularioData && window.formularioData.estado_pasos) {
+            const total = this.totalSteps;
+            const completados = Object.values(window.formularioData.estado_pasos).filter(v => v === true).length;
+            let percent = Math.round((completados / total) * 100);
+
+            // Si el cálculo da 100 pero no ha hecho clic en completar, mostrar 99%
+            if (percent >= 100 && !this.isCompleted) {
+                percent = 99;
+            }
+
+            this.elements.progressBar.style.width = percent + '%';
+            this.elements.progressPercentage.textContent = percent + '%';
+        }
     }
 
     loadExistingData() {
@@ -1313,50 +1305,18 @@ class FormularioCliente {
 
     canNavigateToStep(step) {
 
-        if (this.isCompleted) {
-            return true;
-        }
+        if (this.isCompleted) return true;
 
-        // Permitir navegación a cualquier paso completado o al siguiente inmediato
-        if (step <= this.currentStep + 1) {
-            return true;
-        }
+        // Siempre puede volver atrás
+        if (step <= this.currentStep) return true;
 
-        // Verificar si el paso tiene datos ya guardados
-        if (window.formularioData && window.formularioData.datosFormulario) {
-            let tieneDatos = false;
+        // Para ir hacia adelante, el paso anterior inmediato DEBE estar validado
+        const nombresPasos = ['datos_empresa', 'info_trasteros', 'usuarios_app', 'config_correo', 'niveles_acceso', 'documentacion'];
+        const pasoAnteriorKey = nombresPasos[step - 2]; // Si quiero ir al 3, chequeo el 2 (índice 1)
 
-            switch (step) {
-                case 1:
-                    tieneDatos = window.formularioData.datosFormulario.datos_empresa &&
-                        Object.keys(window.formularioData.datosFormulario.datos_empresa).length > 0;
-                    break;
-                case 2:
-                    tieneDatos = window.formularioData.datosFormulario.info_trasteros &&
-                        Object.keys(window.formularioData.datosFormulario.info_trasteros).length > 0;
-                    break;
-                case 3:
-                    tieneDatos = window.formularioData.datosFormulario.usuarios_app &&
-                        Object.keys(window.formularioData.datosFormulario.usuarios_app).length > 0;
-                    break;
-                case 4:
-                    tieneDatos = window.formularioData.datosFormulario.config_correo &&
-                        Object.keys(window.formularioData.datosFormulario.config_correo).length > 0;
-                    break;
-                case 5:
-                    tieneDatos = window.formularioData.datosFormulario.niveles_acceso &&
-                        Object.keys(window.formularioData.datosFormulario.niveles_acceso).length > 0;
-                    break;
-                case 6:
-                    tieneDatos = window.formularioData.datosFormulario.documentacion &&
-                        Object.keys(window.formularioData.datosFormulario.documentacion).length > 0;
-                    break;
-            }
+        const pasoAnteriorValidado = window.formularioData.estado_pasos && window.formularioData.estado_pasos[pasoAnteriorKey];
 
-            return tieneDatos;
-        }
-
-        return false;
+        return pasoAnteriorValidado === true;
     }
 
     async completeForm() {

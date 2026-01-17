@@ -198,6 +198,8 @@ def formulario_cliente(nombre_cliente):
         'pasoActual': formulario_obj.paso_actual,
         'totalPasos': 6,
         'porcentajeCompletado': formulario_obj.porcentaje_completado,
+        'completado': formulario_obj.completado,  # <--- IMPORTANTE
+        'estado_pasos': formulario_obj.to_dict()['estado_pasos'],  # <--- IMPORTANTE
         'porcentajeCompletadoStyled': f"{formulario_obj.porcentaje_completado}%",
         'stepNames': step_names,
         'datosFormulario': {
@@ -327,6 +329,15 @@ def save_form_data():
         # Guardar los datos del paso utilizando el método del modelo
         guardado_exitoso = formulario_obj.guardar_paso(paso, datos)
 
+        estado_pasos = {
+            'datos_empresa': formulario_obj.paso_completo(1, formulario_obj.datos_empresa),
+            'info_trasteros': formulario_obj.paso_completo(2, formulario_obj.info_trasteros),
+            'usuarios_app': formulario_obj.paso_completo(3, formulario_obj.usuarios_app),
+            'config_correo': formulario_obj.paso_completo(4, formulario_obj.config_correo),
+            'niveles_acceso': formulario_obj.paso_completo(5, formulario_obj.niveles_acceso),
+            'documentacion': formulario_obj.paso_completo(6, formulario_obj.documentacion),
+        }
+
         if not guardado_exitoso:
             raise Exception("Error al guardar el paso en la base de datos.")
 
@@ -338,6 +349,7 @@ def save_form_data():
             'porcentaje': formulario_obj_actualizado.porcentaje_completado,
             'mensaje': 'Datos guardados correctamente',
             'formulario_data_actualizada': formulario_obj_actualizado.to_dict(),
+            'estado_pasos': estado_pasos,
             'cliente_actualizado': cliente_actualizado
         })
 

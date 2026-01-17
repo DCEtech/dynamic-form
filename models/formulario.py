@@ -167,17 +167,14 @@ class Formulario:
         else:
             setattr(self, campo, datos)
 
-        # Actualizar paso actual si es mayor
-        if paso > self.paso_actual:
-            self.paso_actual = paso
-
         # Calcular porcentaje de completado
         self.porcentaje_completado = self._calcular_porcentaje()
 
-        # FORZAR último paso si está completo
-        if self.porcentaje_completado == 100:
-            self.paso_actual = 6
-            self.completado = 1
+        # Ya no forzamos el completado aquí.
+        # El paso_actual solo sube si el usuario realmente avanzó.
+        # Actualizar paso actual si es mayor
+        if paso > self.paso_actual:
+            self.paso_actual = paso
 
         # Guardar en base de datos
         return self._guardar_en_bd()
@@ -186,24 +183,24 @@ class Formulario:
         """Calcula el porcentaje de completado basado en los datos"""
         pasos_completados = 0
 
-        if self._paso_completo(1, self.datos_empresa):
+        if self.paso_completo(1, self.datos_empresa):
             pasos_completados += 1
-        if self._paso_completo(2, self.info_trasteros):
+        if self.paso_completo(2, self.info_trasteros):
             pasos_completados += 1
-        if self._paso_completo(3, self.usuarios_app):
+        if self.paso_completo(3, self.usuarios_app):
             pasos_completados += 1
-        if self._paso_completo(4, self.config_correo):
+        if self.paso_completo(4, self.config_correo):
             pasos_completados += 1
-        if self._paso_completo(5, self.niveles_acceso):
+        if self.paso_completo(5, self.niveles_acceso):
             pasos_completados += 1
-        if self._paso_completo(6, self.documentacion):
+        if self.paso_completo(6, self.documentacion):
             pasos_completados += 1
 
         porcentaje = int((pasos_completados / 6) * 100)
 
         return porcentaje
 
-    def _paso_completo(self, paso: int, datos: Any) -> bool:
+    def paso_completo(self, paso: int, datos: Any) -> bool:
         """Verifica si un paso está completo según sus campos obligatorios"""
 
         # Validaciones por tipo real de datos guardados
@@ -226,8 +223,10 @@ class Formulario:
             return isinstance(datos, list) and len(datos) > 0
 
         if paso == 6:
-            # documentación es opcional pero cuenta como paso válido
-            return True
+            # Solo está completo si el formulario se marcó como enviado (clic en completar)
+            # o si ya existen datos guardados (como las notas o archivos)
+            tiene_notas = isinstance(datos, dict) and datos.get('notas_adicionales')
+            return self.completado == 1 or bool(tiene_notas)
 
         return False
 
@@ -323,10 +322,20 @@ class Formulario:
 
     def to_dict(self) -> Dict:
         """Convierte el formulario a diccionario"""
+
+        estado_pasos = {
+            'datos_empresa': self.paso_completo(1, self.datos_empresa),
+            'info_trasteros': self.paso_completo(2, self.info_trasteros),
+            'usuarios_app': self.paso_completo(3, self.usuarios_app),
+            'config_correo': self.paso_completo(4, self.config_correo),
+            'niveles_acceso': self.paso_completo(5, self.niveles_acceso),
+            'documentacion': self.paso_completo(6, self.documentacion),
+        }
         return {
             'id': self.id,
             'cliente_id': self.cliente_id,
             'paso_actual': self.paso_actual,
+            'estado_pasos': estado_pasos,
             'porcentaje_completado': self.porcentaje_completado,
             'completado': bool(self.completado),
             'datos_empresa': self.datos_empresa,
