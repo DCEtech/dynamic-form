@@ -71,7 +71,6 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    print(os.getenv("NEXTCLOUD_URL"))
     clientes = Cliente.listar_todos(solo_activos=True)
 
     clientes_view = []
@@ -86,8 +85,10 @@ def index():
             'fecha_creacion': cliente.fecha_creacion,
             'paso_actual': formulario.paso_actual if formulario else 1,
             'porcentaje_completado': formulario.porcentaje_completado if formulario else 0,
+            'completado': cliente.completado,
             'ultima_actualizacion': formulario.fecha_actualizacion if formulario else cliente.fecha_creacion
         })
+        print(clientes_view)
 
     return render_template('index.html', clientes=clientes_view)
 

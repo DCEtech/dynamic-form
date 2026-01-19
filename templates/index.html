@@ -3,167 +3,168 @@
 {% block title %}Inicio - Formularios de Clientes{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Header -->
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="text-center">
-                <h1 class="display-4 text-primary mb-3">
-                    <i class="bi bi-clipboard-data me-3"></i>
-                    Formularios de Clientes
-                </h1>
-                <p class="lead text-muted">
-                    Sistema dinámico para la configuración de nuevos clientes
-                </p>
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="text-center">
+                    <h1 class="display-4 text-primary mb-3">
+                        <i class="bi bi-clipboard-data me-3"></i>
+                        Formularios de Clientes
+                    </h1>
+                    <p class="lead text-muted">
+                        Sistema dinámico para la configuración de nuevos clientes
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Clientes Disponibles -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title mb-0">
-                        <i class="bi bi-people me-2"></i>
-                        Clientes Disponibles
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <form action="{{ url_for('nuevo_cliente') }}" method="POST">
-                            <button type="submit" class="btn btn-success">
-                                <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Formulario
-                            </button>
-                        </form>
-                        <div class="btn-group" role="group" aria-label="View switch">
-                            <button type="button" class="btn btn-outline-primary active" data-view="grid">
-                                <i class="bi bi-grid-3x3-gap"></i> Grid
-                            </button>
-                            <button type="button" class="btn btn-outline-primary" data-view="list">
-                                <i class="bi bi-list-ul"></i> List
-                            </button>
-                        </div>
+        <!-- Clientes Disponibles -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="bi bi-people me-2"></i>
+                            Clientes Disponibles
+                        </h3>
                     </div>
-                    {% if clientes %}
-                        <div class="row g-4 clientes-grid" id="clientes-container">
-                            {% for cliente in clientes %}
-                                <div class="col-md-6 col-lg-4">
-                                    <div class="card h-100 border-0 shadow-sm hover-card">
-                                        <div class="card-body d-flex flex-column">
-                                            <!-- Cliente Info -->
-                                            <div class="mb-3">
-                                                <h5 class="card-title text-primary">
-                                                    <i class="bi bi-building me-2"></i>
-                                                    {{ cliente.nombre_cliente }}
-                                                </h5>
-                                                <p class="card-text text-muted small">
-                                                    <i class="bi bi-link-45deg me-1"></i>
-                                                    /{{ cliente.slug }}
-                                                </p>
-                                            </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <form action="{{ url_for('nuevo_cliente') }}" method="POST">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Formulario
+                                </button>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="View switch">
+                                <button type="button" class="btn btn-outline-primary active" data-view="grid">
+                                    <i class="bi bi-grid-3x3-gap"></i> Grid
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" data-view="list">
+                                    <i class="bi bi-list-ul"></i> List
+                                </button>
+                            </div>
+                        </div>
+                        {% if clientes %}
+                            <div class="row g-4 clientes-grid" id="clientes-container">
+                                {% for cliente in clientes %}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card h-100 border-0 shadow-sm hover-card position-relative">
+                                            <div class="card-body d-flex flex-column">
+                                                <!-- Cliente Info -->
+                                                <div class="mb-3">
+                                                    <h5 class="card-title text-primary">
+                                                        <i class="bi bi-building me-2"></i>
+                                                        {{ cliente.nombre_cliente }}
+                                                    </h5>
+                                                    <p class="card-text text-muted small">
+                                                        <i class="bi bi-link-45deg me-1"></i>
+                                                        /{{ cliente.slug }}
+                                                    </p>
+                                                </div>
 
-                                            <!-- Progreso -->
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <span class="small text-muted">Progreso</span>
-                                                    <span class="badge bg-{{ 'success' if cliente.porcentaje_completado == 100 else 'primary' }}">
+                                                <!-- Progreso -->
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="small text-muted">Progreso</span>
+                                                        <span class="badge bg-{{ 'success' if cliente.porcentaje_completado == 100 else 'primary' }}">
                                                         {{ cliente.porcentaje_completado }}%
                                                     </span>
-                                                </div>
-                                                <div class="progress" style="height: 8px;">
-                                                    <div class="progress-bar bg-{{ 'success' if cliente.porcentaje_completado == 100 else 'primary' }}" 
-                                                         role="progressbar" 
-                                                         style="width: {{ cliente.porcentaje_completado }}%"
-                                                         aria-valuenow="{{ cliente.porcentaje_completado }}" 
-                                                         aria-valuemin="0" 
-                                                         aria-valuemax="100">
+                                                    </div>
+                                                    <div class="progress" style="height: 8px;">
+                                                        <div class="progress-bar bg-{{ 'success' if cliente.porcentaje_completado == 100 else 'primary' }}"
+                                                             role="progressbar"
+                                                             style="width: {{ cliente.porcentaje_completado }}%"
+                                                             aria-valuenow="{{ cliente.porcentaje_completado }}"
+                                                             aria-valuemin="0"
+                                                             aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                                    <div class="small text-muted mt-1">
+                                                        Paso {{ cliente.paso_actual }} de 6
                                                     </div>
                                                 </div>
-                                                <div class="small text-muted mt-1">
-                                                    Paso {{ cliente.paso_actual }} de 6
-                                                </div>
-                                            </div>
 
-                                            <!-- Estado -->
-                                            <div class="mb-3">
-                                                {% if cliente.completado %}
-                                                    <span class="badge bg-success">
+                                                <!-- Estado -->
+                                                <div class="mb-3">
+                                                    {% if cliente.completado %}
+                                                        <span class="badge bg-success">
                                                         <i class="bi bi-check-circle me-1"></i>
                                                         Completado
                                                     </span>
-                                                {% elif cliente.porcentaje_completado > 0 %}
-                                                    <span class="badge bg-warning">
+                                                    {% elif cliente.porcentaje_completado > 0 %}
+                                                        <span class="badge bg-warning">
                                                         <i class="bi bi-clock me-1"></i>
                                                         En Progreso
                                                     </span>
-                                                {% else %}
-                                                    <span class="badge bg-secondary">
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">
                                                         <i class="bi bi-circle me-1"></i>
                                                         Sin Iniciar
                                                     </span>
-                                                {% endif %}
-                                            </div>
+                                                    {% endif %}
+                                                </div>
 
-                                            <!-- Botón de Acción -->
-                                            <div class="mt-auto">
-                                                <a href="{{ url_for('formulario_cliente', nombre_cliente=cliente.slug) }}" 
-                                                   class="btn btn-primary w-100">
-                                                    <i class="bi bi-{{ 'eye' if cliente.completado else 'pencil' }} me-2"></i>
-                                                    {{ 'Ver Formulario' if cliente.completado else 'Continuar Formulario' }}
-                                                </a>
+                                                <!-- Botón de Acción -->
+                                                <div class="mt-auto">
+                                                    <a href="{{ url_for('formulario_cliente', nombre_cliente=cliente.slug) }}"
+                                                       class="btn btn-primary w-100 stretched-link">
+                                                        <i class="bi bi-{{ 'eye' if cliente.completado else 'pencil' }} me-2"></i>
+                                                        {{ 'Ver Formulario' if cliente.completado else 'Continuar Formulario' }}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                            <h4 class="text-muted">No hay clientes disponibles</h4>
-                            <p class="text-muted">
-                                Los clientes se configuran desde el panel de administración.
-                            </p>
-                        </div>
-                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                                <h4 class="text-muted">No hay clientes disponibles</h4>
+                                <p class="text-muted">
+                                    Los clientes se configuran desde el panel de administración.
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Información del Sistema -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="card bg-light border-0">
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <i class="bi bi-shield-check display-4 text-success"></i>
-                                <h5 class="mt-2">Seguro</h5>
-                                <p class="text-muted small">Datos protegidos con encriptación</p>
+        <!-- Información del Sistema -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <i class="bi bi-shield-check display-4 text-success"></i>
+                                    <h5 class="mt-2">Seguro</h5>
+                                    <p class="text-muted small">Datos protegidos con encriptación</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <i class="bi bi-speedometer2 display-4 text-primary"></i>
-                                <h5 class="mt-2">Rápido</h5>
-                                <p class="text-muted small">Formularios optimizados y responsivos</p>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <i class="bi bi-speedometer2 display-4 text-primary"></i>
+                                    <h5 class="mt-2">Rápido</h5>
+                                    <p class="text-muted small">Formularios optimizados y responsivos</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <i class="bi bi-cloud-arrow-up display-4 text-info"></i>
-                                <h5 class="mt-2">Automático</h5>
-                                <p class="text-muted small">Guardado automático del progreso</p>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <i class="bi bi-cloud-arrow-up display-4 text-info"></i>
+                                    <h5 class="mt-2">Automático</h5>
+                                    <p class="text-muted small">Guardado automático del progreso</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <i class="bi bi-phone display-4 text-warning"></i>
-                                <h5 class="mt-2">Móvil</h5>
-                                <p class="text-muted small">Compatible con todos los dispositivos</p>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <i class="bi bi-phone display-4 text-warning"></i>
+                                    <h5 class="mt-2">Móvil</h5>
+                                    <p class="text-muted small">Compatible con todos los dispositivos</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -171,59 +172,83 @@
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block extra_head %}
-<style>
-.hover-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
+    <style>
 
-.hover-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
-}
+        .hover-card .stretched-link::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 10; /* Un z-index alto para que esté sobre el texto y progreso */
+            content: "";
+        }
 
-/* Estilos para la vista de lista */
-.clientes-list .col-md-6.col-lg-4 {
-    width: 100%;
-}
+        .hover-card .card-title,
+        .hover-card .progress,
+        .hover-card .badge {
+            position: relative;
+            z-index: 1; /* Por debajo del z-index 10 del stretched-link */
+        }
 
-.clientes-list .card {
-    flex-direction: row;
-    align-items: center;
-}
+        .hover-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+        }
 
-.clientes-list .card-body {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-}
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+            background-color: rgba(0, 123, 255, 0.02);
+        }
 
-.clientes-list .mt-auto {
-    margin-top: 0 !important;
-    width: auto !important;
-}
+        .hover-card:hover .btn-primary {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
 
-.display-1 {
-    font-size: 4rem;
-}
+        /* Estilos para la vista de lista */
+        .clientes-list .col-md-6.col-lg-4 {
+            width: 100%;
+        }
 
-.display-4 {
-    font-size: 2.5rem;
-}
+        .clientes-list .card {
+            flex-direction: row;
+            align-items: center;
+        }
 
-@media (max-width: 768px) {
-    .display-4 {
-        font-size: 2rem;
-    }
-    
-    .display-1 {
-        font-size: 3rem;
-    }
-}
-</style>
+        .clientes-list .card-body {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .clientes-list .mt-auto {
+            margin-top: 0 !important;
+            width: auto !important;
+        }
+
+        .display-1 {
+            font-size: 4rem;
+        }
+
+        .display-4 {
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+
+            .display-1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
 {% endblock %}
