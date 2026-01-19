@@ -10,6 +10,7 @@ class FormularioCliente {
         this.autoSaveInterval = null;
         this.isSubmitting = false;
         this.isCompleted = false;
+        this.originalData = null; // Para comparar cambios
         this.mode = 'wizard';
         this.isDirty = false;
         this.hasChanges = false;
@@ -142,6 +143,16 @@ class FormularioCliente {
             this.updateProgress();
             this.updateFinalButton();
         });
+
+        // Detectar cualquier cambio en el formulario para habilitar el botón de guardado
+        this.elements.form.querySelectorAll('input, select, textarea').forEach(input => {
+            input.addEventListener('change', () => {
+                if (this.isCompleted) {
+                    this.hasChanges = true;
+                    this.updateNavigation();
+                }
+            });
+        });
     }
 
     initializeTooltips() {
@@ -167,18 +178,20 @@ class FormularioCliente {
     nextStep() {
         if (this.isSubmitting) return;
 
-        console.log(`Botón siguiente presionado. Paso actual: ${this.currentStep}`);
+        // Si estamos en modo lectura y hay cambios, el boton de "siguiente" ahora es "guardar"
 
+        if (this.isCompleted && this.hasChanges) {
+            this.saveCurrentStep().then(() => {
+                this.hasChanges = false;
+                this.showToast('Cambios guardados correctamente', 'success');
+                this.updateNavigation()
+            });
+            return;
+        }
+
+        // Lógica normal de navegación...
         if (this.currentStep < this.totalSteps) {
-
-            // 🔥 USAR SIEMPRE EL VALIDADOR CENTRAL
-            if (!this.validateCurrentStep()) {
-                console.log('Validación falló en nextStep');
-                this.showToast('Complete los campos obligatorios del paso actual', 'error');
-                return;
-            }
-
-            console.log('Validación exitosa - avanzando');
+            if (!this.validateCurrentStep()) return;
             this._navigateToStep(this.currentStep + 1);
         } else {
             this.completeForm();
@@ -282,44 +295,40 @@ class FormularioCliente {
     }
 
     updateNavigation() {
-
-        // Botón anterior
         if (this.elements.btnPrevious) {
             this.elements.btnPrevious.disabled = this.currentStep <= 1;
         }
 
-        // FORMULARIO COMPLETADO Y SIN CAMBIOS → solo vista
-        if (this.isCompleted && !this.hasChanges) {
-            if (this.elements.btnNext) {
-                this.elements.btnNext.style.display = 'none';
-            }
-            return;
-        }
+        if (!this.elements.btnNext) return;
 
-        // FORMULARIO COMPLETADO PERO EDITADO → mostrar Guardar
-        if (this.isCompleted && this.hasChanges) {
-            if (this.elements.btnNext) {
+        // CASO 1: Formulario ya completado
+        if (this.isCompleted) {
+            if (this.hasChanges) {
+                // Si hubo cambios, mostramos "Guardar Cambios"
                 this.elements.btnNext.style.display = 'block';
                 this.elements.btnNext.innerHTML = '<i class="bi bi-save me-1"></i>Guardar cambios';
-                this.elements.btnNext.classList.remove('btn-primary', 'btn-success');
-                this.elements.btnNext.classList.add('btn-warning');
+                this.elements.btnNext.className = 'btn btn-warning btn-sm';
+            } else {
+                // Si no hay cambios, en el paso 6 ocultamos, en el resto dejamos "Siguiente"
+                if (this.currentStep === this.totalSteps) {
+                    this.elements.btnNext.style.display = 'none';
+                } else {
+                    this.elements.btnNext.style.display = 'block';
+                    this.elements.btnNext.innerHTML = 'Siguiente<i class="bi bi-arrow-right ms-1"></i>';
+                    this.elements.btnNext.className = 'btn btn-primary btn-sm';
+                }
             }
             return;
         }
 
-        // MODO WIZARD NORMAL
-        if (this.elements.btnNext) {
-            this.elements.btnNext.style.display = 'block';
-
-            if (this.currentStep === this.totalSteps) {
-                this.elements.btnNext.innerHTML = '<i class="bi bi-check-circle me-1"></i>Completar';
-                this.elements.btnNext.classList.remove('btn-primary');
-                this.elements.btnNext.classList.add('btn-success');
-            } else {
-                this.elements.btnNext.innerHTML = 'Siguiente<i class="bi bi-arrow-right ms-1"></i>';
-                this.elements.btnNext.classList.remove('btn-success');
-                this.elements.btnNext.classList.add('btn-primary');
-            }
+        // CASO 2: Modo Wizard Normal (Sin completar)
+        this.elements.btnNext.style.display = 'block';
+        if (this.currentStep === this.totalSteps) {
+            this.elements.btnNext.innerHTML = '<i class="bi bi-check-circle me-1"></i>Finalizar y Enviar';
+            this.elements.btnNext.className = 'btn btn-success btn-sm';
+        } else {
+            this.elements.btnNext.innerHTML = 'Siguiente<i class="bi bi-arrow-right ms-1"></i>';
+            this.elements.btnNext.className = 'btn btn-primary btn-sm';
         }
     }
 

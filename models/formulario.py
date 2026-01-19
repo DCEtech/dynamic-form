@@ -223,10 +223,15 @@ class Formulario:
             return isinstance(datos, list) and len(datos) > 0
 
         if paso == 6:
-            # Solo está completo si el formulario se marcó como enviado (clic en completar)
-            # o si ya existen datos guardados (como las notas o archivos)
-            tiene_notas = isinstance(datos, dict) and datos.get('notas_adicionales')
-            return self.completado == 1 or bool(tiene_notas)
+            # Un paso 6 está "técnicamente" completo si tiene notas O si hay archivos subidos
+            tiene_notas = isinstance(datos, dict) and bool(datos.get('notas_adicionales'))
+
+            # Consultar si hay archivos en la DB para este formulario
+            # (Esto asegura que el check verde aparezca si subió algo)
+            archivos = self.obtener_archivos()
+            tiene_archivos = len(archivos) > 0
+
+            return tiene_notas or tiene_archivos or self.completado == 1
 
         return False
 

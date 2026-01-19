@@ -665,21 +665,23 @@ def get_form_files(formulario_id):
 @app.route('/api/cliente/<cliente_id>/completar', methods=['POST'])
 def completar_formulario(cliente_id):
     formulario = Formulario.obtener_por_cliente(cliente_id)
+    cliente = Cliente.obtener_por_id(cliente_id)
 
-    if not formulario:
-        return jsonify({'error': 'Formulario no encontrado'}), 404
+    if not formulario or not cliente:
+        return jsonify({'error': 'No se encontró la información'}), 404
 
-    # Marcar como enviado oficialmente
+    # 1. Marcar formulario como completado
     formulario.completado = 1
-
-    # El porcentaje se congela en el valor real
-    formulario.porcentaje_completado = formulario._calcular_porcentaje()
-
+    formulario.porcentaje_completado = 100  # Forzamos al cierre
     formulario._guardar_en_bd()
+
+    # 2. Sincronizar con la tabla de clientes
+    cliente.completado = True
+    cliente.actualizar()
 
     return jsonify({
         'success': True,
-        'mensaje': 'Formulario completado correctamente',
+        'mensaje': 'Formulario cerrado y guardado correctamente',
         'formulario': formulario.to_dict()
     })
 

@@ -3,250 +3,275 @@
 {% block title %}{{ cliente.nombre_cliente }} - Formulario{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar con progreso -->
-        <div class="col-lg-3 col-md-4">
-            <div class="card shadow-sm sticky-top" style="top: 20px;">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">
-                        <i class="bi bi-building me-2"></i>
-                        {{ cliente.nombre_cliente }}
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <!-- Progreso General -->
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-bold">Progreso Total</span>
-                            <span class="badge bg-primary fs-6" id="progress-percentage">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar con progreso -->
+            <div class="col-lg-3 col-md-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-building me-2"></i>
+                            {{ cliente.nombre_cliente }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Progreso General -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold">Progreso Total</span>
+                                <span class="badge bg-primary fs-6" id="progress-percentage">
                                 {{ formulario_data.porcentajeCompletado }}%
                             </span>
-                        </div>
-                        <div class="progress mb-2" style="height: 12px;">
-                            <div class="progress-bar bg-gradient" 
-                                 role="progressbar" 
-                                 data-porcentaje="{{ formulario_data.porcentajeCompletado }}"
-                                 id="progress-bar"
-                                 aria-valuenow="{{ formulario_data.porcentajeCompletado }}"
-                                 aria-valuemin="0" 
-                                 aria-valuemax="100">
                             </div>
+                            <div class="progress mb-2" style="height: 12px;">
+                                <div class="progress-bar bg-gradient"
+                                     role="progressbar"
+                                     data-porcentaje="{{ formulario_data.porcentajeCompletado }}"
+                                     id="progress-bar"
+                                     aria-valuenow="{{ formulario_data.porcentajeCompletado }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                            <small class="text-muted">
+                                Paso <span
+                                    id="current-step-sidebar">{{ paso_actual or (formulario.paso_actual if formulario else 1) }}</span>
+                                de <span id="total-steps-sidebar">{{ step_names|length }}</span>
+                            </small>
                         </div>
-                        <small class="text-muted">
-                            Paso <span id="current-step-sidebar">{{ paso_actual or (formulario.paso_actual if formulario else 1) }}</span> de <span id="total-steps-sidebar">{{ step_names|length }}</span>
-                        </small>
-                    </div>
 
-                    <!-- Lista de Pasos -->
-                    <div class="steps-list">
-                        {% for i in range(1, step_names|length + 1) %}
-                            <div class="step-item mb-3" data-step-nav="{{ i }}">
-                                <div class="d-flex align-items-center">
-                                    <div class="step-number me-3">
-                                        <span class="badge bg-secondary rounded-circle step-number-badge">{{ i }}</span>
-                                        <i class="bi bi-check-circle-fill text-success d-none step-check-icon"></i>
-                                    </div>
-                                    <div class="step-content">
-                                        <div class="step-title fw-bold">{{ step_names[i-1] }}</div>
-                                        <div class="step-description small text-muted">
-                                            {% if i == 1 %}Información básica de la empresa
-                                            {% elif i == 2 %}Configuración de trasteros
-                                            {% elif i == 3 %}Usuarios del sistema
-                                            {% elif i == 4 %}Configuración de correo
-                                            {% elif i == 5 %}Niveles de acceso
-                                            {% elif i == 6 %}Documentación requerida
-                                            {% endif %}
+                        <!-- Lista de Pasos -->
+                        <div class="steps-list">
+                            {% for i in range(1, step_names|length + 1) %}
+                                <div class="step-item mb-3" data-step-nav="{{ i }}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="step-number me-3">
+                                            <span class="badge bg-secondary rounded-circle step-number-badge">{{ i }}</span>
+                                            <i class="bi bi-check-circle-fill text-success d-none step-check-icon"></i>
+                                        </div>
+                                        <div class="step-content">
+                                            <div class="step-title fw-bold">{{ step_names[i-1] }}</div>
+                                            <div class="step-description small text-muted">
+                                                {% if i == 1 %}Información básica de la empresa
+                                                {% elif i == 2 %}Configuración de trasteros
+                                                {% elif i == 3 %}Usuarios del sistema
+                                                {% elif i == 4 %}Configuración de correo
+                                                {% elif i == 5 %}Niveles de acceso
+                                                {% elif i == 6 %}Documentación requerida
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                            {% endfor %}
+                        </div>
 
-                    <!-- Guardado Automático -->
-                    <div class="mt-4 pt-3 border-top">
-                        <div class="d-flex align-items-center text-muted small">
-                            <i class="bi bi-cloud-check me-2" id="save-icon"></i>
-                            <span id="save-status">Guardado automático activo</span>
+                        <!-- Guardado Automático -->
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="bi bi-cloud-check me-2" id="save-icon"></i>
+                                <span id="save-status">Guardado automático activo</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Contenido Principal del Formulario -->
-        <div class="col-lg-9 col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">
-                            <span class="badge bg-primary me-2" id="current-step-title">{{ paso_actual or (formulario.paso_actual if formulario else 1) }}</span>
-                            <span id="step-name-title">{{ step_names[(paso_actual or (formulario.paso_actual if formulario else 1)) - 1] }}</span>
-                        </h4>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-previous" 
-                                    {% if (paso_actual or (formulario.paso_actual if formulario else 1)) <= 1 %}disabled{% endif %}>
-                                <i class="bi bi-arrow-left me-1"></i>Anterior
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" id="btn-next">
-                                Siguiente<i class="bi bi-arrow-right ms-1"></i>
-                            </button>
+            <!-- Contenido Principal del Formulario -->
+            <div class="col-lg-9 col-md-8">
+                {% if formulario.completado %}
+                    <div class="alert alert-info d-flex align-items-center mb-3 shadow-sm" role="alert">
+                        <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                        <div>
+                            <strong>Modo Vista:</strong> Este formulario ya ha sido completado. Puedes navegar por los
+                            pasos y, si modificas algún dato, aparecerá el botón para guardar los cambios.
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <!-- Formulario Dinámico -->
-                    <form id="dynamic-form" novalidate>
-                        <input type="hidden" id="cliente-id" value="{{ cliente.id }}">
-                        <input type="hidden" id="paso-actual" value="{{ paso_actual or (formulario.paso_actual if formulario else 1) }}">
-                        
-                        <!-- Contenedor de Pasos -->
-                        <div id="form-steps">
-                            <!-- Paso 1: Datos de la Empresa -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 1 %}active{% endif %}" data-step="1">
-                                {% include 'steps/paso1_empresa.html' %}
-                            </div>
-
-                            <!-- Paso 2: Información de Trasteros -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 2 %}active{% endif %}" data-step="2">
-                                {% include 'steps/paso2_trasteros.html' %}
-                            </div>
-
-                            <!-- Paso 3: Usuarios de la Aplicación -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 3 %}active{% endif %}" data-step="3">
-                                {% include 'steps/paso3_usuarios.html' %}
-                            </div>
-
-                            <!-- Paso 4: Configuración de Correo -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 4 %}active{% endif %}" data-step="4">
-                                {% include 'steps/paso4_correo.html' %}
-                            </div>
-
-                            <!-- Paso 5: Niveles de Acceso -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 5 %}active{% endif %}" data-step="5">
-                                {% include 'steps/paso5_niveles.html' %}
-                            </div>
-
-                            <!-- Paso 6: Documentación -->
-                            <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 6 %}active{% endif %}" data-step="6">
-                                {% include 'steps/paso6_documentacion.html' %}
+                {% endif %}
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">
+                                <span class="badge bg-primary me-2"
+                                      id="current-step-title">{{ paso_actual or (formulario.paso_actual if formulario else 1) }}</span>
+                                <span id="step-name-title">{{ step_names[(paso_actual or (formulario.paso_actual if formulario else 1)) - 1] }}</span>
+                            </h4>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-previous"
+                                        {% if (paso_actual or (formulario.paso_actual if formulario else 1)) <= 1 %}disabled{% endif %}>
+                                    <i class="bi bi-arrow-left me-1"></i>Anterior
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" id="btn-next">
+                                    Siguiente<i class="bi bi-arrow-right ms-1"></i>
+                                </button>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario Dinámico -->
+                        <form id="dynamic-form" novalidate>
+                            <input type="hidden" id="cliente-id" value="{{ cliente.id }}">
+                            <input type="hidden" id="paso-actual"
+                                   value="{{ paso_actual or (formulario.paso_actual if formulario else 1) }}">
+
+                            <!-- Contenedor de Pasos -->
+                            <div id="form-steps">
+                                <!-- Paso 1: Datos de la Empresa -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 1 %}active{% endif %}"
+                                     data-step="1">
+                                    {% include 'steps/paso1_empresa.html' %}
+                                </div>
+
+                                <!-- Paso 2: Información de Trasteros -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 2 %}active{% endif %}"
+                                     data-step="2">
+                                    {% include 'steps/paso2_trasteros.html' %}
+                                </div>
+
+                                <!-- Paso 3: Usuarios de la Aplicación -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 3 %}active{% endif %}"
+                                     data-step="3">
+                                    {% include 'steps/paso3_usuarios.html' %}
+                                </div>
+
+                                <!-- Paso 4: Configuración de Correo -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 4 %}active{% endif %}"
+                                     data-step="4">
+                                    {% include 'steps/paso4_correo.html' %}
+                                </div>
+
+                                <!-- Paso 5: Niveles de Acceso -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 5 %}active{% endif %}"
+                                     data-step="5">
+                                    {% include 'steps/paso5_niveles.html' %}
+                                </div>
+
+                                <!-- Paso 6: Documentación -->
+                                <div class="form-step {% if (paso_actual or (formulario.paso_actual if formulario else 1)) == 6 %}active{% endif %}"
+                                     data-step="6">
+                                    {% include 'steps/paso6_documentacion.html' %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal de Confirmación -->
-<div class="modal fade" id="confirmModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar Acción</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p id="confirm-message">¿Está seguro de que desea continuar?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="confirm-action">Confirmar</button>
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Acción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirm-message">¿Está seguro de que desea continuar?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirm-action">Confirmar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block extra_head %}
-<style>
-.form-step {
-    display: none;
-    animation: fadeIn 0.3s ease-in-out;
-}
+    <style>
+        .form-step {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
 
-.form-step.active {
-    display: block;
-}
+        .form-step.active {
+            display: block;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
-.step-item {
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-}
+        .step-item {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
 
-.step-item:hover {
-    background-color: rgba(0,123,255,0.1);
-}
+        .step-item:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
 
-.step-item.active {
-    background-color: rgba(0,123,255,0.15);
-    border-left: 4px solid #007bff;
-}
+        .step-item.active {
+            background-color: rgba(0, 123, 255, 0.15);
+            border-left: 4px solid #007bff;
+        }
 
-.step-item.completed {
-    background-color: rgba(40,167,69,0.1);
-}
+        .step-item.completed {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
 
-.step-number {
-    width: 30px;
-    text-align: center;
-}
+        .step-number {
+            width: 30px;
+            text-align: center;
+        }
 
-.progress-bar {
-    transition: width 0.5s ease-in-out;
-}
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
 
-.sticky-top {
-    z-index: 1020;
-}
+        .sticky-top {
+            z-index: 1020;
+        }
 
-.form-control:focus, .form-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-}
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
 
-.is-invalid {
-    border-color: #dc3545;
-}
+        .is-invalid {
+            border-color: #dc3545;
+        }
 
-.is-valid {
-    border-color: #28a745;
-}
+        .is-valid {
+            border-color: #28a745;
+        }
 
-.tooltip-icon {
-    cursor: help;
-    color: #6c757d;
-}
+        .tooltip-icon {
+            cursor: help;
+            color: #6c757d;
+        }
 
-.tooltip-icon:hover {
-    color: #007bff;
-}
+        .tooltip-icon:hover {
+            color: #007bff;
+        }
 
-@media (max-width: 768px) {
-    .col-lg-3 {
-        margin-bottom: 20px;
-    }
-    
-    .sticky-top {
-        position: relative !important;
-    }
-}
-</style>
+        @media (max-width: 768px) {
+            .col-lg-3 {
+                margin-bottom: 20px;
+            }
+
+            .sticky-top {
+                position: relative !important;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block extra_scripts %}
-<script>
-// Datos del formulario para JavaScript
-window.formularioData = JSON.parse('{{ (formulario_data | tojson | safe) if formulario_data else "{}" }}');
-</script>
-<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+    <script>
+        // Datos del formulario para JavaScript
+        window.formularioData = JSON.parse('{{ (formulario_data | tojson | safe) if formulario_data else "{}" }}');
+    </script>
+    <script src="{{ url_for('static', filename='js/validation.js') }}"></script>
 {% endblock %}
