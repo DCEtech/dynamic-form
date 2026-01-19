@@ -23,7 +23,7 @@
 
         <div class="col-12 mb-3">
             <label class="form-label">
-                Contratos en Formato .docx
+                Contratos en Formato .docx <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
                    title="Suba los contratos de alquiler en formato Word (.docx)"></i>
@@ -55,7 +55,7 @@
 
         <div class="col-12 mb-3">
             <label class="form-label">
-                Plano Gráfico de las Instalaciones
+                Plano Gráfico de las Instalaciones <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
                    title="Planos arquitectónicos o esquemas de las instalaciones"></i>
@@ -87,7 +87,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label">
-                Logo Principal
+                Logo Principal <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
                    title="Logo principal de la empresa para usar en documentos y sistema"></i>
@@ -403,34 +403,50 @@
 
                 removeBtn.addEventListener('click', function () {
                     const tipo = type === 'logo' ? 'logo_principal' : 'logo_alternativo';
-
                     const file = uploadedFiles.logos.find(f => f._tipo === tipo);
 
                     if (!file || !file._serverFileId) {
+                        // Si no hay archivo en el servidor, solo limpiamos la UI
                         logoPreview.style.display = 'none';
                         uploadContent.style.display = 'block';
                         fileInput.value = '';
                         updateResumen();
+                        return;
                     }
+
+                    // FEEDBACK VISUAL INMEDIATO
+                    logoPreview.classList.add('loading'); // Muestra el overlay oscuro y el spinner
+                    removeBtn.disabled = true;           // Evita que el usuario haga clic varias veces
+                    const originalText = removeBtn.innerHTML;
+                    removeBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
                     fetch(`/api/formulario/${window.formularioData.formulario_id}/archivo/${file._serverFileId}`, {
                         method: 'DELETE'
-                    }).then(res => res.json())
+                    })
+                        .then(res => res.json())
                         .then(data => {
                             if (!data.success) throw new Error(data.error);
 
-                            // UI
+                            // Éxito: Limpiamos todo
+                            logoPreview.classList.remove('loading');
                             logoPreview.style.display = 'none';
                             uploadContent.style.display = 'block';
                             fileInput.value = '';
+                            removeBtn.disabled = false;
+                            removeBtn.innerHTML = originalText;
 
                             // Memoria
                             uploadedFiles.logos = uploadedFiles.logos.filter(f => f._serverFileId !== file._serverFileId);
 
                             updateResumen();
+                            showToast('Logo eliminado correctamente', 'success');
                         })
                         .catch(err => {
                             console.error(err);
+                            // Error: Volvemos al estado anterior para que el usuario pueda reintentar
+                            logoPreview.classList.remove('loading');
+                            removeBtn.disabled = false;
+                            removeBtn.innerHTML = originalText;
                             showToast('Error eliminando el logo', 'error');
                         });
                 });
@@ -738,6 +754,7 @@
 
                                 // 🟢 LOGOS → preview (NO lista)
                                 if (tipo === 'logo_principal' || tipo === 'logo_alternativo') {
+                                    fakeFile._tipo = archivo.tipo_archivo;
                                     uploadedFiles.logos.push(fakeFile);
 
                                     const uploadArea = document.getElementById(

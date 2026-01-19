@@ -670,6 +670,12 @@ def completar_formulario(cliente_id):
     if not formulario or not cliente:
         return jsonify({'error': 'No se encontró la información'}), 404
 
+    if not formulario.paso_completo(6, formulario.documentacion):
+        return jsonify({
+            'success': False,
+            'error': 'No se puede finalizar: Faltan archivos obligatorios (Contratos, Planos o Logo).'
+        }), 400
+
     # 1. Marcar formulario como completado
     formulario.completado = 1
     formulario.porcentaje_completado = 100  # Forzamos al cierre

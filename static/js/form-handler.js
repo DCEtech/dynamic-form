@@ -178,22 +178,27 @@ class FormularioCliente {
     nextStep() {
         if (this.isSubmitting) return;
 
-        // Si estamos en modo lectura y hay cambios, el boton de "siguiente" ahora es "guardar"
-
+        // 1. Si ya está completo y hay cambios, guardamos (lógica de edición)
         if (this.isCompleted && this.hasChanges) {
             this.saveCurrentStep().then(() => {
                 this.hasChanges = false;
                 this.showToast('Cambios guardados correctamente', 'success');
-                this.updateNavigation()
+                this.updateNavigation();
             });
             return;
         }
 
-        // Lógica normal de navegación...
+        // 2. VALIDACIÓN CRÍTICA: Validar siempre el paso actual antes de hacer nada
+        if (!this.validateCurrentStep()) {
+            console.warn("Validación rechazada para el paso:", this.currentStep);
+            return; // Detenemos la ejecución si falta algo
+        }
+
+        // 3. Navegación o Finalización
         if (this.currentStep < this.totalSteps) {
-            if (!this.validateCurrentStep()) return;
             this._navigateToStep(this.currentStep + 1);
         } else {
+
             this.completeForm();
         }
     }
@@ -554,6 +559,25 @@ class FormularioCliente {
 
         if (this.currentStep === 5) {
             return this._validateNivelesStep();
+        }
+
+        if (this.currentStep === 6) {
+            const files = window.uploadedFilesPaso6;
+
+            const tieneContratos = files.contratos && files.contratos.length > 0;
+            const tienePlanos = files.planos && files.planos.length > 0;
+            const tieneLogo = files.logos && files.logos.some(f => f._tipo === 'logo_principal');
+
+            if (!tieneContratos || !tienePlanos || !tieneLogo) {
+                let faltantes = [];
+                if (!tieneContratos) faltantes.push("Contratos");
+                if (!tienePlanos) faltantes.push("Planos");
+                if (!tieneLogo) faltantes.push("Logo Principal");
+
+                this.showToast(`Faltan archivos obligatorios: ${faltantes.join(', ')}`, 'error');
+                return false;
+            }
+            return true;
         }
 
         // Resto de pasos → validación normal

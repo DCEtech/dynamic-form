@@ -223,15 +223,15 @@ class Formulario:
             return isinstance(datos, list) and len(datos) > 0
 
         if paso == 6:
-            # Un paso 6 está "técnicamente" completo si tiene notas O si hay archivos subidos
-            tiene_notas = isinstance(datos, dict) and bool(datos.get('notas_adicionales'))
-
-            # Consultar si hay archivos en la DB para este formulario
-            # (Esto asegura que el check verde aparezca si subió algo)
             archivos = self.obtener_archivos()
-            tiene_archivos = len(archivos) > 0
 
-            return tiene_notas or tiene_archivos or self.completado == 1
+            tipos_subidos = [a['tipo_archivo'] for a in archivos]
+
+            tiene_contratos = 'contratos' in tipos_subidos
+            tiene_planos = 'planos' in tipos_subidos
+            tiene_logo = 'logo_principal' in tipos_subidos
+
+            return tiene_contratos and tiene_planos and tiene_logo
 
         return False
 
