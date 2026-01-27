@@ -263,7 +263,7 @@
                     }
                 });
 
-                // 🔹 Cargar datos iniciales (MISMO PATRÓN QUE addTrastero)
+                // Cargar datos iniciales
                 if (data) {
                     el.querySelector('.usuario-nombre').value =
                         data.nombre_usuario || '';
@@ -453,7 +453,7 @@
                 const resumenRol = usuarioEl.querySelector('.usuario-resumen-rol');
                 const resumenDepartamento = usuarioEl.querySelector('.usuario-resumen-departamento');
 
-                // ⚠️ Si el resumen aún no existe, NO hacemos nada
+                // Si el resumen aún no existe, NO hacemos nada
                 if (!resumenNombre || !resumenEmail) {
                     return;
                 }
@@ -492,7 +492,7 @@
 
 
             // =========================
-            // 🔥 REHIDRATAR DESDE BACKEND
+            // REHIDRATAR DESDE BACKEND
             // =========================
 
             const data = window.formularioData?.datosFormulario?.usuarios_app || [];

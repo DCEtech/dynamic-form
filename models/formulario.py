@@ -15,7 +15,7 @@ class Formulario:
 
     def __init__(self, id=None, cliente_id=None, datos_empresa=None,
                  info_trasteros=None, usuarios_app=None, config_correo=None,
-                 niveles_acceso=None, documentacion=None, paso_actual=1,
+                 perfiles_acceso=None, documentacion=None, paso_actual=1,
                  porcentaje_completado=0, completado=0, fecha_creacion=None, fecha_actualizacion=None):
         self.id = id
         self.cliente_id = cliente_id
@@ -23,7 +23,7 @@ class Formulario:
         self.info_trasteros = info_trasteros or []
         self.usuarios_app = usuarios_app or {}
         self.config_correo = config_correo or {}
-        self.niveles_acceso = niveles_acceso or {}
+        self.perfiles_acceso = perfiles_acceso or {}
         self.documentacion = documentacion or {}
         self.paso_actual = paso_actual
         self.porcentaje_completado = porcentaje_completado
@@ -47,7 +47,7 @@ class Formulario:
 
         cursor.execute(
             """INSERT INTO formularios_clientes (cliente_id, datos_empresa, info_trasteros,
-                                                 usuarios_app, config_correo, niveles_acceso, documentacion)
+                                                 usuarios_app, config_correo, perfiles_acceso, documentacion)
                VALUES (%s, %s, %s, %s, %s, %s, %s)
             """,
             (cliente_id, '{}', '[]', '{}', '{}', '{}', '{}')
@@ -99,7 +99,7 @@ class Formulario:
             info_trasteros=json.loads(row['info_trasteros'] or '[]'),
             usuarios_app=json.loads(row['usuarios_app'] or '[]'),
             config_correo=json.loads(row['config_correo'] or '{}'),
-            niveles_acceso=json.loads(row['niveles_acceso'] or '[]'),
+            perfiles_acceso=json.loads(row['perfiles_acceso'] or '[]'),
             documentacion=json.loads(row['documentacion'] or '{}'),
             paso_actual=row['paso_actual'],
             porcentaje_completado=row['porcentaje_completado'],
@@ -125,7 +125,7 @@ class Formulario:
             2: 'info_trasteros',
             3: 'usuarios_app',
             4: 'config_correo',
-            5: 'niveles_acceso',
+            5: 'perfiles_acceso',
             6: 'documentacion'
         }
 
@@ -149,7 +149,7 @@ class Formulario:
 
         if paso == 5:
             if isinstance(datos, dict):
-                datos = datos.get('niveles_acceso', [])
+                datos = datos.get('perfiles_acceso', [])
             if not isinstance(datos, list):
                 datos = []
 
@@ -191,7 +191,7 @@ class Formulario:
             pasos_completados += 1
         if self.paso_completo(4, self.config_correo):
             pasos_completados += 1
-        if self.paso_completo(5, self.niveles_acceso):
+        if self.paso_completo(5, self.perfiles_acceso):
             pasos_completados += 1
         if self.paso_completo(6, self.documentacion):
             pasos_completados += 1
@@ -247,7 +247,7 @@ class Formulario:
                        info_trasteros        = %s,
                        usuarios_app          = %s,
                        config_correo         = %s,
-                       niveles_acceso        = %s,
+                       perfiles_acceso       = %s,
                        documentacion         = %s,
                        paso_actual           = %s,
                        porcentaje_completado = %s,
@@ -259,7 +259,7 @@ class Formulario:
                     json.dumps(self.info_trasteros, ensure_ascii=False),
                     json.dumps(self.usuarios_app, ensure_ascii=False),
                     json.dumps(self.config_correo, ensure_ascii=False),
-                    json.dumps(self.niveles_acceso, ensure_ascii=False),
+                    json.dumps(self.perfiles_acceso, ensure_ascii=False),
                     json.dumps(self.documentacion, ensure_ascii=False),
                     self.paso_actual,
                     self.porcentaje_completado,
@@ -282,7 +282,7 @@ class Formulario:
             2: self.info_trasteros,
             3: self.usuarios_app,
             4: self.config_correo,
-            5: self.niveles_acceso,
+            5: self.perfiles_acceso,
             6: self.documentacion
         }
 
@@ -333,7 +333,7 @@ class Formulario:
             'info_trasteros': self.paso_completo(2, self.info_trasteros),
             'usuarios_app': self.paso_completo(3, self.usuarios_app),
             'config_correo': self.paso_completo(4, self.config_correo),
-            'niveles_acceso': self.paso_completo(5, self.niveles_acceso),
+            'perfiles_acceso': self.paso_completo(5, self.perfiles_acceso),
             'documentacion': self.paso_completo(6, self.documentacion),
         }
         return {
@@ -347,7 +347,7 @@ class Formulario:
             'info_trasteros': self.info_trasteros,
             'usuarios_app': self.usuarios_app,
             'config_correo': self.config_correo,
-            'niveles_acceso': self.niveles_acceso,
+            'perfiles_acceso': self.perfiles_acceso,
             'documentacion': self.documentacion,
             'fecha_creacion': self.fecha_creacion,
             'fecha_actualizacion': self.fecha_actualizacion,

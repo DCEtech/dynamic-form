@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS formularios_clientes (
     info_trasteros LONGTEXT,
     usuarios_app LONGTEXT,
     config_correo LONGTEXT,
-    niveles_acceso LONGTEXT,
+    perfiles_acceso LONGTEXT,
     documentacion LONGTEXT,
 
     paso_actual INT DEFAULT 1,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS archivos_clientes (
     nombre_original VARCHAR(255) NOT NULL,
     nombre_archivo VARCHAR(255) NOT NULL,
     tipo_archivo VARCHAR(50) NOT NULL,
-    size_bytes INT NOT NULL,
+    tamano_bytes INT NOT NULL,
     ruta_archivo VARCHAR(500) NOT NULL,
     public_url VARCHAR(2048),
     paso_formulario INT NOT NULL,

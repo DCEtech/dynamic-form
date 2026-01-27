@@ -318,7 +318,7 @@
             const notasField = document.getElementById('notas_adicionales');
             const charCountNotas = document.querySelector('.char-count-notas');
 
-            // 🟢 HIDRATAR textarea desde backend al refrescar
+            // HIDRATAR textarea desde backend al refrescar
             if (notasField) {
                 const notasGuardadas =
                     window.formularioData?.datosFormulario?.documentacion?.notas_adicionales;
@@ -752,7 +752,7 @@
                                     size: 0
                                 };
 
-                                // 🟢 LOGOS → preview (NO lista)
+                                // LOGOS → preview (NO lista)
                                 if (tipo === 'logo_principal' || tipo === 'logo_alternativo') {
                                     fakeFile._tipo = archivo.tipo_archivo;
                                     uploadedFiles.logos.push(fakeFile);
@@ -779,7 +779,7 @@
                                     return;
                                 }
 
-                                // 🟢 ARCHIVOS NORMALES (lista)
+                                // ARCHIVOS NORMALES (lista)
                                 if (!uploadedFiles[tipo]) {
                                     uploadedFiles[tipo] = [];
                                 }
