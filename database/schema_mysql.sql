@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS formularios_clientes (
     info_trasteros LONGTEXT,
     usuarios_app LONGTEXT,
     config_correo LONGTEXT,
-    niveles_acceso LONGTEXT,
+    perfiles_acceso LONGTEXT,
     documentacion LONGTEXT,
 
     paso_actual INT DEFAULT 1,
