@@ -514,30 +514,30 @@ class FormularioCliente {
 
     getNivelesData() {
         const niveles = [];
-
+        // Buscamos todos los items excepto el template
         document.querySelectorAll('.nivel-item:not(#nivel-template)').forEach(nivel => {
             const puertas = [];
 
-            nivel.querySelectorAll('.puertas-grid input[type="checkbox"]:checked')
-                .forEach(p => puertas.push(p.name));
+            // 1. Obtener puertas de checkboxes (estándar)
+            nivel.querySelectorAll('.puertas-grid input[type="checkbox"]:checked').forEach(p => {
+                puertas.push(p.name);
+            });
 
-            nivel.querySelectorAll('.puertas-personalizadas-list input[type="checkbox"]:checked')
-                .forEach(p => puertas.push(
-                    p.nextElementSibling?.textContent?.trim()
-                ));
+            // 2. Obtener puertas personalizadas (las etiquetas badge)
+            nivel.querySelectorAll('.custom-door-tag').forEach(tag => {
+                // El texto antes del icono
+                puertas.push(tag.textContent.trim());
+            });
 
             niveles.push({
                 nombre: nivel.querySelector('.nivel-nombre').value.trim(),
-                prioridad: nivel.querySelector('.nivel-prioridad').value,
                 descripcion: nivel.querySelector('.nivel-descripcion').value.trim(),
                 acceso_24h: nivel.querySelector('.acceso-24h').checked,
-                hora_inicio: nivel.querySelector('.hora-inicio')?.value || null,
-                hora_fin: nivel.querySelector('.hora-fin')?.value || null,
-                puertas
+                hora_inicio: nivel.querySelector('.hora-inicio').value,
+                hora_fin: nivel.querySelector('.hora-fin').value,
+                puertas: puertas
             });
         });
-
-        console.log('Niveles serializados:', niveles);
         return niveles;
     }
 
@@ -1206,111 +1206,6 @@ class FormularioCliente {
             stepData = datos.documentacion || datos.paso_6 || {};
         }
 
-        // =========================
-        // PASO 2 – Trasteros
-        // =========================
-        // if (step === 2 && Array.isArray(stepData)) {
-        //     const container = document.getElementById('trasteros-container');
-        //     if (!container) return;
-        //
-        //     // Limpiar existentes
-        //     container
-        //         .querySelectorAll('.trastero-item:not(#trastero-template)')
-        //         .forEach(el => el.remove());
-        //
-        //     stepData.forEach(trastero => {
-        //         if (typeof window.addTrastero !== 'function') return;
-        //
-        //         const el = window.addTrastero();
-        //         if (!el) return;
-        //
-        //         el.querySelector('.trastero-numero').value = trastero.numero_trastero || '';
-        //         el.querySelector('.trastero-metros').value = trastero.metros || '';
-        //         el.querySelector('.trastero-cubicos').value = trastero.metros_cubicos || '';
-        //         el.querySelector('.trastero-precio-sin-iva').value = trastero.precio_sin_iva || '';
-        //         el.querySelector('.trastero-precio-con-iva').value = trastero.precio_con_iva || '';
-        //         el.querySelector('.trastero-fianza').value = trastero.fianza || '';
-        //         el.querySelector('.trastero-descripcion').value = trastero.descripcion || '';
-        //
-        //         // Validar campos restaurados
-        //         el.querySelectorAll('input, select, textarea').forEach(f => {
-        //             this.validateField(f);
-        //         });
-        //     });
-        //
-        //     return; // ⬅️ CRÍTICO
-        // }
-
-        // =========================
-        // PASO 3 – Usuarios
-        // =========================
-        // if (step === 3 && Array.isArray(stepData)) {
-        //     const container = document.getElementById('usuarios-container');
-        //
-        //     if (!container) return;
-        //
-        //     if (typeof window.addUsuario !== 'function') return;
-        //
-        //     // Limpiar existentes
-        //     container
-        //         .querySelectorAll('.usuario-item:not(#usuario-template)')
-        //         .forEach(el => el.remove());
-        //
-        //     stepData.forEach(usuario => {
-        //         const el = window.addUsuario();
-        //         if (!el) return;
-        //
-        //         el.querySelector('.usuario-nombre').value = usuario.nombre_usuario || '';
-        //         el.querySelector('.usuario-email').value = usuario.email_usuario || '';
-        //         el.querySelector('.usuario-password').value = usuario.password_usuario || '';
-        //         el.querySelector('.usuario-confirm-password').value = usuario.confirm_password_usuario || '';
-        //         el.querySelector('.usuario-rol').value = usuario.rol_usuario || 'usuario';
-        //         el.querySelector('.usuario-departamento').value = usuario.departamento_usuario || '';
-        //
-        //         if (usuario.permisos) {
-        //             el.querySelector('[name*="permisos_facturacion"]').checked = !!usuario.permisos.facturacion;
-        //             el.querySelector('[name*="permisos_reportes"]').checked = !!usuario.permisos.reportes;
-        //             el.querySelector('[name*="permisos_configuracion"]').checked = !!usuario.permisos.configuracion;
-        //         }
-        //
-        //         // Forzar resumen + validaciones
-        //         if (typeof updateUsuarioResumen === 'function') {
-        //             updateUsuarioResumen(el);
-        //         }
-        //
-        //         el.querySelectorAll('input, select').forEach(f => {
-        //             this.validateField(f);
-        //         });
-        //     });
-        //
-        //     return; // ⬅️ IGUAL DE CRÍTICO
-        // }
-
-        // =========================
-        // PASO 5: niveles dinámicos
-        // =========================
-        // if (step === 5 && Array.isArray(stepData)) {
-        //     const container = document.getElementById('niveles-container');
-        //     if (!container) return;
-        //
-        //     container
-        //         .querySelectorAll('.nivel-item:not(#nivel-template)')
-        //         .forEach(el => el.remove());
-        //
-        //     stepData.forEach(nivel => {
-        //         if (typeof window.addNivel === 'function') {
-        //             const el = window.addNivel();
-        //             if (!el) return;
-        //
-        //             el.querySelector('.nivel-nombre').value = nivel.nombre || '';
-        //             el.querySelector('.nivel-prioridad').value = nivel.prioridad || '';
-        //             el.querySelector('.nivel-descripcion').value = nivel.descripcion || '';
-        //             el.querySelector('.acceso-24h').checked = !!nivel.acceso_24h;
-        //         }
-        //     });
-        //
-        //     return;
-        // }
 
         // =========================
         // Otros pasos (inputs simples)
