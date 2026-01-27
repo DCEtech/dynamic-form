@@ -198,8 +198,6 @@
             helpText.textContent = config.help;
             helpText.classList.add('text-primary');
 
-            // Opcional: Podrías ocultar el contenedor si no quieres que el usuario "toque"
-            // tecnicoContainer.style.display = 'none';
         } else {
             // Modo "Custom": Limpiar campos y mostrar configuración técnica
             document.getElementById('servidor_saliente').value = '';
@@ -213,7 +211,7 @@
             tecnicoContainer.style.display = 'block';
         }
 
-        // Forzar actualización de validación y resumen (tu función existente)
+        // Forzar actualización de validación y resumen
         updateResumen();
 
         // Disparar validación visual en cada campo autocompletado
