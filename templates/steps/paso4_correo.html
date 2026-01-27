@@ -6,185 +6,111 @@
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
                     <strong>Configuración del Servidor de Correo</strong><br>
-                    Configure el servidor de correo saliente para el envío de notificaciones, facturas y comunicaciones
-                    automáticas del sistema.
-                    Asegúrese de tener los datos correctos de su proveedor de email.
+                    Seleccione su proveedor o configure manualmente el servidor de salida para notificaciones.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Configuración del Servidor -->
+    <!-- SELECCIÓN DE PROVEEDOR -->
     <div class="row mb-4">
-        <div class="col-12">
+        <div class="col-md-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-server me-2"></i>Servidor de Correo Saliente
+                <i class="bi bi-envelope-check me-2"></i>Proveedor de Correo
             </h5>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="servidor_saliente" class="form-label">
-                Servidor de Correo Saliente (SMTP) *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Dirección del servidor SMTP de su proveedor de email"></i>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="servidor_saliente"
-                   name="servidor_saliente"
-                   placeholder="Ej: smtp.gmail.com, smtp.outlook.com"
-                   required>
-            <div class="invalid-feedback">
-                Por favor, ingrese el servidor SMTP.
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="puerto_smtp" class="form-label">
-                Puerto SMTP *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Puerto del servidor SMTP (común: 587, 465, 25)"></i>
-            </label>
-            <select class="form-select" id="puerto_smtp" name="puerto" required>
-                <option value="">Seleccione un puerto</option>
-                <option value="587">587 (STARTTLS - Recomendado)</option>
-                <option value="465">465 (SSL/TLS)</option>
-                <option value="25">25 (Sin cifrado - No recomendado)</option>
-                <option value="2525">2525 (Alternativo)</option>
-            </select>
-            <div class="invalid-feedback">
-                Por favor, seleccione un puerto.
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="direccion_servidor" class="form-label">
-                Dirección del Servidor *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Misma dirección que el servidor SMTP (para verificación)"></i>
-            </label>
-            <input type="text"
-                   class="form-control"
-                   id="direccion_servidor"
-                   name="direccion_servidor"
-                   placeholder="Ej: smtp.gmail.com"
-                   required>
-            <div class="invalid-feedback">
-                Por favor, ingrese la dirección del servidor.
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label for="usa_ssl" class="form-label">
-                Usar SSL/TLS *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Protocolo de seguridad para la conexión (recomendado: SÍ)"></i>
-            </label>
-            <div class="d-flex gap-3 mt-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_si" value="SI" required>
-                    <label class="form-check-label" for="ssl_si">
-                        <i class="bi bi-shield-check text-success me-1"></i>SÍ (Recomendado)
-                    </label>
+            <div class="card bg-light border-dashed">
+                <div class="card-body">
+                    <label for="proveedor_selector" class="form-label fw-bold">Seleccione su proveedor de email</label>
+                    <select class="form-select form-select-lg border-primary" id="proveedor_selector"
+                            name="proveedor_tipo">
+                        <option value="custom">-- Otro (Configuración manual) --</option>
+                        <option value="gmail">Gmail / Google Workspace</option>
+                        <option value="outlook">Outlook / Hotmail / Office 365</option>
+                        <option value="yahoo">Yahoo Mail</option>
+                        <option value="icloud">iCloud Mail</option>
+                    </select>
+                    <div class="form-text mt-2" id="provider-hint">
+                        Si elige un proveedor conocido, completaremos los datos técnicos por usted.
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_no" value="NO">
-                    <label class="form-check-label" for="ssl_no">
-                        <i class="bi bi-shield-x text-danger me-1"></i>NO
-                    </label>
-                </div>
-            </div>
-            <div class="invalid-feedback">
-                Por favor, seleccione una opción.
             </div>
         </div>
     </div>
 
-    <!-- Credenciales de Autenticación -->
+    <!-- Contenedor de Configuración Técnica -->
+    <div id="configuracion_tecnica_container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="text-primary mb-3">
+                    <i class="bi bi-server me-2"></i>Servidor de Correo Saliente
+                </h5>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="servidor_saliente" class="form-label">Servidor SMTP *</label>
+                <input type="text" class="form-control" id="servidor_saliente" name="servidor_saliente" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="puerto_smtp" class="form-label">Puerto SMTP *</label>
+                <select class="form-select" id="puerto_smtp" name="puerto" required>
+                    <option value="">Seleccione un puerto</option>
+                    <option value="587">587 (STARTTLS)</option>
+                    <option value="465">465 (SSL/TLS)</option>
+                    <option value="25">25 (Sin cifrado)</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="direccion_servidor" class="form-label">Dirección del Servidor *</label>
+                <input type="text" class="form-control" id="direccion_servidor" name="direccion_servidor" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Usar SSL/TLS *</label>
+                <div class="d-flex gap-3 mt-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_si" value="SI" required>
+                        <label class="form-check-label" for="ssl_si">SÍ</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_no" value="NO">
+                        <label class="form-check-label" for="ssl_no">NO</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credenciales -->
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
                 <i class="bi bi-key me-2"></i>Credenciales de Autenticación
             </h5>
         </div>
-
         <div class="col-md-6 mb-3">
-            <label for="usuario_email" class="form-label">
-                Dirección Email *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Email que se usará para autenticar en el servidor SMTP"></i>
-            </label>
-            <input type="email"
-                   class="form-control"
-                   id="usuario_email"
-                   name="usuario_email"
-                   placeholder="Ej: sistema@empresa.com"
-                   required>
-            <div class="invalid-feedback">
-                Por favor, ingrese un email válido.
-            </div>
+            <label for="usuario_email" class="form-label">Dirección Email *</label>
+            <input type="email" class="form-control" id="usuario_email" name="usuario_email" required>
         </div>
-
         <div class="col-md-6 mb-3">
-            <label for="password_email" class="form-label">
-                Contraseña del Email *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="Contraseña del email o contraseña de aplicación"></i>
-            </label>
+            <label for="password_email" class="form-label">Contraseña *</label>
             <div class="input-group">
-                <input type="password"
-                       class="form-control"
-                       id="password_email"
-                       name="password_email"
-                       placeholder="Contraseña del email"
-                       required>
+                <input type="password" class="form-control" id="password_email" name="password_email" required>
                 <button class="btn btn-outline-secondary" type="button" id="toggle-email-password">
                     <i class="bi bi-eye"></i>
                 </button>
             </div>
-            <div class="invalid-feedback">
-                Por favor, ingrese la contraseña del email.
-            </div>
-            <small class="text-muted">
-                Para Gmail/Outlook, use una contraseña de aplicación específica.
-            </small>
+
         </div>
     </div>
 
 
-    <!-- Notificaciones del Sistema -->
+    <!-- Campo de Notificaciones -->
     <div class="row mb-4">
-        <div class="col-12">
-            <h5 class="text-primary mb-3">
-                <i class="bi bi-bell me-2"></i>Notificaciones Email
-            </h5>
-        </div>
-
         <div class="col-12 mb-3">
-            <label for="email_notificaciones" class="form-label">
-                Email para Notificaciones del Sistema *
-                <i class="bi bi-question-circle tooltip-icon ms-1"
-                   data-bs-toggle="tooltip"
-                   title="En este email se recibiran todas las notificaciones y eventos"></i>
-            </label>
-            <input type="email"
-                   class="form-control"
-                   id="email_notificaciones"
-                   name="email_notificaciones"
-                   placeholder="Ej: admin@empresa.com"
-                   required>
-            <div class="invalid-feedback">
-                Por favor, ingrese un email válido para notificaciones.
-            </div>
-            <small class="text-muted">
-                En este email se recibiran todas las notificaciones y eventos.
-            </small>
+            <label for="email_notificaciones" class="form-label">Email para Notificaciones *</label>
+            <input type="email" class="form-control" id="email_notificaciones" name="email_notificaciones" required>
         </div>
     </div>
 
@@ -219,6 +145,83 @@
 </div>
 
 <script>
+
+    // 1. Definición de Proveedores
+    const EMAIL_PROVIDERS = {
+        gmail: {
+            smtp: 'smtp.gmail.com',
+            port: '587',
+            ssl: 'SI',
+            help: 'Nota: Use una "Contraseña de aplicación" generada desde su cuenta de Google.'
+        },
+        outlook: {
+            smtp: 'smtp.office365.com',
+            port: '587',
+            ssl: 'SI',
+            help: 'Nota: Asegúrese de tener habilitado el acceso SMTP autenticado en Microsoft 365.'
+        },
+        yahoo: {
+            smtp: 'smtp.mail.yahoo.com',
+            port: '465',
+            ssl: 'SI',
+            help: 'Nota: Requiere una contraseña de aplicación generada en Yahoo Security.'
+        },
+        icloud: {
+            smtp: 'smtp.mail.me.com',
+            port: '587',
+            ssl: 'SI',
+            help: 'Nota: Use su ID de Apple y una contraseña específica de aplicación.'
+        }
+    };
+
+    const proveedorSelector = document.getElementById('proveedor_selector');
+    const tecnicoContainer = document.getElementById('configuracion_tecnica_container');
+
+    // 2. Lógica de cambio de proveedor
+    proveedorSelector.addEventListener('change', function () {
+        const providerKey = this.value;
+        const config = EMAIL_PROVIDERS[providerKey];
+        const helpText = document.getElementById('password_help');
+
+        if (config) {
+            // Autocompletar campos
+            document.getElementById('servidor_saliente').value = config.smtp;
+            document.getElementById('direccion_servidor').value = config.smtp;
+            document.getElementById('puerto_smtp').value = config.port;
+
+            if (config.ssl === 'SI') {
+                document.getElementById('ssl_si').checked = true;
+            } else {
+                document.getElementById('ssl_no').checked = true;
+            }
+
+            helpText.textContent = config.help;
+            helpText.classList.add('text-primary');
+
+            // Opcional: Podrías ocultar el contenedor si no quieres que el usuario "toque"
+            // tecnicoContainer.style.display = 'none';
+        } else {
+            // Modo "Custom": Limpiar campos y mostrar configuración técnica
+            document.getElementById('servidor_saliente').value = '';
+            document.getElementById('direccion_servidor').value = '';
+            document.getElementById('puerto_smtp').value = '';
+            document.getElementById('ssl_si').checked = false;
+            document.getElementById('ssl_no').checked = false;
+
+            helpText.textContent = 'Configure manualmente los datos de su servidor SMTP.';
+            helpText.classList.remove('text-primary');
+            tecnicoContainer.style.display = 'block';
+        }
+
+        // Forzar actualización de validación y resumen (tu función existente)
+        updateResumen();
+
+        // Disparar validación visual en cada campo autocompletado
+        ['servidor_saliente', 'direccion_servidor', 'puerto_smtp'].forEach(id => {
+            const el = document.getElementById(id);
+            if (window.formularioCliente) window.formularioCliente.validateField(el);
+        });
+    });
 
     // Toggle password visibility
     document.getElementById('toggle-email-password').addEventListener('click', function () {
