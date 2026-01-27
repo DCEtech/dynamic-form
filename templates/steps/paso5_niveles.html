@@ -369,15 +369,11 @@
 
         // Función para agregar un nuevo nivel
         function addNivel(data = null) {
-            // =========================
-            // Índice / contador
-            // =========================
+
             nivelCounter++;
             const index = nivelCounter - 1;
 
-            // =========================
-            // DOM base
-            // =========================
+
             const template = document.getElementById('nivel-template');
             const container = document.getElementById('niveles-container');
             const emptyMessage = document.getElementById('no-niveles-message');
@@ -412,7 +408,7 @@
             });
 
             // =========================
-            // 🔹 Rehidratación (si hay data)
+            // Rehidratación (si hay data)
             // =========================
             if (data) {
                 el.querySelector('.nivel-nombre').value =
@@ -452,19 +448,10 @@
             }
 
 
-            // =========================
-            // Insertar en DOM
-            // =========================
             container.appendChild(el);
 
-            // =========================
-            // Eventos
-            // =========================
             setupNivelEvents(el);
 
-            // =========================
-            // Puertas personalizadas (después de eventos)
-            // =========================
             if (data && Array.isArray(data.puertas_personalizadas)) {
                 const list = el.querySelector('.puertas-personalizadas-list');
 

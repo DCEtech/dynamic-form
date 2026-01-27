@@ -219,66 +219,6 @@
 </div>
 
 <script>
-    {#document.addEventListener('DOMContentLoaded', function() {#}
-    {#    // Configuraciones predefinidas#}
-    {#    const presets = {#}
-    {#        gmail: {#}
-    {#            servidor_saliente: 'smtp.gmail.com',#}
-    {#            direccion_servidor: 'smtp.gmail.com',#}
-    {#            puerto: '587',#}
-    {#            usa_ssl: 'SI'#}
-    {#        },#}
-    {#        outlook: {#}
-    {#            servidor_saliente: 'smtp-mail.outlook.com',#}
-    {#            direccion_servidor: 'smtp-mail.outlook.com',#}
-    {#            puerto: '587',#}
-    {#            usa_ssl: 'SI'#}
-    {#        },#}
-    {#        yahoo: {#}
-    {#            servidor_saliente: 'smtp.mail.yahoo.com',#}
-    {#            direccion_servidor: 'smtp.mail.yahoo.com',#}
-    {#            puerto: '587',#}
-    {#            usa_ssl: 'SI'#}
-    {#        }#}
-    {#    };#}
-    {#    #}
-    {#    // Aplicar configuración predefinida#}
-    {#    document.querySelectorAll('.config-preset').forEach(button => {#}
-    {#        button.addEventListener('click', function() {#}
-    {#            const provider = this.getAttribute('data-provider');#}
-    {#            const config = presets[provider];#}
-    {#            #}
-    {#            if (config) {#}
-    {#                document.getElementById('servidor_saliente').value = config.servidor_saliente;#}
-    {#                document.getElementById('direccion_servidor').value = config.direccion_servidor;#}
-    {#                document.getElementById('puerto_smtp').value = config.puerto;#}
-    {#                #}
-    {#                if (config.usa_ssl === 'SI') {#}
-    {#                    document.getElementById('ssl_si').checked = true;#}
-    {#                } else {#}
-    {#                    document.getElementById('ssl_no').checked = true;#}
-    {#                }#}
-    {#                #}
-    {#                // Actualizar resumen#}
-    {#                updateResumen();#}
-    {#                #}
-    {#                // Mostrar mensaje de éxito#}
-    {#                showToast(`Configuración de ${provider.charAt(0).toUpperCase() + provider.slice(1)} aplicada correctamente`, 'success');#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {#    #}
-    {#    // Limpiar configuración#}
-    {#    document.getElementById('clear-config').addEventListener('click', function() {#}
-    {#        document.getElementById('servidor_saliente').value = '';#}
-    {#        document.getElementById('direccion_servidor').value = '';#}
-    {#        document.getElementById('puerto_smtp').value = '';#}
-    {#        document.getElementById('ssl_si').checked = false;#}
-    {#        document.getElementById('ssl_no').checked = false;#}
-    {#        #}
-    {#        updateResumen();#}
-    {#        showToast('Configuración limpiada', 'info');#}
-    {#    });#}
 
     // Toggle password visibility
     document.getElementById('toggle-email-password').addEventListener('click', function () {

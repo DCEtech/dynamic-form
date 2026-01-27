@@ -319,32 +319,7 @@
         <p class="text-muted">Haga clic en "Agregar Trastero" para comenzar a configurar los trasteros disponibles.</p>
     </div>
 
-    {#    <!-- Resumen total -->#}
-    {#    <div id="resumen-total" class="card bg-primary text-white mt-4" style="display: none;">#}
-    {#        <div class="card-body">#}
-    {#            <h5 class="card-title">#}
-    {#                <i class="bi bi-calculator me-2"></i>Resumen Total#}
-    {#            </h5>#}
-    {#            <div class="row text-center">#}
-    {#                <div class="col-md-3">#}
-    {#                    <h6>Total Trasteros</h6>#}
-    {#                    <h4 id="total-trasteros">0</h4>#}
-    {#                </div>#}
-    {#                <div class="col-md-3">#}
-    {#                    <h6>Superficie Total</h6>#}
-    {#                    <h4 id="total-superficie">0 m²</h4>#}
-    {#                </div>#}
-    {#                <div class="col-md-3">#}
-    {#                    <h6>Ingresos Mensuales (sin IVA)</h6>#}
-    {#                    <h4 id="total-ingresos-sin-iva">0.00 €</h4>#}
-    {#                </div>#}
-    {#                <div class="col-md-3">#}
-    {#                    <h6>Ingresos Mensuales (con IVA)</h6>#}
-    {#                    <h4 id="total-ingresos-con-iva">0.00 €</h4>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
+
 </div>
 
 <script>
@@ -489,10 +464,6 @@
             );
         }
 
-        // =========================
-        // Estado visual
-        // =========================
-
 
         // =========================
         // Resumen total
@@ -508,7 +479,7 @@
         }
 
         // =========================
-        // 🔥 REHIDRATAR DESDE BACKEND
+        // REHIDRATAR DESDE BACKEND
         // =========================
 
         const data = window.formularioData?.datosFormulario?.info_trasteros || [];
