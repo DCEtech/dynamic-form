@@ -137,8 +137,8 @@
                 el.querySelector('.nivel-descripcion').value = data.descripcion || '';
                 chk24h.checked = data.acceso_24h !== false;
                 chk24h.onchange();
-                el.querySelector('.hora-inicio').value = data.hora_inicio || '08:00';
-                el.querySelector('.hora-fin').value = data.hora_fin || '18:00';
+                el.querySelector('.hora-inicio').value = data.hora_inicio || (chk24h.checked ? '' : '08:00');
+                el.querySelector('.hora-fin').value = data.hora_fin || (chk24h.checked ? '' : '18:00');
 
                 if (data.puertas) {
                     data.puertas.forEach(p => {
@@ -156,7 +156,7 @@
         document.getElementById('add-nivel').onclick = () => window.addNivel();
 
         // Carga inicial
-        const existing = window.formularioData?.datosFormulario?.niveles_acceso || [];
+        const existing = window.formularioData?.datosFormulario?.perfiles_acceso || [];
         if (existing.length > 0) existing.forEach(d => window.addNivel(d));
         else window.addNivel();
     });

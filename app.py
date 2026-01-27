@@ -41,7 +41,7 @@ step_names = [
     "Información de Trasteros",
     "Usuarios de la Aplicación",
     "Configuración de Correo",
-    "Niveles de Acceso",
+    "Perfiles de Acceso",
     "Documentación"
 ]
 
@@ -134,7 +134,7 @@ def formulario_cliente(nombre_cliente):
             'info_trasteros': formulario_obj.info_trasteros,
             'usuarios_app': formulario_obj.usuarios_app,
             'config_correo': formulario_obj.config_correo,
-            'niveles_acceso': formulario_obj.niveles_acceso,
+            'perfiles_acceso': formulario_obj.perfiles_acceso,
             'documentacion': formulario_obj.documentacion
         }
     }
@@ -213,7 +213,7 @@ def save_form_data():
             'info_trasteros': formulario_obj.paso_completo(2, formulario_obj.info_trasteros),
             'usuarios_app': formulario_obj.paso_completo(3, formulario_obj.usuarios_app),
             'config_correo': formulario_obj.paso_completo(4, formulario_obj.config_correo),
-            'niveles_acceso': formulario_obj.paso_completo(5, formulario_obj.niveles_acceso),
+            'perfiles_acceso': formulario_obj.paso_completo(5, formulario_obj.perfiles_acceso),
             'documentacion': formulario_obj.paso_completo(6, formulario_obj.documentacion),
         }
 
@@ -440,15 +440,15 @@ def calcular_porcentaje_completado(datos_formulario):
         'paso_2': ['numero_trasteros'],
         'paso_3': ['usuarios'],
         'paso_4': ['servidor_saliente', 'puerto', 'usuario_email'],
-        'paso_5': ['niveles_acceso'],
-        'paso_6': []  # Documentación es opcional
+        'paso_5': ['perfiles_acceso'],
+        'paso_6': []
     }
 
     for paso, campos in campos_requeridos.items():
         if paso in datos_formulario:
             datos_paso = datos_formulario[paso]
 
-            if paso == 'paso_6':  # Documentación siempre cuenta como completado
+            if paso == 'paso_6':
                 pasos_completados += 1
             else:
                 # Verificar si los campos requeridos están presentes
