@@ -144,5 +144,67 @@
     "Vizcaya",
     "Zamora",
     "Zaragoza"
-  ]
+  ],
+  "step2": {
+    "alert": {
+      "title": "Configuración de Trasteros",
+      "text": "Configure los trasteros disponibles con sus características y precios. Puede agregar múltiples trasteros usando el botón 'Agregar Trastero'."
+    },
+    "btn_add": "Agregar Trastero",
+    "item": {
+      "title": "Trastero",
+      "fields": {
+        "numero": {
+          "label": "Número de Trastero *",
+          "tooltip": "Número identificativo único",
+          "placeholder": "Ej: T001",
+          "error": "Ingrese el número."
+        },
+        "metros": {
+          "label": "Metros Cuadrados *",
+          "tooltip": "Superficie en m²",
+          "placeholder": "0.00",
+          "error": "Ingrese los metros."
+        },
+        "cubicos": {
+          "label": "Metros Cúbicos",
+          "tooltip": "Volumen en m³ - opcional",
+          "placeholder": "0.00"
+        },
+        "precio_sin_iva": {
+          "label": "Precio sin IVA *",
+          "tooltip": "Precio mensual sin IVA",
+          "placeholder": "0.00",
+          "error": "Ingrese el precio."
+        },
+        "precio_con_iva": {
+          "label": "Precio con IVA",
+          "tooltip": "Se calcula automáticamente (21% IVA)",
+          "placeholder": "0.00",
+          "helper": "Calculado automáticamente (21% IVA)"
+        },
+        "fianza": {
+          "label": "Fianza",
+          "tooltip": "Importe de la fianza",
+          "placeholder": "0.00"
+        }
+      }
+    },
+    "modal": {
+      "title": "Agregar trasteros en lote",
+      "btn_cancel": "Cancelar",
+      "btn_confirm": "Crear trasteros",
+      "label_cantidad": "Cantidad de trasteros *",
+      "summary_part1": "Se",
+      "summary_part2": "trastero",
+      "verb_singular": "creará",
+      "verb_plural": "crearán",
+      "suffix_plural": "s"
+    },
+    "empty": {
+      "title": "No hay trasteros configurados",
+      "desc": "Haga clic en 'Agregar Trastero' para comenzar."
+    }
+  }
 }
+

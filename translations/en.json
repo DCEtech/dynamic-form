@@ -144,5 +144,66 @@
     "Biscay",
     "Zamora",
     "Saragossa"
-  ]
+  ],
+  "step2": {
+    "alert": {
+      "title": "Storage Unit Setup",
+      "text": "Configure the available storage units with their features and prices. You can add multiple units using the 'Add Storage Unit' button."
+    },
+    "btn_add": "Add Storage Unit",
+    "item": {
+      "title": "Unit",
+      "fields": {
+        "numero": {
+          "label": "Unit Number *",
+          "tooltip": "Unique ID number",
+          "placeholder": "e.g., T001",
+          "error": "Enter unit number."
+        },
+        "metros": {
+          "label": "Square Meters *",
+          "tooltip": "Surface area in sqm",
+          "placeholder": "0.00",
+          "error": "Enter area."
+        },
+        "cubicos": {
+          "label": "Cubic Meters",
+          "tooltip": "Volume in cbm - optional",
+          "placeholder": "0.00"
+        },
+        "precio_sin_iva": {
+          "label": "Price (excl. VAT) *",
+          "tooltip": "Monthly price without VAT",
+          "placeholder": "0.00",
+          "error": "Enter price."
+        },
+        "precio_con_iva": {
+          "label": "Price (incl. VAT)",
+          "tooltip": "Calculated automatically (21% VAT)",
+          "placeholder": "0.00",
+          "helper": "Calculated automatically (21% VAT)"
+        },
+        "fianza": {
+          "label": "Deposit",
+          "tooltip": "Security deposit amount",
+          "placeholder": "0.00"
+        }
+      }
+    },
+    "modal": {
+      "title": "Bulk Add Units",
+      "btn_cancel": "Cancel",
+      "btn_confirm": "Create Units",
+      "label_cantidad": "Number of units *",
+      "summary_part1": "There will be",
+      "summary_part2": "unit",
+      "verb_singular": "created",
+      "verb_plural": "created",
+      "suffix_plural": "s"
+    },
+    "empty": {
+      "title": "No units configured",
+      "desc": "Click 'Add Storage Unit' to start."
+    }
+  }
 }

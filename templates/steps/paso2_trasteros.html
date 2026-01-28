@@ -5,9 +5,8 @@
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
-                    <strong>Configuración de Trasteros</strong><br>
-                    Configure los trasteros disponibles con sus características y precios.
-                    Puede agregar múltiples trasteros usando el botón "Agregar Trastero".
+                    <strong>{{ t.step2.alert.title }}</strong><br>
+                    {{ t.step2.alert.text }}
                 </div>
             </div>
         </div>
@@ -17,7 +16,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <button type="button" class="btn btn-success" id="add-trastero">
-                <i class="bi bi-plus-circle me-2"></i>Agregar Trastero
+                <i class="bi bi-plus-circle me-2"></i>{{ t.step2.btn_add }}
             </button>
         </div>
     </div>
@@ -29,7 +28,8 @@
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">
                     <i class="bi bi-archive me-2"></i>
-                    Trastero <span class="trastero-number">1</span>
+                    <span class="trastero-number-label">{{ t.step2.item.title }}</span>
+                    <span class="trastero-number">1</span>
                 </h6>
                 <button type="button" class="btn btn-sm btn-outline-danger remove-trastero">
                     <i class="bi bi-trash"></i>
@@ -39,55 +39,55 @@
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Número de Trastero *
+                            {{ t.step2.item.fields.numero.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Número identificativo único del trastero"></i>
+                               title="{{ t.step2.item.fields.numero.tooltip }}"></i>
                         </label>
                         <input type="text"
                                class="form-control trastero-numero"
                                name="numero_trastero"
-                               placeholder="Ej: T001"
+                               placeholder="{{ t.step2.item.fields.numero.placeholder }}"
                                required>
                         <div class="invalid-feedback">
-                            Por favor, ingrese el número del trastero.
+                            {{ t.step2.item.fields.numero.error }}
                         </div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Metros Cuadrados *
+                            {{ t.step2.item.fields.metros.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Superficie en metros cuadrados (m²)"></i>
+                               title="{{ t.step2.item.fields.metros.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="number"
                                    class="form-control trastero-metros"
                                    name="metros"
-                                   placeholder="0.00"
+                                   placeholder="{{ t.step2.item.fields.metros.placeholder }}"
                                    step="0.01"
                                    min="0"
                                    required>
                             <span class="input-group-text">m²</span>
                         </div>
                         <div class="invalid-feedback">
-                            Por favor, ingrese los metros cuadrados.
+                            {{ t.step2.item.fields.metros.error }}
                         </div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Metros Cúbicos
+                            {{ t.step2.item.fields.cubicos.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Volumen en metros cúbicos (m³) - opcional"></i>
+                               title="{{ t.step2.item.fields.cubicos.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="number"
                                    class="form-control trastero-cubicos"
                                    name="metros_cubicos"
-                                   placeholder="0.00"
+                                   placeholder="{{ t.step2.item.fields.cubicos.placeholder }}"
                                    step="0.01"
                                    min="0">
                             <span class="input-group-text">m³</span>
@@ -96,57 +96,57 @@
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Precio sin IVA *
+                            {{ t.step2.item.fields.precio_sin_iva.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Precio mensual sin IVA incluido"></i>
+                               title="{{ t.step2.item.fields.precio_sin_iva.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="number"
                                    class="form-control trastero-precio-sin-iva"
                                    name="precio_sin_iva"
-                                   placeholder="0.00"
+                                   placeholder="{{ t.step2.item.fields.precio_sin_iva.placeholder }}"
                                    step="0.01"
                                    min="0"
                                    required>
                             <span class="input-group-text">€</span>
                         </div>
                         <div class="invalid-feedback">
-                            Por favor, ingrese el precio sin IVA.
+                            {{ t.step2.item.fields.precio_sin_iva.error }}
                         </div>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Precio con IVA
+                            {{ t.step2.item.fields.precio_con_iva.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Se calcula automáticamente (21% IVA)"></i>
+                               title="{{ t.step2.item.fields.precio_con_iva.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="number"
                                    class="form-control trastero-precio-con-iva"
                                    name="precio_con_iva"
-                                   placeholder="0.00"
+                                   placeholder="{{ t.step2.item.fields.precio_con_iva.placeholder }}"
                                    step="0.01"
                                    readonly>
                             <span class="input-group-text">€</span>
                         </div>
-                        <small class="text-muted">Calculado automáticamente (21% IVA)</small>
+                        <small class="text-muted">{{ t.step2.item.fields.precio_con_iva.helper }}</small>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label">
-                            Fianza
+                            {{ t.step2.item.fields.fianza.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Importe de la fianza requerida"></i>
+                               title="{{ t.step2.item.fields.fianza.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="number"
                                    class="form-control trastero-fianza"
                                    name="fianza"
-                                   placeholder="0.00"
+                                   placeholder="{{ t.step2.item.fields.fianza.placeholder }}"
                                    step="0.01"
                                    min="0">
                             <span class="input-group-text">€</span>
@@ -156,39 +156,6 @@
 
                 </div>
 
-                {#                <!-- Resumen del trastero -->#}
-                {#                <div class="row mt-3">#}
-                {#                    <div class="col-12">#}
-                {#                        <div class="alert alert-light border">#}
-                {#                            <div class="row text-center">#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Número</strong><br>#}
-                {#                                    <span class="text-primary trastero-resumen-numero">-</span>#}
-                {#                                </div>#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Superficie</strong><br>#}
-                {#                                    <span class="text-primary trastero-resumen-metros">0 m²</span>#}
-                {#                                </div>#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Volumen</strong><br>#}
-                {#                                    <span class="text-primary trastero-resumen-cubicos">0 m³</span>#}
-                {#                                </div>#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Sin IVA</strong><br>#}
-                {#                                    <span class="text-success trastero-resumen-sin-iva">0.00 €</span>#}
-                {#                                </div>#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Con IVA</strong><br>#}
-                {#                                    <span class="text-success trastero-resumen-con-iva">0.00 €</span>#}
-                {#                                </div>#}
-                {#                                <div class="col-md-2">#}
-                {#                                    <strong>Fianza</strong><br>#}
-                {#                                    <span class="text-warning trastero-resumen-fianza">0.00 €</span>#}
-                {#                                </div>#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                    </div>#}
-                {#                </div>#}
             </div>
         </div>
     </div>
@@ -201,7 +168,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-archive me-2"></i>
-                        Agregar trasteros en lote
+                        {{ t.step2.modal.title }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -213,7 +180,7 @@
                         <!-- Metros cuadrados -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
-                                Metros Cuadrados *
+                                {{ t.step2.item.fields.metros.label }}
                             </label>
                             <div class="input-group">
                                 <input type="number"
@@ -229,7 +196,7 @@
                         <!-- Metros cúbicos -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
-                                Metros Cúbicos
+                                {{ t.step2.item.fields.cubicos.label }}
                             </label>
                             <div class="input-group">
                                 <input type="number"
@@ -244,7 +211,7 @@
                         <!-- Precio sin IVA -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
-                                Precio sin IVA *
+                                {{ t.step2.item.fields.precio_sin_iva.label }}
                             </label>
                             <div class="input-group">
                                 <input type="number"
@@ -260,7 +227,7 @@
                         <!-- Fianza -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
-                                Fianza
+                                {{ t.step2.item.fields.fianza.label }}
                             </label>
                             <div class="input-group">
                                 <input type="number"
@@ -275,7 +242,7 @@
                         <!-- Cantidad -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">
-                                Cantidad de trasteros *
+                                {{ t.step2.modal.label_cantidad }}
                             </label>
                             <input type="number"
                                    class="form-control"
@@ -288,10 +255,12 @@
                     </div>
 
                     <div class="alert alert-info mt-2">
-                        Se <span id="texto-trasteros-verbo">crearán</span>
-                        <strong><span id="texto-trasteros-cantidad">1</span> trastero<span
-                                id="texto-trasteros-plural">s</span></strong>
-                        con estas mismas características.
+                        {{ t.step2.modal.summary_part1 }} <span id="texto-trasteros-verbo"></span>
+                        <strong>
+                            <span id="texto-trasteros-cantidad">1</span>
+                            {{ t.step2.modal.summary_part2 }}<span id="texto-trasteros-plural"></span>
+
+                        </strong>
                     </div>
                 </div>
 
@@ -299,12 +268,12 @@
                     <button type="button"
                             class="btn btn-outline-secondary"
                             data-bs-dismiss="modal">
-                        Cancelar
+                        {{ t.step2.modal.btn_cancel }}
                     </button>
                     <button type="button"
                             class="btn btn-primary"
                             id="btnConfirmarTrasteros">
-                        Crear trasteros
+                        {{ t.step2.modal.btn_confirm }}
                     </button>
                 </div>
 
@@ -315,8 +284,8 @@
     <!-- Mensaje cuando no hay trasteros -->
     <div id="no-trasteros-message" class="text-center py-5">
         <i class="bi bi-archive display-1 text-muted mb-3"></i>
-        <h5 class="text-muted">No hay trasteros configurados</h5>
-        <p class="text-muted">Haga clic en "Agregar Trastero" para comenzar a configurar los trasteros disponibles.</p>
+        <h5 class="text-muted">{{ t.step2.empty.title }}</h5>
+        <p class="text-muted">{{ t.step2.empty.desc }}</p>
     </div>
 
 
@@ -324,6 +293,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const t = window.I18N.step2;
+
         let trasteroCounter = 0;
         const container = document.getElementById('trasteros-container');
         const template = document.getElementById('trastero-template');
@@ -346,11 +317,11 @@
             textoCantidad.textContent = cantidad;
 
             if (cantidad === 1) {
-                textoPlural.style.display = 'none';
-                textoVerbo.textContent = 'creará';
+                textoPlural.textContent = "";
+                textoVerbo.textContent = t.modal.verb_singular;
             } else {
-                textoPlural.style.display = 'inline';
-                textoVerbo.textContent = 'crearán';
+                textoPlural.textContent = t.modal.suffix_plural;
+                textoVerbo.textContent = t.modal.verb_plural;
             }
         }
 
@@ -370,7 +341,13 @@
             el.id = `trastero-${trasteroCounter}`;
             el.style.display = 'block';
 
+            // Traducir el título del card dinámicamente
+            el.querySelector('.trastero-number-label').textContent = t.item.title;
             el.querySelector('.trastero-number').textContent = trasteroCounter;
+
+
+            const tooltips = el.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltips.forEach(tp => new bootstrap.Tooltip(tp));
 
             // Indexar names
             el.querySelectorAll('input, textarea').forEach(input => {
