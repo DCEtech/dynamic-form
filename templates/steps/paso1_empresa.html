@@ -5,9 +5,8 @@
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
-                    <strong>Información de la Empresa</strong><br>
-                    Complete los datos básicos de su empresa. Todos los campos marcados con (*) son obligatorios.
-                    Esta información se utilizará para la configuración inicial del sistema.
+                    <strong>{{ t.step1.alert.title }}</strong><br>
+                    {{ t.step1.alert.text }}
                 </div>
             </div>
         </div>
@@ -17,108 +16,97 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-building me-2"></i>Información Fiscal
+                <i class="bi bi-building me-2"></i>{{ t.step1.sections.fiscal }}
             </h5>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="nombre_empresa" class="form-label">
-                Nombre de la Empresa o Autónomo *
+                {{ t.step1.fields.nombre.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Nombre completo de la empresa o autónomo tal como aparece en documentos oficiales"></i>
+                   title="{{ t.step1.fields.nombre.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="nombre_empresa"
                    name="nombre"
-                   placeholder="Ej: Trasteros Madrid S.L. | Juan Perez"
+                   placeholder="{{ t.step1.fields.nombre.placeholder }}"
                    required>
             <div class="invalid-feedback">
-                Por favor, ingrese el nombre de la empresa.
+                {{ t.step1.fields.nombre.error }}
             </div>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="nif_empresa" class="form-label">
-                NIF/CIF *
+                {{ t.step1.fields.nif.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Número de Identificación Fiscal (formato: 12345678A o A12345678)"></i>
+                   title="{{ t.step1.fields.nif.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="nif_empresa"
                    name="nif"
-                   placeholder="Ej: 12345678A"
+                   placeholder="{{ t.step1.fields.nif.placeholder }}"
                    pattern="^[0-9]{8}[A-Z]$|^[A-Z][0-9]{7}[A-Z0-9]$"
                    required>
             <div class="invalid-feedback">
-                Formato de NIF/CIF inválido. Use el formato 12345678A o A12345678.
+                {{ t.step1.fields.nif.error }}
             </div>
         </div>
 
         <div class="col-12 mb-3">
             <label for="direccion_empresa" class="form-label">
-                Dirección Completa *
+                {{ t.step1.fields.direccion.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Dirección completa incluyendo calle, número, piso, etc."></i>
+                   title="{{ t.step1.fields.direccion.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="direccion_empresa"
                    name="direccion"
-                   placeholder="Ej: Calle Mayor, 123, 2º A"
+                   placeholder="{{ t.step1.fields.direccion.placeholder }}"
                    required>
             <div class="invalid-feedback">
-                Por favor, ingrese la dirección completa.
+                {{ t.step1.fields.direccion.error }}
             </div>
         </div>
 
         <div class="col-md-4 mb-3">
             <label for="codigo_postal" class="form-label">
-                Código Postal *
+                {{ t.step1.fields.cp.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Código postal de 5 dígitos"></i>
+                   title="{{ t.step1.fields.cp.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="codigo_postal"
                    name="codigo_postal"
-                   placeholder="Ej: 28001"
+                   placeholder="{{ t.step1.fields.cp.placeholder }}"
                    pattern="^[0-9]{5}$"
                    maxlength="5"
                    required>
             <div class="invalid-feedback">
-                El código postal debe tener 5 dígitos.
+                {{ t.step1.fields.cp.error }}
             </div>
         </div>
 
         <div class="col-md-8 mb-3">
             <label for="provincia" class="form-label">
-                Provincia *
+                {{ t.step1.fields.provincia.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Seleccione la provincia donde se encuentra la empresa"></i>
+                   title="{{ t.step1.fields.provincia.tooltip }}"></i>
             </label>
             <select class="form-select" id="provincia" name="provincia" required>
-                <option value="">Seleccione una provincia</option>
-                <option value="Madrid">Madrid</option>
-                <option value="Barcelona">Barcelona</option>
-                <option value="Valencia">Valencia</option>
-                <option value="Sevilla">Sevilla</option>
-                <option value="Zaragoza">Zaragoza</option>
-                <option value="Málaga">Málaga</option>
-                <option value="Murcia">Murcia</option>
-                <option value="Palma">Palma</option>
-                <option value="Las Palmas">Las Palmas</option>
-                <option value="Bilbao">Bilbao</option>
-                <!-- Agregar más provincias según necesidad -->
+                <option value="">{{ t.step1.fields.provincia.default_option }}</option>
             </select>
             <div class="invalid-feedback">
-                Por favor, seleccione una provincia.
+                {{ t.step1.fields.provincia.error }}
             </div>
         </div>
     </div>
@@ -127,61 +115,61 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-telephone me-2"></i>Información de Contacto
+                <i class="bi bi-telephone me-2"></i>{{ t.step1.sections.contact }}
             </h5>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="telefono" class="form-label">
-                Teléfono *
+                {{ t.step1.fields.telefono.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Teléfono de contacto (formato: +34 XXX XXX XXX)"></i>
+                   title="{{ t.step1.fields.telefono.tooltip }}"></i>
             </label>
             <input type="tel"
                    class="form-control"
                    id="telefono"
                    name="telefono"
-                   placeholder="Ej: +34 912 345 678"
+                   placeholder="{{ t.step1.fields.telefono.placeholder }}"
                    pattern="^(\+34|0034|34)?[6789][0-9]{8}$"
                    required>
             <div class="invalid-feedback">
-                Formato de teléfono inválido. Use el formato +34 XXX XXX XXX.
+                {{ t.step1.fields.telefono.error}}
             </div>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="email" class="form-label">
-                Email Corporativo *
+                {{ t.step1.fields.email.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Dirección de email principal de la empresa"></i>
+                   title="{{ t.step1.fields.email.tooltip }}"></i>
             </label>
             <input type="email"
                    class="form-control"
                    id="email"
                    name="email"
-                   placeholder="Ej: info@empresa.com"
+                   placeholder="{{ t.step1.fields.email.placeholder }}"
                    required>
             <div class="invalid-feedback">
-                Por favor, ingrese un email válido.
+                {{ t.step1.fields.email.error }}
             </div>
         </div>
 
         <div class="col-12 mb-3">
             <label for="web" class="form-label">
-                Página Web
+                {{ t.step1.fields.web.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="URL de la página web de la empresa (opcional)"></i>
+                   title="{{ t.step1.fields.web.tooltip }}"></i>
             </label>
             <input type="url"
                    class="form-control"
                    id="web"
                    name="web"
-                   placeholder="Ej: https://www.empresa.com">
+                   placeholder="{{ t.step1.fields.web.placeholder }}">
             <div class="invalid-feedback">
-                Por favor, ingrese una URL válida.
+                {{ t.step1.fields.web.error }}
             </div>
         </div>
     </div>
@@ -190,57 +178,57 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-bank me-2"></i>Información Bancaria
+                <i class="bi bi-bank me-2"></i>{{ t.step1.sections.bank }}
             </h5>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="nombre_banco" class="form-label">
-                Nombre del Banco
+                {{ t.step1.fields.banco.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Nombre de la entidad bancaria"></i>
+                   title="{{ t.step1.fields.banco.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="nombre_banco"
                    name="nombre_banco"
-                   placeholder="Ej: Banco Santander">
+                   placeholder="{{ t.step1.fields.banco.placeholder }}">
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="bic_switch" class="form-label">
-                BIC/SWIFT
+                {{ t.step1.fields.bic.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Es el identificador internacional del banco. Se puede encontrar en el app bancaria (sección 'Detalles de cuenta') o en los extractos mensuales. Debe contener de 8 a 11 caracteres"></i>
+                   title="{{ t.step1.fields.bic.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="bic_switch"
                    name="bic_switch"
-                   placeholder="Ej: BSCHESMM"
+                   placeholder="{{ t.step1.fields.bic.placeholder }}"
                    pattern="^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$">
             <div class="invalid-feedback">
-                Formato de BIC/SWIFT inválido.
+                {{ t.step1.fields.bic.error }}
             </div>
         </div>
 
         <div class="col-12 mb-3">
             <label for="cuenta_bancaria" class="form-label">
-                Cuenta Bancaria (IBAN)
+                {{ t.step1.fields.iban.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Número de cuenta en formato IBAN (ES + 22 dígitos)"></i>
+                   title="{{ t.step1.fields.iban.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="cuenta_bancaria"
                    name="cuenta_bancaria"
-                   placeholder="Ej: ES91 2100 0418 4502 0005 1332"
+                   placeholder="{{ t.step1.fields.iban.placeholder }}"
                    pattern="^ES[0-9]{2}[0-9]{4}[0-9]{4}[0-9]{1}[0-9]{1}[0-9]{10}$">
             <div class="invalid-feedback">
-                Formato de IBAN español inválido. Use el formato ES91 2100 0418 4502 0005 1332.
+                {{ t.step1.fields.iban.error }}
             </div>
         </div>
     </div>
@@ -249,50 +237,66 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-gear me-2"></i>Configuración Adicional
+                <i class="bi bi-gear me-2"></i>{{ t.step1.sections.additional }}
             </h5>
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="identificador_sepa" class="form-label">
-                Identificador Acreedor SEPA (Solicitar al Banco)
+                {{ t.step1.fields.sepa.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Identificador único para domiciliaciones bancarias SEPA"></i>
+                   title="{{ t.step1.fields.sepa.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="identificador_sepa"
                    name="identificador_sepa"
-                   placeholder="Ej: ES98ZZZ12345678">
+                   placeholder="{{ t.step1.fields.sepa.placeholder }}">
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="numeracion_facturas" class="form-label">
-                Numeración de Facturas
+                {{ t.step1.fields.facturacion.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Formato de numeración para las facturas (ej: FAC-2024-)"></i>
+                   title="{{ t.step1.fields.facturacion.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="numeracion_facturas"
                    name="numeracion_facturas"
-                   placeholder="En caso de no indicar, comenzamos en 0">
+                   placeholder="{{ t.step1.fields.facturacion.placeholder }}">
         </div>
 
         <div class="col-md-6 mb-3">
             <label for="numeracion_facturas_rectificativas" class="form-label">
-                Numeración de Facturas Rectificativas
+                {{ t.step1.fields.rectificativas.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Formato de numeración para las facturas (ej: FAC-2024-)"></i>
+                   title="{{ t.step1.fields.rectificativas.tooltip }}"></i>
             </label>
             <input type="text"
                    class="form-control"
                    id="numeracion_facturas_rectificativas"
                    name="numeracion_facturas_rectificativas"
-                   placeholder="En caso de no indicar, comenzamos en 0">
+                   placeholder="{{ t.step1.fields.rectificativas.placeholder }}">
         </div>
     </div>
 </div>
+<script>
+
+    const provincias = window.I18N.provincias;
+    const selectProvincia = document.getElementById("provincia");
+
+    // Limpiamos opciones previas por si acaso
+    selectProvincia.innerHTML = `<option value="">${window.I18N.step1.fields.provincia.default_option}</option>`;
+
+    provincias.forEach(provincia => {
+        const option = document.createElement("option");
+        option.value = provincia;
+        option.textContent = provincia;
+        selectProvincia.appendChild(option);
+    });
+</script>
+

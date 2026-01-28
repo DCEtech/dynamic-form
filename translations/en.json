@@ -1,0 +1,148 @@
+{
+  "step1": {
+    "alert": {
+      "title": "Company Information",
+      "text": "Complete your company's basic details. All fields marked with (*) are required. This information will be used for the initial system setup."
+    },
+    "sections": {
+      "fiscal": "Tax Information",
+      "contact": "Contact Information",
+      "bank": "Bank Details",
+      "additional": "Additional Configuration"
+    },
+    "fields": {
+      "nombre": {
+        "label": "Company or Freelancer Name *",
+        "tooltip": "Full name of the company or freelancer as it appears on official documents",
+        "placeholder": "e.g., Madrid Storage S.L. | John Doe",
+        "error": "Please enter the company name."
+      },
+      "nif": {
+        "label": "Tax ID (NIF/CIF) *",
+        "tooltip": "Tax Identification Number (format: 12345678A or A12345678)",
+        "placeholder": "e.g., 12345678A",
+        "error": "Invalid Tax ID format. Use 12345678A or A12345678."
+      },
+      "direccion": {
+        "label": "Full Address *",
+        "tooltip": "Full address including street, number, floor, etc.",
+        "placeholder": "e.g., 123 Main St, 2nd Floor",
+        "error": "Please enter the full address."
+      },
+      "cp": {
+        "label": "Postal Code *",
+        "tooltip": "5-digit postal code",
+        "placeholder": "e.g., 28001",
+        "error": "Postal code must be 5 digits."
+      },
+      "provincia": {
+        "label": "Province *",
+        "tooltip": "Select the province where the company is located",
+        "default_option": "Select a province",
+        "error": "Please select a province."
+      },
+      "telefono": {
+        "label": "Phone *",
+        "tooltip": "Contact phone (format: +34 XXX XXX XXX)",
+        "placeholder": "e.g., +34 912 345 678",
+        "error": "Invalid phone format. Use +34 XXX XXX XXX."
+      },
+      "email": {
+        "label": "Corporate Email *",
+        "tooltip": "Primary company email address",
+        "placeholder": "e.g., info@company.com",
+        "error": "Please enter a valid email."
+      },
+      "web": {
+        "label": "Website",
+        "tooltip": "Company website URL (optional)",
+        "placeholder": "e.g., https://www.company.com",
+        "error": "Please enter a valid URL."
+      },
+      "banco": {
+        "label": "Bank Name",
+        "tooltip": "Name of the banking institution",
+        "placeholder": "e.g., Santander Bank"
+      },
+      "bic": {
+        "label": "BIC/SWIFT",
+        "tooltip": "International bank identifier. Found in your banking app (Account details) or statements. 8-11 characters",
+        "placeholder": "e.g., BSCHESMM",
+        "error": "Invalid BIC/SWIFT format."
+      },
+      "iban": {
+        "label": "Bank Account (IBAN)",
+        "tooltip": "Account number in IBAN format (ES + 22 digits)",
+        "placeholder": "e.g., ES91 2100 0418 4502 0005 1332",
+        "error": "Invalid Spanish IBAN format."
+      },
+      "sepa": {
+        "label": "SEPA Creditor ID",
+        "tooltip": "Unique identifier for SEPA direct debits (request from your bank)",
+        "placeholder": "e.g., ES98ZZZ12345678"
+      },
+      "facturacion": {
+        "label": "Invoice Numbering",
+        "tooltip": "Numbering format for invoices (e.g., INV-2024-)",
+        "placeholder": "If blank, we start at 0"
+      },
+      "rectificativas": {
+        "label": "Credit Note Numbering",
+        "tooltip": "Numbering format for credit notes (e.g., CN-2024-)",
+        "placeholder": "If blank, we start at 0"
+      }
+    }
+  },
+  "provincias": [
+    "Alava",
+    "Albacete",
+    "Alicante",
+    "Almeria",
+    "Asturias",
+    "Avila",
+    "Badajoz",
+    "Barcelona",
+    "Burgos",
+    "Caceres",
+    "Cadiz",
+    "Cantabria",
+    "Castellon",
+    "Ciudad Real",
+    "Cordoba",
+    "A Coruna",
+    "Cuenca",
+    "Girona",
+    "Granada",
+    "Guadalajara",
+    "Guipuzcoa",
+    "Huelva",
+    "Huesca",
+    "Balearic Islands",
+    "Jaen",
+    "La Rioja",
+    "Las Palmas",
+    "Leon",
+    "Lleida",
+    "Lugo",
+    "Madrid",
+    "Malaga",
+    "Murcia",
+    "Navarre",
+    "Ourense",
+    "Palencia",
+    "Pontevedra",
+    "Salamanca",
+    "Santa Cruz de Tenerife",
+    "Segovia",
+    "Seville",
+    "Soria",
+    "Tarragona",
+    "Teruel",
+    "Toledo",
+    "Valencia",
+    "Valladolid",
+    "Biscay",
+    "Zamora",
+    "Saragossa"
+  ]
+}

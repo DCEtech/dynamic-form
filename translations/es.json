@@ -1,0 +1,148 @@
+{
+  "step1": {
+    "alert": {
+      "title": "Información de la Empresa",
+      "text": "Complete los datos básicos de su empresa. Todos los campos marcados con (*) son obligatorios. Esta información se utilizará para la configuración inicial del sistema."
+    },
+    "sections": {
+      "fiscal": "Información Fiscal",
+      "contact": "Información de Contacto",
+      "bank": "Información Bancaria",
+      "additional": "Configuración Adicional"
+    },
+    "fields": {
+      "nombre": {
+        "label": "Nombre de la Empresa o Autónomo *",
+        "tooltip": "Nombre completo de la empresa o autónomo tal como aparece en documentos oficiales",
+        "placeholder": "Ej: Trasteros Madrid S.L. | Juan Perez",
+        "error": "Por favor, ingrese el nombre de la empresa."
+      },
+      "nif": {
+        "label": "NIF/CIF *",
+        "tooltip": "Número de Identificación Fiscal (formato: 12345678A o A12345678)",
+        "placeholder": "Ej: 12345678A",
+        "error": "Formato de NIF/CIF inválido. Use el formato 12345678A o A12345678."
+      },
+      "direccion": {
+        "label": "Dirección Completa *",
+        "tooltip": "Dirección completa incluyendo calle, número, piso, etc.",
+        "placeholder": "Ej: Calle Mayor, 123, 2º A",
+        "error": "Por favor, ingrese la dirección completa."
+      },
+      "cp": {
+        "label": "Código Postal *",
+        "tooltip": "Código postal de 5 dígitos",
+        "placeholder": "Ej: 28001",
+        "error": "El código postal debe tener 5 dígitos."
+      },
+      "provincia": {
+        "label": "Provincia *",
+        "tooltip": "Seleccione la provincia donde se encuentra la empresa",
+        "default_option": "Seleccione una provincia",
+        "error": "Por favor, seleccione una provincia."
+      },
+      "telefono": {
+        "label": "Teléfono *",
+        "tooltip": "Teléfono de contacto (formato: +34 XXX XXX XXX sin espacios)",
+        "placeholder": "Ej: +34912345678",
+        "error": "Formato de teléfono inválido. Use el formato +34 XXX XXX XXX."
+      },
+      "email": {
+        "label": "Email Corporativo *",
+        "tooltip": "Dirección de email principal de la empresa",
+        "placeholder": "Ej: info@empresa.com",
+        "error": "Por favor, ingrese un email válido."
+      },
+      "web": {
+        "label": "Página Web",
+        "tooltip": "URL de la página web de la empresa (opcional)",
+        "placeholder": "Ej: https://www.empresa.com",
+        "error": "Por favor, ingrese una URL válida."
+      },
+      "banco": {
+        "label": "Nombre del Banco",
+        "tooltip": "Nombre de la entidad bancaria",
+        "placeholder": "Ej: Banco Santander"
+      },
+      "bic": {
+        "label": "BIC/SWIFT",
+        "tooltip": "Es el identificador internacional del banco. Se puede encontrar en el app bancaria (sección 'Detalles de cuenta') o en los extractos mensuales. Debe contener de 8 a 11 caracteres",
+        "placeholder": "Ej: BSCHESMM",
+        "error": "Formato de BIC/SWIFT inválido."
+      },
+      "iban": {
+        "label": "Cuenta Bancaria (IBAN)",
+        "tooltip": "Número de cuenta en formato IBAN (ES + 22 dígitos)",
+        "placeholder": "Ej: ES91 2100 0418 4502 0005 1332",
+        "error": "Formato de IBAN español inválido."
+      },
+      "sepa": {
+        "label": "Identificador Acreedor SEPA (Solicitar al Banco)",
+        "tooltip": "Identificador único para domiciliaciones bancarias SEPA",
+        "placeholder": "Ej: ES98ZZZ12345678"
+      },
+      "facturacion": {
+        "label": "Numeración de Facturas",
+        "tooltip": "Formato de numeración para las facturas (ej: FAC-2024-)",
+        "placeholder": "En caso de no indicar, comenzamos en 0"
+      },
+      "rectificativas": {
+        "label": "Numeración de Facturas Rectificativas",
+        "tooltip": "Formato de numeración para las facturas (ej: FAC-2024-)",
+        "placeholder": "En caso de no indicar, comenzamos en 0"
+      }
+    }
+  },
+  "provincias": [
+    "Álava",
+    "Albacete",
+    "Alicante",
+    "Almería",
+    "Asturias",
+    "Ávila",
+    "Badajoz",
+    "Barcelona",
+    "Burgos",
+    "Cáceres",
+    "Cádiz",
+    "Cantabria",
+    "Castellón",
+    "Ciudad Real",
+    "Córdoba",
+    "A Coruña",
+    "Cuenca",
+    "Girona",
+    "Granada",
+    "Guadalajara",
+    "Guipúzcoa",
+    "Huelva",
+    "Huesca",
+    "Illes Balears",
+    "Jaén",
+    "La Rioja",
+    "Las Palmas",
+    "León",
+    "Lleida",
+    "Lugo",
+    "Madrid",
+    "Málaga",
+    "Murcia",
+    "Navarra",
+    "Ourense",
+    "Palencia",
+    "Pontevedra",
+    "Salamanca",
+    "Santa Cruz de Tenerife",
+    "Segovia",
+    "Sevilla",
+    "Soria",
+    "Tarragona",
+    "Teruel",
+    "Toledo",
+    "Valencia",
+    "Valladolid",
+    "Vizcaya",
+    "Zamora",
+    "Zaragoza"
+  ]
+}

@@ -48,6 +48,37 @@ step_names = [
 storage = StorageService()
 
 
+# Infraestructura para funcionalidad Multi-Idiomas
+
+def load_translations(lang):
+    """"Carga el archivo JSON del idioma solicitado"""
+    path = os.path.join(app.root_path, 'translations', f'{lang}.json')
+    try:
+        with open(path, encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        path = os.path.join(app.root_path, 'translations', 'es.json')
+        with open(path, encoding='utf-8') as f:
+            return json.load(f)
+
+
+@app.context_processor
+def inject_translations():
+    """"Inyecta el diccionario 't' en todos los templates automaticamente"""
+    lang = session.get('lang', 'es')
+    return {
+        't': load_translations(lang),
+        'current_lang': lang
+    }
+
+
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in ['es', 'en']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('index'))
+
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
