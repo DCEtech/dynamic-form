@@ -11,6 +11,13 @@
     },
     "placeholders": {
       "select": "Seleccione una opción..."
+    },
+    "yes": "SÍ",
+    "no": "NO",
+    "status": {
+      "configured": "Configurado",
+      "incomplete": "Incompleto",
+      "not_configured": "No configurado"
     }
   },
   "step1": {
@@ -288,6 +295,53 @@
       "max_reached": "Máximo 3 usuarios permitidos según las licencias adquiridas.",
       "email_exists": "Este email ya está siendo usado por otro usuario."
     }
+  },
+  "step4": {
+    "alert": {
+      "title": "Configuración del Servidor de Correo",
+      "text": "Seleccione su proveedor o configure manualmente el servidor de salida para notificaciones."
+    },
+    "provider": {
+      "title": "Proveedor de Correo",
+      "label": "Seleccione su proveedor de email",
+      "hint": "Si elige un proveedor conocido, completaremos los datos técnicos por usted.",
+      "manual": "-- Otro (Configuración manual) --",
+      "hints": {
+        "gmail": "Nota: Use una 'Contraseña de aplicación' generada desde su cuenta de Google.",
+        "outlook": "Nota: Asegúrese de tener habilitado el acceso SMTP autenticado en Microsoft 365.",
+        "yahoo": "Nota: Requiere una contraseña de aplicación generada en Yahoo Security.",
+        "icloud": "Nota: Use su ID de Apple y una contraseña específica de aplicación.",
+        "custom": "Configure manualmente los datos de su servidor SMTP."
+      }
+    },
+    "technical": {
+      "title": "Servidor de Correo Saliente",
+      "smtp": "Servidor SMTP *",
+      "port": {
+        "label": "Puerto SMTP *",
+        "placeholder": "Seleccione un puerto"
+      },
+      "address": "Dirección del Servidor *",
+      "ssl_label": "Usar SSL/TLS *"
+    },
+    "credentials": {
+      "title": "Credenciales de Autenticación",
+      "email": "Dirección Email *",
+      "pass": "Contraseña *"
+    },
+    "notifications": {
+      "label": "Email para Notificaciones *"
+    },
+    "summary": {
+      "title": "Resumen de Configuración",
+      "server": "Servidor",
+      "port": "Puerto",
+      "ssl": "SSL/TLS",
+      "user": "Usuario",
+      "notif": "Notificaciones",
+      "status": "Estado"
+    }
   }
 }
+
 

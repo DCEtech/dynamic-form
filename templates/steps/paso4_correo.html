@@ -5,8 +5,8 @@
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
-                    <strong>Configuración del Servidor de Correo</strong><br>
-                    Seleccione su proveedor o configure manualmente el servidor de salida para notificaciones.
+                    <strong>{{ t.step4.alert.title }}</strong><br>
+                    {{ t.step4.alert.text }}
                 </div>
             </div>
         </div>
@@ -16,21 +16,21 @@
     <div class="row mb-4">
         <div class="col-md-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-envelope-check me-2"></i>Proveedor de Correo
+                <i class="bi bi-envelope-check me-2"></i>{{ t.step4.provider.title }}
             </h5>
             <div class="card bg-light border-dashed">
                 <div class="card-body">
-                    <label for="proveedor_selector" class="form-label fw-bold">Seleccione su proveedor de email</label>
+                    <label for="proveedor_selector" class="form-label fw-bold">{{ t.step4.provider.label }}</label>
                     <select class="form-select form-select-lg border-primary" id="proveedor_selector"
                             name="proveedor_tipo">
-                        <option value="custom">-- Otro (Configuración manual) --</option>
+                        <option value="custom">{{ t.step4.provider.manual }}</option>
                         <option value="gmail">Gmail / Google Workspace</option>
                         <option value="outlook">Outlook / Hotmail / Office 365</option>
                         <option value="yahoo">Yahoo Mail</option>
                         <option value="icloud">iCloud Mail</option>
                     </select>
                     <div class="form-text mt-2" id="provider-hint">
-                        Si elige un proveedor conocido, completaremos los datos técnicos por usted.
+                        {{ t.step4.provider.hint }}
                     </div>
                 </div>
             </div>
@@ -42,40 +42,40 @@
         <div class="row mb-4">
             <div class="col-12">
                 <h5 class="text-primary mb-3">
-                    <i class="bi bi-server me-2"></i>Servidor de Correo Saliente
+                    <i class="bi bi-server me-2"></i>{{ t.step4.technical.title }}
                 </h5>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="servidor_saliente" class="form-label">Servidor SMTP *</label>
+                <label for="servidor_saliente" class="form-label">{{ t.step4.technical.smtp }}</label>
                 <input type="text" class="form-control" id="servidor_saliente" name="servidor_saliente" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="puerto_smtp" class="form-label">Puerto SMTP *</label>
+                <label for="puerto_smtp" class="form-label">{{ t.step4.technical.port.label }}</label>
                 <select class="form-select" id="puerto_smtp" name="puerto" required>
-                    <option value="">Seleccione un puerto</option>
+                    <option value="">{{ t.step4.technical.port.placeholder }}</option>
                     <option value="587">587 (STARTTLS)</option>
                     <option value="465">465 (SSL/TLS)</option>
-                    <option value="25">25 (Sin cifrado)</option>
+                    <option value="25">25</option>
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="direccion_servidor" class="form-label">Dirección del Servidor *</label>
+                <label for="direccion_servidor" class="form-label">{{ t.step4.technical.address }}</label>
                 <input type="text" class="form-control" id="direccion_servidor" name="direccion_servidor" required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Usar SSL/TLS *</label>
+                <label class="form-label">{{ t.step4.technical.ssl_label }}</label>
                 <div class="d-flex gap-3 mt-2">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_si" value="SI" required>
-                        <label class="form-check-label" for="ssl_si">SÍ</label>
+                        <label class="form-check-label" for="ssl_si">{{ t.common.yes }}</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="usa_ssl" id="ssl_no" value="NO">
-                        <label class="form-check-label" for="ssl_no">NO</label>
+                        <label class="form-check-label" for="ssl_no">{{ t.common.no }}</label>
                     </div>
                 </div>
             </div>
@@ -86,15 +86,15 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-key me-2"></i>Credenciales de Autenticación
+                <i class="bi bi-key me-2"></i>{{ t.step4.credentials.title }}
             </h5>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="usuario_email" class="form-label">Dirección Email *</label>
+            <label for="usuario_email" class="form-label">{{ t.step4.credentials.email }}</label>
             <input type="email" class="form-control" id="usuario_email" name="usuario_email" required>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="password_email" class="form-label">Contraseña *</label>
+            <label for="password_email" class="form-label">{{ t.step4.credentials.pass }}</label>
             <div class="input-group">
                 <input type="password" class="form-control" id="password_email" name="password_email" required>
                 <button class="btn btn-outline-secondary" type="button" id="toggle-email-password">
@@ -109,7 +109,7 @@
     <!-- Campo de Notificaciones -->
     <div class="row mb-4">
         <div class="col-12 mb-3">
-            <label for="email_notificaciones" class="form-label">Email para Notificaciones *</label>
+            <label for="email_notificaciones" class="form-label">{{ t.step4.notifications.label }}</label>
             <input type="email" class="form-control" id="email_notificaciones" name="email_notificaciones" required>
         </div>
     </div>
@@ -121,21 +121,21 @@
             <div class="card border-primary">
                 <div class="card-header bg-primary text-white">
                     <h6 class="mb-0">
-                        <i class="bi bi-list-check me-2"></i>Resumen de Configuración
+                        <i class="bi bi-list-check me-2"></i>{{ t.step4.summary.title }}
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <strong>Servidor:</strong> <span id="resumen-servidor">-</span><br>
-                            <strong>Puerto:</strong> <span id="resumen-puerto">-</span><br>
-                            <strong>SSL/TLS:</strong> <span id="resumen-ssl">-</span>
+                            <strong>{{ t.step4.summary.server }}:</strong> <span id="resumen-servidor">-</span><br>
+                            <strong>{{ t.step4.summary.port }}:</strong> <span id="resumen-puerto">-</span><br>
+                            <strong>{{ t.step4.summary.ssl }}:</strong> <span id="resumen-ssl">-</span>
                         </div>
                         <div class="col-md-6">
-                            <strong>Usuario:</strong> <span id="resumen-usuario">-</span><br>
-                            <strong>Notificaciones:</strong> <span id="resumen-notificaciones">-</span><br>
-                            <strong>Estado:</strong> <span id="resumen-estado"
-                                                           class="badge bg-secondary">No configurado</span>
+                            <strong>{{ t.step4.summary.user }}:</strong> <span id="resumen-usuario">-</span><br>
+                            <strong>{{ t.step4.summary.notif }}:</strong> <span id="resumen-notificaciones">-</span><br>
+                            <strong>{{ t.step4.summary.status }}:</strong> <span id="resumen-estado"
+                                                                                 class="badge bg-secondary">No configurado</span>
                         </div>
                     </div>
                 </div>
@@ -145,6 +145,8 @@
 </div>
 
 <script>
+    const t = window.I18N.step4;
+    const c = window.I18N.common;
 
     // 1. Definición de Proveedores
     const EMAIL_PROVIDERS = {
@@ -152,25 +154,25 @@
             smtp: 'smtp.gmail.com',
             port: '587',
             ssl: 'SI',
-            help: 'Nota: Use una "Contraseña de aplicación" generada desde su cuenta de Google.'
+            help: t.provider.hints.gmail
         },
         outlook: {
             smtp: 'smtp.office365.com',
             port: '587',
             ssl: 'SI',
-            help: 'Nota: Asegúrese de tener habilitado el acceso SMTP autenticado en Microsoft 365.'
+            help: t.provider.hints.outlook
         },
         yahoo: {
             smtp: 'smtp.mail.yahoo.com',
             port: '465',
             ssl: 'SI',
-            help: 'Nota: Requiere una contraseña de aplicación generada en Yahoo Security.'
+            help: t.provider.hints.yahoo
         },
         icloud: {
             smtp: 'smtp.mail.me.com',
             port: '587',
             ssl: 'SI',
-            help: 'Nota: Use su ID de Apple y una contraseña específica de aplicación.'
+            help: t.provider.hints.icloud
         }
     };
 
@@ -181,7 +183,7 @@
     proveedorSelector.addEventListener('change', function () {
         const providerKey = this.value;
         const config = EMAIL_PROVIDERS[providerKey];
-        const helpText = document.getElementById('password_help');
+        const helpText = document.getElementById('provider-hint');
 
         if (config) {
             // Autocompletar campos
@@ -206,12 +208,11 @@
             document.getElementById('ssl_si').checked = false;
             document.getElementById('ssl_no').checked = false;
 
-            helpText.textContent = 'Configure manualmente los datos de su servidor SMTP.';
+            helpText.textContent = t.provider.hints.custom;
             helpText.classList.remove('text-primary');
             tecnicoContainer.style.display = 'block';
         }
 
-        // Forzar actualización de validación y resumen
         updateResumen();
 
         // Disparar validación visual en cada campo autocompletado
@@ -253,7 +254,11 @@
     function updateResumen() {
         const servidor = document.getElementById('servidor_saliente').value || '-';
         const puerto = document.getElementById('puerto_smtp').value || '-';
-        const ssl = document.querySelector('[name="usa_ssl"]:checked')?.value || '-';
+        const sslRaw = document.querySelector('[name="usa_ssl"]:checked')?.value;
+
+
+        const ssl = sslRaw === 'SI' ? c.yes : (sslRaw === 'NO' ? c.no : '-');
+
         const usuario = document.getElementById('usuario_email').value || '-';
         const notificaciones = document.getElementById('email_notificaciones').value || '-';
 
@@ -263,19 +268,17 @@
         document.getElementById('resumen-usuario').textContent = usuario;
         document.getElementById('resumen-notificaciones').textContent = notificaciones;
 
-        // Actualizar estado
+
         const estadoBadge = document.getElementById('resumen-estado');
-        const requiredFields = [servidor, puerto, ssl, usuario, notificaciones];
-        const isComplete = requiredFields.every(field => field !== '-' && field !== '');
+        const requiredFields = [servidor, puerto, sslRaw, usuario, notificaciones];
+        const isComplete = requiredFields.every(field => field && field !== '-');
 
         if (isComplete) {
-            estadoBadge.textContent = 'Configurado';
+            estadoBadge.textContent = c.status.configured;
             estadoBadge.className = 'badge bg-success';
-            document.getElementById('test-connection').disabled = false;
         } else {
-            estadoBadge.textContent = 'Incompleto';
+            estadoBadge.textContent = c.status.incomplete;
             estadoBadge.className = 'badge bg-warning';
-            document.getElementById('test-connection').disabled = true;
         }
     }
 

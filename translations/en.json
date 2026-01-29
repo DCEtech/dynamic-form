@@ -11,6 +11,13 @@
     },
     "placeholders": {
       "select": "Select an option..."
+    },
+    "yes": "YES",
+    "no": "NO",
+    "status": {
+      "configured": "Configured",
+      "incomplete": "Incomplete",
+      "not_configured": "Not configured"
     }
   },
   "step1": {
@@ -287,6 +294,52 @@
     "errors": {
       "max_reached": "Maximum of 3 users allowed according to acquired licenses.",
       "email_exists": "This email is already in use by another user."
+    }
+  },
+  "step4": {
+    "alert": {
+      "title": "Mail Server Configuration",
+      "text": "Select your provider or manually configure the outgoing server for notifications."
+    },
+    "provider": {
+      "title": "Email Provider",
+      "label": "Select your email provider",
+      "hint": "If you choose a known provider, we will fill in the technical details for you.",
+      "manual": "-- Other (Manual Configuration) --",
+      "hints": {
+        "gmail": "Note: Use an 'App Password' generated from your Google account.",
+        "outlook": "Note: Ensure authenticated SMTP access is enabled in Microsoft 365.",
+        "yahoo": "Note: Requires an app password generated in Yahoo Security.",
+        "icloud": "Note: Use your Apple ID and an app-specific password.",
+        "custom": "Manually configure your SMTP server details."
+      }
+    },
+    "technical": {
+      "title": "Outgoing Mail Server",
+      "smtp": "SMTP Server *",
+      "port": {
+        "label": "SMTP Port *",
+        "placeholder": "Select a port"
+      },
+      "address": "Server Address *",
+      "ssl_label": "Use SSL/TLS *"
+    },
+    "credentials": {
+      "title": "Authentication Credentials",
+      "email": "Email Address *",
+      "pass": "Password *"
+    },
+    "notifications": {
+      "label": "Email for Notifications *"
+    },
+    "summary": {
+      "title": "Configuration Summary",
+      "server": "Server",
+      "port": "Port",
+      "ssl": "SSL/TLS",
+      "user": "User",
+      "notif": "Notifications",
+      "status": "Status"
     }
   }
 }

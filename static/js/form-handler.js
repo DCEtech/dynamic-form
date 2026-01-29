@@ -652,14 +652,6 @@ class FormularioCliente {
         return field.name || field.id || 'Campo desconocido';
     }
 
-    _showFieldErrors(invalidFields) {
-        // Hacer scroll al primer campo inválido
-        const firstInvalidField = document.querySelector('.is-invalid');
-        if (firstInvalidField) {
-            firstInvalidField.scrollIntoView({behavior: 'smooth', block: 'center'});
-            firstInvalidField.focus();
-        }
-    }
 
     _navigateToStep(step) {
         console.log(`Navegando al paso ${step}`);
@@ -776,16 +768,6 @@ class FormularioCliente {
         }
     }
 
-    showValidationErrors() {
-        const firstInvalidField = document.querySelector('.is-invalid');
-        if (firstInvalidField) {
-            firstInvalidField.focus();
-            firstInvalidField.scrollIntoView({behavior: 'smooth', block: 'center'});
-        }
-
-        // Mostrar toast de error
-        this.showToast('Por favor, complete todos los campos obligatorios correctamente.', 'error');
-    }
 
     getCurrentStepData() {
 
@@ -912,18 +894,14 @@ class FormularioCliente {
                 throw new Error(result.mensaje || 'Error al guardar');
             }
 
-            // ----------------------------
-            // ✅ PROGRESO
-            // ----------------------------
+
             if (typeof result.porcentaje === 'number') {
                 this.updateProgress(result.porcentaje);
             }
 
             this.updateSaveStatus('saved');
 
-            // ----------------------------
-            // ✅ ACTUALIZAR DATOS SIN ROMPER LA ESTRUCTURA
-            // ----------------------------
+
             if (!window.formularioData.datosFormulario) {
                 window.formularioData.datosFormulario = {};
             }
@@ -1176,12 +1154,12 @@ class FormularioCliente {
 
         if (this.isCompleted) return true;
 
-        // Siempre puede volver atrás
+
         if (step <= this.currentStep) return true;
 
-        // Para ir hacia adelante, el paso anterior inmediato DEBE estar validado
+
         const nombresPasos = ['datos_empresa', 'info_trasteros', 'usuarios_app', 'config_correo', 'perfiles_acceso', 'documentacion'];
-        const pasoAnteriorKey = nombresPasos[step - 2]; // Si quiero ir al 3, chequeo el 2 (índice 1)
+        const pasoAnteriorKey = nombresPasos[step - 2];
 
         const pasoAnteriorValidado = window.formularioData.estado_pasos && window.formularioData.estado_pasos[pasoAnteriorKey];
 
@@ -1207,13 +1185,13 @@ class FormularioCliente {
                 throw new Error(result.error || 'Error al completar el formulario');
             }
 
-            // ✅ Progreso REAL desde backend
+            // Progreso REAL desde backend
             this.updateProgress(100);
             this.isCompleted = true;
             this.hasChanges = false;
             this.updateNavigation();
 
-            // ✅ Sincronizar estado global
+            // Sincronizar estado global
             if (result.formulario) {
                 window.formularioData.porcentajeCompletado =
                     result.formulario.porcentaje_completado;
@@ -1237,10 +1215,6 @@ class FormularioCliente {
         }
     }
 
-
-    showSaveError() {
-        this.showToast('Error al guardar los datos. Por favor, inténtelo de nuevo.', 'error');
-    }
 
     showToast(message, type = 'info') {
         // Crear toast dinámicamente
