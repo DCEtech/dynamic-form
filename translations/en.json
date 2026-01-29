@@ -1,4 +1,18 @@
 {
+  "common": {
+    "important_note": "Important note:",
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete"
+    },
+    "placeholders": {
+      "select": "Select an option..."
+    }
+  },
   "step1": {
     "alert": {
       "title": "Company Information",
@@ -204,6 +218,75 @@
     "empty": {
       "title": "No units configured",
       "desc": "Click 'Add Storage Unit' to start."
+    }
+  },
+  "step3": {
+    "alert": {
+      "title": "System Users",
+      "text": "Set up the users who will have access to the system. You can create up to 3 users based on your licenses."
+    },
+    "btn_add": "Add User",
+    "limit_info": "Maximum 3 users according to acquired licenses",
+    "item_title": "User",
+    "fields": {
+      "nombre": {
+        "label": "Full Name *",
+        "tooltip": "First and last name",
+        "placeholder": "e.g., John Doe",
+        "error": "Enter full name."
+      },
+      "email": {
+        "label": "User Email *",
+        "tooltip": "Unique login email",
+        "placeholder": "e.g., john@company.com",
+        "error": "Invalid or duplicate email."
+      },
+      "pass": {
+        "label": "Password *",
+        "tooltip": "Min 8 chars, uppercase, lowercase and number",
+        "placeholder": "Secure password",
+        "error": "Requirements not met."
+      },
+      "confirm": {
+        "label": "Confirm Password *",
+        "tooltip": "Repeat password",
+        "placeholder": "Confirm password",
+        "error": "Passwords do not match."
+      },
+      "rol": {
+        "label": "User Role",
+        "tooltip": "Access level",
+        "options": {
+          "estandar": "Standard User",
+          "principal": "Primary User"
+        }
+      },
+      "depto": {
+        "label": "Department",
+        "tooltip": "Work area (optional)",
+        "placeholder": "e.g., Sales"
+      }
+    },
+    "strength": {
+      "label": "Enter a password",
+      "v_weak": "Very weak",
+      "weak": "Weak",
+      "medium": "Moderate",
+      "strong": "Strong",
+      "v_strong": "Very strong"
+    },
+    "summary": {
+      "title": "Users Summary",
+      "total": "Total Users",
+      "principales": "Primary",
+      "estandar": "Standard",
+      "empty_title": "No users configured",
+      "empty_desc": "Click 'Add User' to start."
+    },
+    "note": "The number of users is limited by licenses. If you need more, contact support.",
+    "errors": {
+      "max_reached": "Maximum of 3 users allowed according to acquired licenses.",
+      "email_exists": "This email is already in use by another user."
     }
   }
 }

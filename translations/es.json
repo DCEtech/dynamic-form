@@ -1,4 +1,18 @@
 {
+  "common": {
+    "important_note": "Nota importante:",
+    "buttons": {
+      "next": "Siguiente",
+      "back": "Anterior",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "delete": "Eliminar"
+    },
+    "placeholders": {
+      "select": "Seleccione una opción..."
+    }
+  },
   "step1": {
     "alert": {
       "title": "Información de la Empresa",
@@ -204,6 +218,75 @@
     "empty": {
       "title": "No hay trasteros configurados",
       "desc": "Haga clic en 'Agregar Trastero' para comenzar."
+    }
+  },
+  "step3": {
+    "alert": {
+      "title": "Usuarios del Sistema",
+      "text": "Configure los usuarios que tendrán acceso al sistema. Puede crear hasta 3 usuarios según las licencias adquiridas."
+    },
+    "btn_add": "Agregar Usuario",
+    "limit_info": "Máximo 3 usuarios según licencias adquiridas",
+    "item_title": "Usuario",
+    "fields": {
+      "nombre": {
+        "label": "Nombre Completo *",
+        "tooltip": "Nombre y apellidos",
+        "placeholder": "Ej: Juan Pérez",
+        "error": "Ingrese el nombre."
+      },
+      "email": {
+        "label": "Email del Usuario *",
+        "tooltip": "Email único de acceso",
+        "placeholder": "Ej: juan@empresa.com",
+        "error": "Email inválido o duplicado."
+      },
+      "pass": {
+        "label": "Contraseña *",
+        "tooltip": "Mínimo 8 caracteres, mayúscula, minúscula y número",
+        "placeholder": "Contraseña segura",
+        "error": "Requisitos no cumplidos."
+      },
+      "confirm": {
+        "label": "Confirmar Contraseña *",
+        "tooltip": "Repita la contraseña",
+        "placeholder": "Confirmar contraseña",
+        "error": "Las contraseñas no coinciden."
+      },
+      "rol": {
+        "label": "Rol del Usuario",
+        "tooltip": "Nivel de acceso",
+        "options": {
+          "estandar": "Usuario Estándar",
+          "principal": "Usuario Principal"
+        }
+      },
+      "depto": {
+        "label": "Departamento",
+        "tooltip": "Área de trabajo (opcional)",
+        "placeholder": "Ej: Ventas"
+      }
+    },
+    "strength": {
+      "label": "Ingrese una contraseña",
+      "v_weak": "Muy débil",
+      "weak": "Débil",
+      "medium": "Moderada",
+      "strong": "Fuerte",
+      "v_strong": "Muy fuerte"
+    },
+    "summary": {
+      "title": "Resumen de Usuarios",
+      "total": "Total Usuarios",
+      "principales": "Principales",
+      "estandar": "Estándar",
+      "empty_title": "No hay usuarios configurados",
+      "empty_desc": "Haga clic en 'Agregar Usuario' para comenzar."
+    },
+    "note": "El número de usuarios está limitado por las licencias. Si necesita más, contacte con soporte.",
+    "errors": {
+      "max_reached": "Máximo 3 usuarios permitidos según las licencias adquiridas.",
+      "email_exists": "Este email ya está siendo usado por otro usuario."
     }
   }
 }
