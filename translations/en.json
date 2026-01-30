@@ -341,5 +341,38 @@
       "notif": "Notifications",
       "status": "Status"
     }
+  },
+  "step5": {
+    "alert": {
+      "title": "Access Profiles Configuration",
+      "text": "Define entry permissions. Each profile indicates which doors can be opened and at what time."
+    },
+    "btn_add": "Add Access Profile",
+    "card": {
+      "title": "Access Profile",
+      "fields": {
+        "nombre": {
+          "label": "Profile Name *",
+          "placeholder": "e.g., Cleaning Staff"
+        },
+        "desc": {
+          "label": "Profile Description *",
+          "placeholder": "Areas allowed to access..."
+        },
+        "doors": {
+          "label": "Permitted Doors",
+          "main": "Main Door",
+          "back": "Back Door",
+          "office": "Office",
+          "custom_placeholder": "Other door..."
+        },
+        "schedule": {
+          "label": "Access Schedule",
+          "all_day": "24/7 Access",
+          "start": "Start:",
+          "end": "End:"
+        }
+      }
+    }
   }
 }

@@ -341,6 +341,39 @@
       "notif": "Notificaciones",
       "status": "Estado"
     }
+  },
+  "step5": {
+    "alert": {
+      "title": "Configuración de Perfiles de Acceso",
+      "text": "Defina los permisos de entrada. Cada perfil indica qué puertas se pueden abrir y en qué horario."
+    },
+    "btn_add": "Agregar Perfil de Acceso",
+    "card": {
+      "title": "Perfil de Acceso",
+      "fields": {
+        "nombre": {
+          "label": "Nombre del Perfil *",
+          "placeholder": "Ej: Personal de Limpieza"
+        },
+        "desc": {
+          "label": "Descripción del perfil *",
+          "placeholder": "Áreas a las que tiene permitido acceder..."
+        },
+        "doors": {
+          "label": "Puertas Permitidas",
+          "main": "P. Principal",
+          "back": "P. Trasera",
+          "office": "Oficina",
+          "custom_placeholder": "Otra puerta..."
+        },
+        "schedule": {
+          "label": "Horario de Acceso",
+          "all_day": "Acceso 24/7",
+          "start": "Inicio:",
+          "end": "Fin:"
+        }
+      }
+    }
   }
 }
 
