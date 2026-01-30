@@ -5,9 +5,8 @@
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
-                    <strong>Documentación Requerida</strong><br>
-                    Suba los documentos necesarios para completar la configuración del sistema.
-                    Los archivos se almacenarán de forma segura y estarán disponibles para consulta posterior.
+                    <strong>{{ t.step6.alert.title }}</strong><br>
+                    {{ t.step6.alert.text }}
                 </div>
             </div>
         </div>
@@ -17,27 +16,28 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-file-earmark-text me-2"></i>Contratos
+                <i class="bi bi-file-earmark-text me-2"></i>{{ t.step6.sections.contracts.title }}
             </h5>
         </div>
 
         <div class="col-12 mb-3">
             <label class="form-label">
-                Contratos en Formato .docx <span class="text-danger">*</span>
+                {{ t.step6.sections.contracts.label }} <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Suba los contratos de alquiler en formato Word (.docx)"></i>
+                   title="{{ t.step6.sections.contracts.tooltip }}"></i>
             </label>
             <div class="upload-area" id="contratos-upload">
                 <div class="upload-content">
                     <i class="bi bi-cloud-upload display-4 text-muted mb-3"></i>
-                    <h6>Arrastre archivos aquí o haga clic para seleccionar</h6>
-                    <p class="text-muted">Formatos permitidos: .docx | Tamaño máximo: 5MB por archivo</p>
+                    <h6>{{ t.step6.upload_zone.drop_files }}</h6>
+                    <p class="text-muted">{{ t.step6.upload_zone.formats }}: .docx | {{ t.step6.upload_zone.max_size }}:
+                        5MB</p>
                     <input type="file" class="file-input" id="contratos-input" multiple accept=".docx"
                            style="display: none;">
                     <button type="button" class="btn btn-outline-primary"
                             onclick="document.getElementById('contratos-input').click()">
-                        <i class="bi bi-folder2-open me-2"></i>Seleccionar Archivos
+                        <i class="bi bi-folder2-open me-2"></i>{{ t.common.select_files }}
                     </button>
                 </div>
             </div>
@@ -49,27 +49,28 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-diagram-3 me-2"></i>Planos Gráficos
+                <i class="bi bi-diagram-3 me-2"></i>{{ t.step6.sections.plans.title }}
             </h5>
         </div>
 
         <div class="col-12 mb-3">
             <label class="form-label">
-                Plano Gráfico de las Instalaciones <span class="text-danger">*</span>
+                {{ t.step6.sections.plans.label }} <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Planos arquitectónicos o esquemas de las instalaciones"></i>
+                   title="{{ t.step6.sections.plans.tooltip }}"></i>
             </label>
             <div class="upload-area" id="planos-upload">
                 <div class="upload-content">
                     <i class="bi bi-image display-4 text-muted mb-3"></i>
-                    <h6>Arrastre imágenes aquí o haga clic para seleccionar</h6>
-                    <p class="text-muted">Formatos permitidos: .jpg, .png, .pdf | Tamaño máximo: 5MB por archivo</p>
+                    <h6>{{ t.step6.upload_zone.drop_files }}</h6>
+                    <p class="text-muted">{{ t.step6.upload_zone.formats }}: .jpg, .png, .pdf
+                        | {{ t.step6.upload_zone.max_size }}: 5MB</p>
                     <input type="file" class="file-input" id="planos-input" multiple accept=".jpg,.jpeg,.png,.pdf"
                            style="display: none;">
                     <button type="button" class="btn btn-outline-primary"
                             onclick="document.getElementById('planos-input').click()">
-                        <i class="bi bi-folder2-open me-2"></i>Seleccionar Archivos
+                        <i class="bi bi-folder2-open me-2"></i>{{ t.common.select_files }}
                     </button>
                 </div>
             </div>
@@ -81,27 +82,28 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-image me-2"></i>Logo de la Empresa
+                <i class="bi bi-image me-2"></i>{{ t.step6.sections.logos.title }}
             </h5>
         </div>
 
         <div class="col-md-6 mb-3">
             <label class="form-label">
-                Logo Principal <span class="text-danger">*</span>
+                {{ t.step6.sections.logos.main_label }} <span class="text-danger">*</span>
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Logo principal de la empresa para usar en documentos y sistema"></i>
+                   title="{{ t.step6.sections.logos.main_tooltip }}"></i>
             </label>
             <div class="upload-area logo-upload" id="logo-upload">
                 <div class="upload-content">
                     <i class="bi bi-image display-4 text-muted mb-3"></i>
-                    <h6>Logo de la empresa</h6>
-                    <p class="text-muted">Formatos: .jpg, .png | Máximo: 2MB</p>
+                    <h6>{{ t.step6.sections.logos.main_label }}</h6>
+                    <p class="text-muted">{{ t.step6.upload_zone.formats }}: .jpg, .png
+                        | {{ t.step6.upload_zone.max_size }}: 2MB</p>
                     <input type="file" class="file-input" id="logo-input" accept=".jpg,.jpeg,.png"
                            style="display: none;">
                     <button type="button" class="btn btn-outline-primary"
                             onclick="document.getElementById('logo-input').click()">
-                        <i class="bi bi-folder2-open me-2"></i>Seleccionar Logo
+                        <i class="bi bi-folder2-open me-2"></i>{{ t.step6.sections.logos.select_logo }}
                     </button>
                 </div>
                 <div class="logo-preview" style="display: none;">
@@ -114,7 +116,7 @@
                     </div>
 
                     <button type="button" class="btn btn-sm btn-outline-danger mt-2 remove-logo">
-                        <i class="bi bi-trash"></i> Eliminar
+                        <i class="bi bi-trash"></i> {{ t.common.delete }}
                     </button>
                 </div>
             </div>
@@ -122,21 +124,22 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label">
-                Logo Alternativo (Opcional)
+                {{ t.step6.sections.logos.alt_label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Logo alternativo o versión en blanco y negro"></i>
+                   title="{{ t.step6.sections.logos.alt_tooltip }}"></i>
             </label>
             <div class="upload-area logo-upload" id="logo-alt-upload">
                 <div class="upload-content">
                     <i class="bi bi-image display-4 text-muted mb-3"></i>
-                    <h6>Logo alternativo</h6>
-                    <p class="text-muted">Formatos: .jpg, .png | Máximo: 2MB</p>
+                    <h6>{{ t.step6.sections.logos.alt_title }}</h6>
+                    <p class="text-muted">{{ t.step6.upload_zone.formats }}: .jpg, .png
+                        | {{ t.step6.upload_zone.max_size }}: 2MB</p>
                     <input type="file" class="file-input" id="logo-alt-input" accept=".jpg,.jpeg,.png"
                            style="display: none;">
                     <button type="button" class="btn btn-outline-secondary"
                             onclick="document.getElementById('logo-alt-input').click()">
-                        <i class="bi bi-folder2-open me-2"></i>Seleccionar Logo
+                        <i class="bi bi-folder2-open me-2"></i>{{ t.step6.sections.logos.select_logo }}
                     </button>
                 </div>
                 <div class="logo-preview" style="display: none;">
@@ -149,7 +152,7 @@
                     </div>
 
                     <button type="button" class="btn btn-sm btn-outline-danger mt-2 remove-logo">
-                        <i class="bi bi-trash"></i> Eliminar
+                        <i class="bi bi-trash"></i> {{ t.common.delete }}
                     </button>
                 </div>
             </div>
@@ -160,28 +163,29 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-file-earmark-plus me-2"></i>Documentación Adicional
+                <i class="bi bi-file-earmark-plus me-2"></i>{{ t.step6.sections.additional.title }}
             </h5>
         </div>
 
         <div class="col-12 mb-3">
             <label class="form-label">
-                Otros Documentos (Opcional)
+                {{ t.step6.sections.additional.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Cualquier otro documento relevante para la configuración"></i>
+                   title="{{ t.step6.sections.additional.tooltip }}"></i>
             </label>
             <div class="upload-area" id="adicional-upload">
                 <div class="upload-content">
                     <i class="bi bi-file-earmark display-4 text-muted mb-3"></i>
-                    <h6>Documentos adicionales</h6>
-                    <p class="text-muted">Formatos permitidos: .pdf, .docx, .jpg, .png | Tamaño máximo: 5MB por
-                        archivo</p>
+                    <h6>{{ t.step6.sections.additional.sub_title }}</h6>
+                    <p class="text-muted">{{ t.step6.upload_zone.formats }}: .pdf, .docx, .jpg, .png
+                        | {{ t.step6.upload_zone.max_size }}:
+                        5MB</p>
                     <input type="file" class="file-input" id="adicional-input" multiple
                            accept=".pdf,.docx,.jpg,.jpeg,.png" style="display: none;">
                     <button type="button" class="btn btn-outline-secondary"
                             onclick="document.getElementById('adicional-input').click()">
-                        <i class="bi bi-folder2-open me-2"></i>Seleccionar Archivos
+                        <i class="bi bi-folder2-open me-2"></i>{{ t.common.select_files }}
                     </button>
                 </div>
             </div>
@@ -193,24 +197,24 @@
     <div class="row mb-4">
         <div class="col-12">
             <h5 class="text-primary mb-3">
-                <i class="bi bi-chat-text me-2"></i>Notas y Comentarios
+                <i class="bi bi-chat-text me-2"></i>{{ t.step6.sections.notes.title }}
             </h5>
         </div>
 
         <div class="col-12 mb-3">
             <label for="notas_adicionales" class="form-label">
-                Notas Adicionales
+                {{ t.step6.sections.notes.label }}
                 <i class="bi bi-question-circle tooltip-icon ms-1"
                    data-bs-toggle="tooltip"
-                   title="Cualquier información adicional o instrucciones especiales"></i>
+                   title="{{ t.step6.sections.notes.tooltip }}"></i>
             </label>
             <textarea class="form-control"
                       id="notas_adicionales"
                       name="notas_adicionales"
                       rows="4"
-                      placeholder="Escriba aquí cualquier información adicional, instrucciones especiales, o comentarios que considere relevantes para la configuración del sistema..."></textarea>
+                      placeholder="{{ t.step6.sections.notes.placeholder }}"></textarea>
             <div class="form-text">
-                <span class="char-count-notas">0</span>/1000 caracteres
+                <span class="char-count-notas">0</span>/1000 {{ t.step6.sections.notes.char_limit }}
             </div>
         </div>
     </div>
@@ -221,7 +225,7 @@
             <div class="card border-success">
                 <div class="card-header bg-success text-white">
                     <h6 class="mb-0">
-                        <i class="bi bi-check2-square me-2"></i>Resumen de Documentación
+                        <i class="bi bi-check2-square me-2"></i>{{ t.step6.summary.title }}
                     </h6>
                 </div>
                 <div class="card-body">
@@ -230,38 +234,40 @@
                             <div class="mb-2">
                                 <i class="bi bi-file-earmark-text display-4 text-primary"></i>
                             </div>
-                            <h6>Contratos</h6>
+                            <h6>{{ t.step6.sections.contracts.title }}</h6>
                             <span class="badge bg-primary" id="count-contratos">0 archivos</span>
                         </div>
                         <div class="col-md-3 text-center">
                             <div class="mb-2">
                                 <i class="bi bi-diagram-3 display-4 text-info"></i>
                             </div>
-                            <h6>Planos</h6>
+                            <h6>{{ t.step6.sections.plans.title }}</h6>
                             <span class="badge bg-info" id="count-planos">0 archivos</span>
                         </div>
                         <div class="col-md-3 text-center">
                             <div class="mb-2">
                                 <i class="bi bi-image display-4 text-warning"></i>
                             </div>
-                            <h6>Logos</h6>
+                            <h6>{{ t.step6.sections.logos.title }}</h6>
                             <span class="badge bg-warning" id="count-logos">0 archivos</span>
                         </div>
                         <div class="col-md-3 text-center">
                             <div class="mb-2">
                                 <i class="bi bi-file-earmark-plus display-4 text-secondary"></i>
                             </div>
-                            <h6>Adicionales</h6>
+                            <h6>{{ t.step6.sections.additional.summary_sub_title }}</h6>
                             <span class="badge bg-secondary" id="count-adicionales">0 archivos</span>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-md-6">
-                            <strong>Total de archivos:</strong> <span id="total-archivos">0</span>
+                            <strong>{{ t.step6.summary.total_files }}:</strong> <span
+                                id="total-archivos">0</span>
                         </div>
                         <div class="col-md-6">
-                            <strong>Tamaño total:</strong> <span id="total-tamaño">0 MB</span>
+                            <strong>{{ t.step6.summary.total_size }}:</strong> <span
+                                id="total-tamaño">0 MB</span>
                         </div>
                     </div>
                 </div>
@@ -274,8 +280,7 @@
         <div class="col-12">
             <div class="alert alert-success">
                 <i class="bi bi-check-circle me-2"></i>
-                <strong>¡Último paso!</strong> Una vez que haya subido toda la documentación necesaria,
-                podrá completar el formulario y el sistema estará listo para su uso.
+                <strong>{{ t.step6.finish_alert.title }}</strong> {{ t.step6.alert.text }}
             </div>
         </div>
     </div>
@@ -283,6 +288,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+            const t = window.I18N.step6;
+            const c = window.I18N.common;
+
             let uploadedFiles = {
                 contratos: [],
                 planos: [],
@@ -349,7 +358,6 @@
             function setupUploadArea(type, allowedExtensions) {
                 const uploadArea = document.getElementById(`${type}-upload`);
                 const fileInput = document.getElementById(`${type}-input`);
-                const filesContainer = document.getElementById(`${type}-files`);
 
                 // Drag and drop
                 uploadArea.addEventListener('dragover', function (e) {
@@ -415,8 +423,8 @@
                     }
 
                     // FEEDBACK VISUAL INMEDIATO
-                    logoPreview.classList.add('loading'); // Muestra el overlay oscuro y el spinner
-                    removeBtn.disabled = true;           // Evita que el usuario haga clic varias veces
+                    logoPreview.classList.add('loading');
+                    removeBtn.disabled = true;
                     const originalText = removeBtn.innerHTML;
                     removeBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
@@ -439,7 +447,7 @@
                             uploadedFiles.logos = uploadedFiles.logos.filter(f => f._serverFileId !== file._serverFileId);
 
                             updateResumen();
-                            showToast('Logo eliminado correctamente', 'success');
+                            showToast(t.toasts.logo_deleted, 'success');
                         })
                         .catch(err => {
                             console.error(err);
@@ -447,7 +455,7 @@
                             logoPreview.classList.remove('loading');
                             removeBtn.disabled = false;
                             removeBtn.innerHTML = originalText;
-                            showToast('Error eliminando el logo', 'error');
+                            showToast(t.toasts.logo_error, 'error');
                         });
                 });
             }
@@ -480,12 +488,12 @@
                 const sizeMB = file.size / (1024 * 1024);
 
                 if (!allowedExtensions.includes(extension)) {
-                    showToast(`Formato de archivo no permitido: ${extension}`, 'error');
+                    showToast(`${t.toasts.format_error}: ${extension}`, 'error');
                     return false;
                 }
 
                 if (sizeMB > maxSizeMB) {
-                    showToast(`El archivo es demasiado grande: ${sizeMB.toFixed(1)}MB (máximo: ${maxSizeMB}MB)`, 'error');
+                    showToast(`${t.toasts.size_error}: ${sizeMB.toFixed(1)}MB (máximo: ${maxSizeMB}MB)`, 'error');
                     return false;
                 }
 
@@ -589,13 +597,13 @@
                     fileLabel = `
             <span class="fw-bold text-muted">
                 <span class="spinner-border spinner-border-sm me-2"></span>
-                Subiendo...
+                ${c.uploading}
             </span>`;
                 } else if (file._error) {
                     fileLabel = `
             <span class="fw-bold text-danger">
                 <i class="bi bi-x-circle me-1"></i>
-                Error al subir
+                ${c.error_upload}
             </span>`;
                 } else if (file.public_url) {
                     fileLabel = `
@@ -702,12 +710,15 @@
                     logos: uploadedFiles.logos?.length || 0,
                     adicional: uploadedFiles.adicional?.length || 0
                 };
+
+                const getLabel = (count) => `${count} ${count === 1 ? c.file : c.files}`
+
                 console.log(counts.logos);
-                document.getElementById('count-contratos').textContent = `${counts.contratos} archivos`;
-                document.getElementById('count-planos').textContent = `${counts.planos} archivos`;
-                document.getElementById('count-logos').textContent = `${counts.logos} archivos`;
+                document.getElementById('count-contratos').textContent = getLabel(counts.contratos);
+                document.getElementById('count-planos').textContent = getLabel(counts.planos);
+                document.getElementById('count-logos').textContent = getLabel(counts.logos);
                 document.getElementById('count-adicionales').textContent =
-                    `${counts.adicional} archivos`;
+                    getLabel(counts.adicional);
 
                 const totalFiles = Object.values(counts).reduce((a, b) => a + b, 0);
                 document.getElementById('total-archivos').textContent = totalFiles;

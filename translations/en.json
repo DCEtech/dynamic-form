@@ -18,7 +18,13 @@
       "configured": "Configured",
       "incomplete": "Incomplete",
       "not_configured": "Not configured"
-    }
+    },
+    "files": "files",
+    "file": "file",
+    "uploading": "Uploading...",
+    "error_upload": "Upload error",
+    "select_files": "Select Files",
+    "delete": "Delete"
   },
   "step1": {
     "alert": {
@@ -373,6 +379,68 @@
           "end": "End:"
         }
       }
+    }
+  },
+  "step6": {
+    "alert": {
+      "title": "Required Documentation",
+      "text": "Upload the necessary documents to complete the system configuration. Files will be stored securely and available for later consultation."
+    },
+    "sections": {
+      "contracts": {
+        "title": "Contracts",
+        "label": "Contracts in .docx Format",
+        "tooltip": "Upload rental contracts in Word format (.docx)"
+      },
+      "plans": {
+        "title": "Graphic Plans",
+        "label": "Facilities Graphic Plan",
+        "tooltip": "Architectural plans or facility layouts"
+      },
+      "logos": {
+        "title": "Company Logo",
+        "main_label": "Main Logo",
+        "main_tooltip": "Primary company logo for documents and system",
+        "alt_title": "Alternative Logo",
+        "alt_label": "Alternative Logo (Optional)",
+        "alt_tooltip": "Alternative logo or black and white version",
+        "select_logo": "Select Logo"
+      },
+      "additional": {
+        "title": "Additional Documentation",
+        "summary_sub_title": "Additionals",
+        "sub_title": "Additional Documentation",
+        "label": "Other Documents (Optional)",
+        "tooltip": "Any other relevant document for the setup"
+      },
+      "notes": {
+        "title": "Notes and Comments",
+        "label": "Additional Notes",
+        "tooltip": "Any additional information or special instructions",
+        "placeholder": "Write here any additional information, special instructions, or comments you consider relevant for the system setup...",
+        "char_limit": "characters"
+      }
+    },
+    "upload_zone": {
+      "drop_files": "Drag files here or click to select",
+      "drop_images": "Drag images here or click to select",
+      "formats": "Allowed formats",
+      "max_size": "Max size"
+    },
+    "summary": {
+      "title": "Documentation Summary",
+      "total_files": "Total files",
+      "total_size": "Total size"
+    },
+    "finish_alert": {
+      "title": "Last step!",
+      "text": "Once you have uploaded all the necessary documentation, you can complete the form and the system will be ready for use."
+    },
+    "toasts": {
+      "logo_deleted": "Logo deleted successfully",
+      "logo_error": "Error deleting the logo",
+      "format_error": "File format not allowed",
+      "size_error": "The file is too large"
     }
   }
 }

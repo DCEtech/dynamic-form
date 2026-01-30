@@ -18,7 +18,13 @@
       "configured": "Configurado",
       "incomplete": "Incompleto",
       "not_configured": "No configurado"
-    }
+    },
+    "files": "archivos",
+    "file": "archivo",
+    "uploading": "Subiendo...",
+    "error_upload": "Error al subir",
+    "select_files": "Seleccionar Archivos",
+    "delete": "Eliminar"
   },
   "step1": {
     "alert": {
@@ -373,6 +379,68 @@
           "end": "Fin:"
         }
       }
+    }
+  },
+  "step6": {
+    "alert": {
+      "title": "Documentación Requerida",
+      "text": "Suba los documentos necesarios para completar la configuración del sistema. Los archivos se almacenarán de forma segura."
+    },
+    "sections": {
+      "contracts": {
+        "title": "Contratos",
+        "label": "Contratos en Formato .docx",
+        "tooltip": "Suba los contratos de alquiler en formato Word (.docx)"
+      },
+      "plans": {
+        "title": "Planos Gráficos",
+        "label": "Plano Gráfico de las Instalaciones",
+        "tooltip": "Planos arquitectónicos o esquemas de las instalaciones"
+      },
+      "logos": {
+        "title": "Logo de la Empresa",
+        "main_label": "Logo Principal",
+        "main_tooltip": "Logo para documentos y sistema",
+        "alt_title": "Logo Alternativo",
+        "alt_label": "Logo Alternativo (Opcional)",
+        "alt_tooltip": "Versión en blanco y negro o alternativa",
+        "select_logo": "Seleccionar Logo"
+      },
+      "additional": {
+        "title": "Documentación Adicional",
+        "summary_sub_title": "Adicionales",
+        "sub_title": "Documentos Adicionales",
+        "label": "Otros Documentos (Opcional)",
+        "tooltip": "Cualquier otro documento relevante"
+      },
+      "notes": {
+        "title": "Notas y Comentarios",
+        "label": "Notas Adicionales",
+        "tooltip": "Información adicional o instrucciones especiales",
+        "placeholder": "Escriba aquí cualquier información relevante...",
+        "char_limit": "caracteres"
+      }
+    },
+    "upload_zone": {
+      "drop_files": "Arrastre archivos aquí o haga clic para seleccionar",
+      "drop_images": "Arrastre imágenes aquí o haga clic para seleccionar",
+      "formats": "Formatos permitidos",
+      "max_size": "Tamaño máximo"
+    },
+    "summary": {
+      "title": "Resumen de Documentación",
+      "total_files": "Total de archivos",
+      "total_size": "Tamaño total"
+    },
+    "finish_alert": {
+      "title": "¡Último paso!",
+      "text": "Una vez subida la documentación, podrá completar el formulario y el sistema estará listo."
+    },
+    "toasts": {
+      "logo_deleted": "Logo eliminado correctamente",
+      "logo_error": "Error eliminando el logo",
+      "format_error": "Formato de archivo no permitido",
+      "size_error": "El archivo es demasiado grande"
     }
   }
 }
