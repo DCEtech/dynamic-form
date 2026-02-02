@@ -1,5 +1,6 @@
 {
   "common": {
+    "saving": "Guardando...",
     "important_note": "Nota importante:",
     "buttons": {
       "next": "Siguiente",
@@ -7,7 +8,23 @@
       "save": "Guardar cambios",
       "cancel": "Cancelar",
       "close": "Cerrar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "finish": "Finalizar y Enviar",
+      "max_reached": "Máximo alcanzado"
+    },
+    "messages": {
+      "success_save": "Cambios guardados correctamente",
+      "success_complete": "¡Formulario completado exitosamente!",
+      "error_save": "Error al guardar",
+      "error_complete": "Error al completar el formulario",
+      "error_required": "Complete los campos obligatorios del paso actual",
+      "error_nav": "Debe completar los pasos anteriores antes de acceder a este",
+      "error_trasteros_min": "Debe agregar al menos un trastero",
+      "error_usuarios_min": "Debe agregar al menos un usuario",
+      "error_perfiles_min": "Debe agregar al menos un nivel de acceso",
+      "error_files_missing": "Faltan archivos obligatorios: {list}",
+      "error_email_exists": "Este email ya está siendo usado por otro usuario",
+      "auto_save_active": "Guardado automático activo"
     },
     "placeholders": {
       "select": "Seleccione una opción..."
@@ -25,6 +42,49 @@
     "error_upload": "Error al subir",
     "select_files": "Seleccionar Archivos",
     "delete": "Eliminar"
+  },
+  "layout": {
+    "total_progress": "Progreso Total",
+    "step_of": "Paso {{ current }} de {{ total }}",
+    "auto_save": "Guardado automático activo",
+    "view_mode": {
+      "title": "Modo Vista:",
+      "text": "Este formulario ya ha sido completado. Puedes navegar por los pasos y, si modificas algún dato, aparecerá el botón para guardar los cambios."
+    },
+    "confirm_modal": {
+      "title": "Confirmar Acción",
+      "message": "¿Está seguro de que desea continuar?",
+      "btn_cancel": "Cancelar",
+      "btn_confirm": "Confirmar"
+    }
+  },
+  "navigation": {
+    "steps": {
+      "1": {
+        "title": "Datos de la Empresa",
+        "desc": "Información básica de la empresa"
+      },
+      "2": {
+        "title": "Información de Trasteros",
+        "desc": "Configuración de trasteros"
+      },
+      "3": {
+        "title": "Usuarios de la Aplicación",
+        "desc": "Usuarios del sistema"
+      },
+      "4": {
+        "title": "Configuración de Correo",
+        "desc": "Configuración de correo"
+      },
+      "5": {
+        "title": "Perfiles de Acceso",
+        "desc": "Perfiles de acceso"
+      },
+      "6": {
+        "title": "Documentación",
+        "desc": "Documentación requerida"
+      }
+    }
   },
   "step1": {
     "alert": {

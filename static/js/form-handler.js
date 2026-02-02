@@ -30,7 +30,6 @@ class FormularioCliente {
 
             if (this.isCompleted) {
                 this.currentStep = window.formularioData.pasoActual || 1;
-                console.log('Modo lectura: Formulario completado');
             } else {
                 this.currentStep = window.formularioData.pasoActual || 1;
             }
@@ -50,7 +49,6 @@ class FormularioCliente {
 
         // Cargar datos existentes
         this.loadExistingData();
-        console.log('Formulario inicializado correctamente');
 
     }
 
@@ -89,7 +87,7 @@ class FormularioCliente {
                 e.preventDefault();
 
                 const targetStep = index + 1;
-                console.log(`Click en paso ${targetStep}. Paso actual: ${this.currentStep}`);
+
 
                 if (targetStep === this.currentStep) {
                     return;
@@ -101,10 +99,7 @@ class FormularioCliente {
                     // Si estamos avanzando al siguiente inmediato → validar
                     if (targetStep === this.currentStep + 1) {
                         if (!this.validateCurrentStep()) {
-                            this.showToast(
-                                'Complete los campos obligatorios del paso actual',
-                                'error'
-                            );
+                            this.showToast(window.I18N.common.messages.error_required, 'error');
                             return;
                         }
                     }
@@ -114,10 +109,7 @@ class FormularioCliente {
                 }
 
                 // Intento de saltar a algo que no existe aún
-                this.showToast(
-                    'Debe completar los pasos anteriores antes de acceder a este',
-                    'warning'
-                );
+                this.showToast(window.I18N.common.messages.error_nav, 'warning');
             });
         });
 
@@ -182,7 +174,7 @@ class FormularioCliente {
         if (this.isCompleted && this.hasChanges) {
             this.saveCurrentStep().then(() => {
                 this.hasChanges = false;
-                this.showToast('Cambios guardados correctamente', 'success');
+                this.showToast(window.I18N.common.messages.success_save, 'success');
                 this.updateNavigation();
             });
             return;
@@ -204,17 +196,15 @@ class FormularioCliente {
     }
 
     previousStep() {
-        console.log(`Botón anterior presionado. Paso actual: ${this.currentStep}`);
 
         if (this.currentStep > 1) {
-            console.log('Retrocediendo con botón anterior');
+
             this._navigateToStep(this.currentStep - 1);
         }
     }
 
     goToStep(step) {
-        // Método simplificado que usa la nueva lógica
-        console.log(`goToStep llamado para paso ${step}`);
+
         this._navigateToStep(step);
     }
 
@@ -243,11 +233,8 @@ class FormularioCliente {
             this.elements.currentStepTitle.textContent = this.currentStep;
         }
         if (this.elements.stepNameTitle) {
-            // Aquí se necesita un array de nombres de pasos, que se pasa desde el backend
-            // Asumiendo que `window.formularioData.stepNames` contiene esto
-            if (window.formularioData && window.formularioData.stepNames) {
-                this.elements.stepNameTitle.textContent = window.formularioData.stepNames[this.currentStep - 1];
-            }
+            const stepKey = this.currentStep.toString();
+            this.elements.stepNameTitle.textContent = window.I18N.navigation.steps[stepKey].title;
         }
 
         // Cargar los datos para el nuevo paso
@@ -300,8 +287,11 @@ class FormularioCliente {
     }
 
     updateNavigation() {
+        const t = window.I18N;
+
         if (this.elements.btnPrevious) {
             this.elements.btnPrevious.disabled = this.currentStep <= 1;
+            this.elements.btnPrevious.innerHTML = `<i class="bi bi-arrow-left me-1"></i>${t.common.buttons.back}`;
         }
 
         if (!this.elements.btnNext) return;
@@ -311,7 +301,7 @@ class FormularioCliente {
             if (this.hasChanges) {
                 // Si hubo cambios, mostramos "Guardar Cambios"
                 this.elements.btnNext.style.display = 'block';
-                this.elements.btnNext.innerHTML = '<i class="bi bi-save me-1"></i>Guardar cambios';
+                this.elements.btnNext.innerHTML = `<i class="bi bi-save me-1"></i>${t.common.buttons.save}`;
                 this.elements.btnNext.className = 'btn btn-warning btn-sm';
             } else {
                 // Si no hay cambios, en el paso 6 ocultamos, en el resto dejamos "Siguiente"
@@ -319,7 +309,7 @@ class FormularioCliente {
                     this.elements.btnNext.style.display = 'none';
                 } else {
                     this.elements.btnNext.style.display = 'block';
-                    this.elements.btnNext.innerHTML = 'Siguiente<i class="bi bi-arrow-right ms-1"></i>';
+                    this.elements.btnNext.innerHTML = `${t.common.buttons.next}<i class="bi bi-arrow-right ms-1"></i>`;
                     this.elements.btnNext.className = 'btn btn-primary btn-sm';
                 }
             }
@@ -329,10 +319,10 @@ class FormularioCliente {
         // CASO 2: Modo Wizard Normal (Sin completar)
         this.elements.btnNext.style.display = 'block';
         if (this.currentStep === this.totalSteps) {
-            this.elements.btnNext.innerHTML = '<i class="bi bi-check-circle me-1"></i>Finalizar y Enviar';
+            this.elements.btnNext.innerHTML = `<i class="bi bi-check-circle me-1"></i>${t.common.buttons.finish || 'Finalizar'}`;
             this.elements.btnNext.className = 'btn btn-success btn-sm';
         } else {
-            this.elements.btnNext.innerHTML = 'Siguiente<i class="bi bi-arrow-right ms-1"></i>';
+            this.elements.btnNext.innerHTML = `${t.common.buttons.next}<i class="bi bi-arrow-right ms-1"></i>`;
             this.elements.btnNext.className = 'btn btn-primary btn-sm';
         }
     }
@@ -343,7 +333,7 @@ class FormularioCliente {
         );
 
         if (trasteros.length === 0) {
-            this.showToast('Debe agregar al menos un trastero', 'error');
+            this.showToast(window.I18N.common.messages.error_trasteros_min, 'error');
             return false;
         }
 
@@ -377,7 +367,7 @@ class FormularioCliente {
         );
 
         if (usuarios.length === 0) {
-            this.showToast('Debe agregar al menos un usuario', 'error');
+            this.showToast(window.I18N.common.messages.error_usuarios_min, 'error');
             return false;
         }
 
@@ -419,7 +409,7 @@ class FormularioCliente {
         const perfiles = document.querySelectorAll('.nivel-item:not(#nivel-template)');
 
         if (perfiles.length === 0) {
-            this.showToast('Debe agregar al menos un nivel de acceso', 'error');
+            this.showToast(window.I18N.common.messages.error_perfiles_min, 'error');
             return false;
         }
 
@@ -471,7 +461,7 @@ class FormularioCliente {
             trasteros.push(data);
         });
 
-        console.log('Trasteros serializados:', trasteros);
+
         return trasteros;
     }
 
@@ -506,9 +496,7 @@ class FormularioCliente {
             });
         });
 
-        console.log('usuarios', usuarios);
 
-        console.log('Usuarios serializados:', usuarios);
         return usuarios;
     }
 
@@ -572,11 +560,12 @@ class FormularioCliente {
 
             if (!tieneContratos || !tienePlanos || !tieneLogo) {
                 let faltantes = [];
-                if (!tieneContratos) faltantes.push("Contratos");
-                if (!tienePlanos) faltantes.push("Planos");
-                if (!tieneLogo) faltantes.push("Logo Principal");
+                if (!tieneContratos) faltantes.push(window.I18N.step6.sections.contracts.title);
+                if (!tienePlanos) faltantes.push(window.I18N.step6.sections.plans.title);
+                if (!tieneLogo) faltantes.push(window.I18N.step6.sections.logos.title);
 
-                this.showToast(`Faltan archivos obligatorios: ${faltantes.join(', ')}`, 'error');
+                const mensaje = window.I18N.common.messages.error_files_missing.replace('{list}', faltantes.join(', '));
+                this.showToast(mensaje, 'error');
                 return false;
             }
             return true;
@@ -592,25 +581,24 @@ class FormularioCliente {
     _getRequiredFieldsForCurrentStep() {
         const currentStepElement = document.querySelector(`[data-step="${this.currentStep}"]`);
         if (!currentStepElement) {
-            console.log(`No se encontró elemento para paso ${this.currentStep}`);
+
             return [];
         }
 
 
         const requiredFields = currentStepElement.querySelectorAll('[required]');
-        console.log(`Paso ${this.currentStep}: ${requiredFields.length} campos obligatorios encontrados`);
+
 
         return Array.from(requiredFields);
     }
 
     _validateRequiredFields(fields) {
         const invalidFields = [];
-        console.log(fields);
+
         fields.forEach(field => {
             const value = field.value ? field.value.trim() : '';
             const fieldLabel = this._getFieldLabel(field);
 
-            console.log(`Validando ${fieldLabel}: "${value}"`);
 
             // Validación básica: campo requerido no puede estar vacío
             if (!value) {
@@ -654,7 +642,7 @@ class FormularioCliente {
 
 
     _navigateToStep(step) {
-        console.log(`Navegando al paso ${step}`);
+
 
         // Guardar datos del paso actual si estamos avanzando
         if (step > this.currentStep) {
@@ -673,7 +661,6 @@ class FormularioCliente {
             this.loadStepData(step, window.formularioData.datosFormulario);
         }
 
-        console.log(`Navegación completada al paso ${step}`);
     }
 
     validateField(field) {
@@ -684,7 +671,7 @@ class FormularioCliente {
         let reason = '';
 
         const value = field.value.trim();
-        console.log(`Validando campo ${fieldName}, valor: "${value}"`);
+
 
         // Validación de campos requeridos
         if (field.hasAttribute('required') && !value) {
@@ -739,11 +726,11 @@ class FormularioCliente {
         if (isValid) {
             field.classList.remove('is-invalid');
             field.classList.add('is-valid');
-            console.log(`Campo ${fieldName} válido`);
+
         } else {
             field.classList.remove('is-valid');
             field.classList.add('is-invalid');
-            console.log(`Campo ${fieldName} inválido: ${reason}`);
+
         }
 
         return isValid;
@@ -885,7 +872,7 @@ class FormularioCliente {
                         nuevaRuta + url.search
                     );
 
-                    console.log('🔁 URL actualizada a:', nuevaRuta);
+
                 }
             }
 
@@ -907,7 +894,6 @@ class FormularioCliente {
             }
 
             const df = window.formularioData.datosFormulario;
-            console.log('df', df);
 
             if (result.formulario_data_actualizada) {
                 if (result.formulario_data_actualizada.datos_empresa !== undefined) {
@@ -1023,21 +1009,20 @@ class FormularioCliente {
 
     updateSaveStatus(status) {
         if (!this.elements.saveStatus || !this.elements.saveIcon) return;
-
-        this.elements.saveStatus.className = `save-status ${status}`;
+        const common = window.I18N.common;
 
         switch (status) {
             case 'saving':
                 this.elements.saveIcon.className = 'bi bi-cloud-arrow-up me-2';
-                this.elements.saveStatus.textContent = 'Guardando...';
+                this.elements.saveStatus.textContent = common.saving;
                 break;
             case 'saved':
                 this.elements.saveIcon.className = 'bi bi-cloud-check me-2';
-                this.elements.saveStatus.textContent = 'Guardado automáticamente';
+                this.elements.saveStatus.textContent = common.messages.auto_save_active;
                 break;
             case 'error':
                 this.elements.saveIcon.className = 'bi bi-cloud-slash me-2';
-                this.elements.saveStatus.textContent = 'Error al guardar';
+                this.elements.saveStatus.textContent = common.messages.error_save;
                 break;
         }
     }
@@ -1201,7 +1186,7 @@ class FormularioCliente {
             }
 
             this.updateSaveStatus('saved');
-            this.showToast('¡Formulario completado exitosamente!', 'success');
+            this.showToast(window.I18N.common.messages.success_complete, 'success');
 
             setTimeout(() => {
                 window.location.href = '/';
@@ -1211,7 +1196,7 @@ class FormularioCliente {
             console.error(error);
             this.isSubmitting = false;
             this.updateSaveStatus('error');
-            this.showToast('Error al completar el formulario', 'error');
+            this.showToast(window.I18N.common.messages.error_complete, 'error');
         }
     }
 

@@ -1,5 +1,6 @@
 {
   "common": {
+    "saving": "Saving...",
     "important_note": "Important note:",
     "buttons": {
       "next": "Next",
@@ -7,7 +8,23 @@
       "save": "Save changes",
       "cancel": "Cancel",
       "close": "Close",
-      "delete": "Delete"
+      "delete": "Delete",
+      "finish": "Finish and Send",
+      "max_reached": "Limit reached"
+    },
+    "messages": {
+      "success_save": "Changes saved successfully",
+      "success_complete": "Form completed successfully!",
+      "error_save": "Error while saving",
+      "error_complete": "Error completing the form",
+      "error_required": "Please complete the required fields in the current step",
+      "error_nav": "You must complete the previous steps before accessing this one",
+      "error_trasteros_min": "You must add at least one unit",
+      "error_usuarios_min": "You must add at least one user",
+      "error_perfiles_min": "You must add at least one access profile",
+      "error_files_missing": "Missing mandatory files: {list}",
+      "error_email_exists": "This email is already in use by another user",
+      "auto_save_active": "Automatic saving active"
     },
     "placeholders": {
       "select": "Select an option..."
@@ -25,6 +42,49 @@
     "error_upload": "Upload error",
     "select_files": "Select Files",
     "delete": "Delete"
+  },
+  "layout": {
+    "total_progress": "Total Progress",
+    "step_of": "Step {{ current }} of {{ total }}",
+    "auto_save": "Automatic saving active",
+    "view_mode": {
+      "title": "View Mode:",
+      "text": "This form has already been completed. You can browse the steps and, if you modify any data, the button to save changes will appear."
+    },
+    "confirm_modal": {
+      "title": "Confirm Action",
+      "message": "Are you sure you want to continue?",
+      "btn_cancel": "Cancel",
+      "btn_confirm": "Confirm"
+    }
+  },
+  "navigation": {
+    "steps": {
+      "1": {
+        "title": "Company's Information",
+        "desc": "Basic company information"
+      },
+      "2": {
+        "title": "Storage Units Information",
+        "desc": "Storage units setup"
+      },
+      "3": {
+        "title": "System's Users",
+        "desc": "System users"
+      },
+      "4": {
+        "title": "Email Configuration",
+        "desc": "Email configuration"
+      },
+      "5": {
+        "title": "Access Profiles",
+        "desc": "Access Profiles"
+      },
+      "6": {
+        "title": "Documents",
+        "desc": "Required documentation"
+      }
+    }
   },
   "step1": {
     "alert": {
