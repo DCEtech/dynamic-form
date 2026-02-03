@@ -2,14 +2,9 @@
 """
 Aplicación Flask para el formulario dinámico de clientes
 """
-import io
+
 import os
-import logging
-import json
-import uuid
-from crypt import methods
 from datetime import datetime
-from pathlib import Path
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from dotenv import load_dotenv
 
@@ -26,7 +21,9 @@ from services.storage import StorageService
 
 # Configuración de la aplicación
 app = Flask(__name__)
-app.config.from_object(config.DevelopmentConfig)
+# Cargar configuración según el entorno
+env_name = os.environ.get('FLASK_ENV', 'development')
+app.config.from_object(config.config_dict[env_name])
 
 # Configuración de uploads
 UPLOAD_FOLDER = 'uploads'
