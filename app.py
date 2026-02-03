@@ -26,11 +26,7 @@ env_name = os.environ.get('FLASK_ENV', 'development')
 app.config.from_object(config.config_dict[env_name])
 
 # Configuración de uploads
-UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx'}
-
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 # Definición global de los nombres de los pasos
 step_names = [
