@@ -86,6 +86,64 @@
       }
     }
   },
+  "base": {
+    "navbar": {
+      "title": "Formularios de Clientes",
+      "btn_home": "Inicio"
+    },
+    "footer": {
+      "desc": "Sistema de Formularios Dinámicos © 2025"
+    }
+  },
+  "index": {
+    "header": {
+      "title": "Formularios de Clientes",
+      "subtitle": "Sistema dinámico para la configuración de nuevos clientes"
+    },
+    "clients_card": {
+      "title": "Clientes Disponibles",
+      "btn_new": "Crear Nuevo Formulario"
+    },
+    "views": {
+      "grid": "Grid",
+      "list": "Lista"
+    },
+    "client_item": {
+      "progress": "Progreso",
+      "step_of": "Paso {{ current }} de 6"
+    },
+    "status": {
+      "completed": "Completado",
+      "in_progress": "En Progreso",
+      "not_started": "Sin Iniciar"
+    },
+    "actions": {
+      "view": "Ver Formulario",
+      "continue": "Continuar Formulario"
+    },
+    "empty": {
+      "title": "No hay clientes disponibles",
+      "desc": "Los clientes se configuran desde el panel de administración."
+    },
+    "features": {
+      "secure": {
+        "title": "Seguro",
+        "desc": "Datos protegidos con encriptación"
+      },
+      "fast": {
+        "title": "Rápido",
+        "desc": "Formularios optimizados"
+      },
+      "auto": {
+        "title": "Automático",
+        "desc": "Guardado automático del progreso"
+      },
+      "mobile": {
+        "title": "Móvil",
+        "desc": "Compatible con dispositivos"
+      }
+    }
+  },
   "step1": {
     "alert": {
       "title": "Información de la Empresa",

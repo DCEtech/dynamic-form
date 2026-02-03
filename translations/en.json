@@ -86,6 +86,64 @@
       }
     }
   },
+  "base": {
+    "navbar": {
+      "title": "Clients Application Form",
+      "btn_home": "Home"
+    },
+    "footer": {
+      "desc": "Dynamic Forms System © 2025"
+    }
+  },
+  "index": {
+    "header": {
+      "title": "Client Forms",
+      "subtitle": "Dynamic system for new client configuration"
+    },
+    "clients_card": {
+      "title": "Available Clients",
+      "btn_new": "Create New Form"
+    },
+    "views": {
+      "grid": "Grid",
+      "list": "List"
+    },
+    "client_item": {
+      "progress": "Progress",
+      "step_of": "Step {{ current }} of 6"
+    },
+    "status": {
+      "completed": "Completed",
+      "in_progress": "In Progress",
+      "not_started": "Not Started"
+    },
+    "actions": {
+      "view": "View Form",
+      "continue": "Continue Form"
+    },
+    "empty": {
+      "title": "No clients available",
+      "desc": "Clients are configured from the administration panel."
+    },
+    "features": {
+      "secure": {
+        "title": "Secure",
+        "desc": "Data protected with encryption"
+      },
+      "fast": {
+        "title": "Fast",
+        "desc": "Optimized and responsive forms"
+      },
+      "auto": {
+        "title": "Automatic",
+        "desc": "Automatic progress saving"
+      },
+      "mobile": {
+        "title": "Mobile",
+        "desc": "Compatible with all devices"
+      }
+    }
+  },
   "step1": {
     "alert": {
       "title": "Company Information",

@@ -28,7 +28,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ url_for('index') }}">
             <i class="bi bi-clipboard-data me-2"></i>
-            Formularios de Clientes
+            {{ t.base.navbar.title }}
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -50,7 +50,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('index') }}">
-                        <i class="bi bi-house me-1"></i>Inicio
+                        <i class="bi bi-house me-1"></i>{{ t.base.navbar.btn_home }}
                     </a>
                 </li>
             </ul>

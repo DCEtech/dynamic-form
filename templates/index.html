@@ -10,10 +10,10 @@
                 <div class="text-center">
                     <h1 class="display-4 text-primary mb-3">
                         <i class="bi bi-clipboard-data me-3"></i>
-                        Formularios de Clientes
+                        {{ t.index.header.title }}
                     </h1>
                     <p class="lead text-muted">
-                        Sistema dinámico para la configuración de nuevos clientes
+                        {{ t.index.header.subtitle }}
                     </p>
                 </div>
             </div>
@@ -26,22 +26,22 @@
                     <div class="card-header bg-primary text-white">
                         <h3 class="card-title mb-0">
                             <i class="bi bi-people me-2"></i>
-                            Clientes Disponibles
+                            {{ t.index.clients_card.title }}
                         </h3>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <form action="{{ url_for('nuevo_cliente') }}" method="POST">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Formulario
+                                    <i class="bi bi-plus-circle me-2"></i>{{ t.index.clients_card.btn_new }}
                                 </button>
                             </form>
                             <div class="btn-group" role="group" aria-label="View switch">
                                 <button type="button" class="btn btn-outline-primary active" data-view="grid">
-                                    <i class="bi bi-grid-3x3-gap"></i> Grid
+                                    <i class="bi bi-grid-3x3-gap"></i> {{ t.index.views.grid }}
                                 </button>
                                 <button type="button" class="btn btn-outline-primary" data-view="list">
-                                    <i class="bi bi-list-ul"></i> List
+                                    <i class="bi bi-list-ul"></i> {{ t.index.views.list }}
                                 </button>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                                 <!-- Progreso -->
                                                 <div class="mb-3">
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="small text-muted">Progreso</span>
+                                                        <span class="small text-muted">{{ t.index.client_item.progress }}</span>
                                                         <span class="badge bg-{{ 'success' if cliente.porcentaje_completado == 100 else 'primary' }}">
                                                         {{ cliente.porcentaje_completado }}%
                                                     </span>
@@ -81,7 +81,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="small text-muted mt-1">
-                                                        Paso {{ cliente.paso_actual }} de 6
+                                                        {{ t.index.client_item.step_of | replace('{{ current }}', cliente.paso_actual) }}
                                                     </div>
                                                 </div>
 
@@ -90,17 +90,17 @@
                                                     {% if cliente.completado %}
                                                         <span class="badge bg-success">
                                                         <i class="bi bi-check-circle me-1"></i>
-                                                        Completado
+                                                        {{ t.index.status.completed }}
                                                     </span>
                                                     {% elif cliente.porcentaje_completado > 0 %}
                                                         <span class="badge bg-warning">
                                                         <i class="bi bi-clock me-1"></i>
-                                                        En Progreso
+                                                        {{ t.index.status.in_progress }}
                                                     </span>
                                                     {% else %}
                                                         <span class="badge bg-secondary">
                                                         <i class="bi bi-circle me-1"></i>
-                                                        Sin Iniciar
+                                                        {{ t.index.status.not_started }}
                                                     </span>
                                                     {% endif %}
                                                 </div>
@@ -110,7 +110,7 @@
                                                     <a href="{{ url_for('formulario_cliente', nombre_cliente=cliente.slug) }}"
                                                        class="btn btn-primary w-100 stretched-link">
                                                         <i class="bi bi-{{ 'eye' if cliente.completado else 'pencil' }} me-2"></i>
-                                                        {{ 'Ver Formulario' if cliente.completado else 'Continuar Formulario' }}
+                                                        {{ t.index.actions.view if cliente.completado else t.index.actions.continue }}
                                                     </a>
                                                 </div>
                                             </div>
@@ -121,9 +121,9 @@
                         {% else %}
                             <div class="text-center py-5">
                                 <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                                <h4 class="text-muted">No hay clientes disponibles</h4>
+                                <h4 class="text-muted">{{ t.index.empty.title }}</h4>
                                 <p class="text-muted">
-                                    Los clientes se configuran desde el panel de administración.
+                                    {{ t.index.empty.desc }}
                                 </p>
                             </div>
                         {% endif %}
@@ -141,29 +141,29 @@
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <i class="bi bi-shield-check display-4 text-success"></i>
-                                    <h5 class="mt-2">Seguro</h5>
-                                    <p class="text-muted small">Datos protegidos con encriptación</p>
+                                    <h5 class="mt-2">{{ t.index.features.secure.title }}</h5>
+                                    <p class="text-muted small">{{ t.index.features.secure.desc }}</p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <i class="bi bi-speedometer2 display-4 text-primary"></i>
-                                    <h5 class="mt-2">Rápido</h5>
-                                    <p class="text-muted small">Formularios optimizados y responsivos</p>
+                                    <h5 class="mt-2">{{ t.index.features.fast.title }}</h5>
+                                    <p class="text-muted small">{{ t.index.features.fast.desc }}</p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <i class="bi bi-cloud-arrow-up display-4 text-info"></i>
-                                    <h5 class="mt-2">Automático</h5>
-                                    <p class="text-muted small">Guardado automático del progreso</p>
+                                    <h5 class="mt-2">{{ t.index.features.auto.title }}</h5>
+                                    <p class="text-muted small">{{ t.index.features.auto.desc }}</p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="mb-3">
                                     <i class="bi bi-phone display-4 text-warning"></i>
-                                    <h5 class="mt-2">Móvil</h5>
-                                    <p class="text-muted small">Compatible con todos los dispositivos</p>
+                                    <h5 class="mt-2">{{ t.index.features.mobile.title }}</h5>
+                                    <p class="text-muted small">{{ t.index.features.mobile.desc }}</p>
                                 </div>
                             </div>
                         </div>
