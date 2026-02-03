@@ -26,11 +26,7 @@ env_name = os.environ.get('FLASK_ENV', 'development')
 app.config.from_object(config.config_dict[env_name])
 
 # Configuración de uploads
-UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx'}
-
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
 
 # Definición global de los nombres de los pasos
 step_names = [
@@ -43,6 +39,22 @@ step_names = [
 ]
 
 storage = StorageService()
+
+def obtener_nombre_cliente(cliente_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT nombre_cliente FROM clientes WHERE id = %s",
+        (cliente_id,)
+    )
+
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    return row["nombre_cliente"] if row else None
+
 
 
 def allowed_file(filename):
@@ -249,6 +261,11 @@ def upload_file():
         if not cliente_id:
             return jsonify({'error': 'cliente_id requerido'}), 400
 
+        nombre_cliente = obtener_nombre_cliente(cliente_id)
+
+        if not nombre_cliente:
+            return jsonify({'error': 'Cliente no encontrado'}), 400
+
         if file.filename == '':
             return jsonify({'error': 'No se seleccionó archivo'}), 400
 
@@ -260,9 +277,9 @@ def upload_file():
             return jsonify({'error': 'No hay formulario activo para el cliente'}), 400
 
         filename = secure_filename(file.filename)
-        unique_filename = f"{cliente_id}_{tipo_archivo}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
+        unique_filename = f"{nombre_cliente}_{tipo_archivo}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{filename}"
 
-        folder = f"clientes/A-PruebaFormulario/{formulario.id}"
+        folder = f"clientes/A-PruebaFormulario/{nombre_cliente}"
 
         # Subir archivo
         storage_path = storage.save(file.stream, unique_filename, folder)
