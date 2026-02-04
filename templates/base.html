@@ -26,37 +26,61 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
+
+        <!-- Brand -->
         <a class="navbar-brand" href="{{ url_for('index') }}">
             <i class="bi bi-clipboard-data me-2"></i>
             {{ t.base.navbar.title }}
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="language-switcher">
-            <a href="{{ url_for('set_language', lang='es') }}"
-               class="btn btn-sm {{ 'btn-primary' if current_lang == 'es' else 'btn-outline-primary' }}">
-                ES
-            </a>
-            <a href="{{ url_for('set_language', lang='en') }}"
-               class="btn btn-sm {{ 'btn-primary' if current_lang == 'en' else 'btn-outline-primary' }}">
-                EN
-            </a>
-        </div>
-
+        <!-- Nav links -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('index') }}">
-                        <i class="bi bi-house me-1"></i>{{ t.base.navbar.btn_home }}
+                        <i class="bi bi-house me-1"></i>
+                        {{ t.base.navbar.btn_home }}
                     </a>
                 </li>
             </ul>
         </div>
+
+        <!-- Language switcher -->
+        <form class="d-flex align-items-center ms-lg-3 me-3 language-switcher">
+            <label for="lang-select" class="visually-hidden">
+                Idioma
+            </label>
+
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-transparent border-0 text-white px-1">
+                    <i class="bi bi-globe"></i>
+                </span>
+
+                <select id="lang-select"
+                        class="form-select form-select-sm bg-transparent text-white border-white"
+                        onchange="location = this.value">
+                    <option value="{{ url_for('set_language', lang='es') }}"
+                            {{ 'selected' if current_lang == 'es' }}>
+                        Español
+                    </option>
+                    <option value="{{ url_for('set_language', lang='en') }}"
+                            {{ 'selected' if current_lang == 'en' }}>
+                        English
+                    </option>
+                </select>
+            </div>
+        </form>
+
     </div>
 </nav>
+
 
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
