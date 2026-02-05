@@ -1,0 +1,564 @@
+{
+  "common": {
+    "saving": "Saving...",
+    "important_note": "Important note:",
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete",
+      "finish": "Finish and Send",
+      "max_reached": "Limit reached"
+    },
+    "messages": {
+      "success_save": "Changes saved successfully",
+      "success_complete": "Form completed successfully!",
+      "error_save": "Error while saving",
+      "error_complete": "Error completing the form",
+      "error_required": "Please complete the required fields in the current step",
+      "error_nav": "You must complete the previous steps before accessing this one",
+      "error_trasteros_min": "You must add at least one unit",
+      "error_usuarios_min": "You must add at least one user",
+      "error_perfiles_min": "You must add at least one access profile",
+      "error_files_missing": "Missing mandatory files: {list}",
+      "error_email_exists": "This email is already in use by another user",
+      "auto_save_active": "Automatic saving active"
+    },
+    "placeholders": {
+      "select": "Select an option..."
+    },
+    "yes": "YES",
+    "no": "NO",
+    "status": {
+      "configured": "Configured",
+      "incomplete": "Incomplete",
+      "not_configured": "Not configured"
+    },
+    "files": "files",
+    "file": "file",
+    "uploading": "Uploading...",
+    "error_upload": "Upload error",
+    "select_files": "Select Files",
+    "delete": "Delete"
+  },
+  "layout": {
+    "total_progress": "Total Progress",
+    "step_of": "Step {{ current }} of {{ total }}",
+    "auto_save": "Automatic saving active",
+    "view_mode": {
+      "title": "View Mode:",
+      "text": "This form has already been completed. You can browse the steps and, if you modify any data, the button to save changes will appear."
+    },
+    "confirm_modal": {
+      "title": "Confirm Action",
+      "message": "Are you sure you want to continue?",
+      "btn_cancel": "Cancel",
+      "btn_confirm": "Confirm"
+    }
+  },
+  "navigation": {
+    "steps": {
+      "1": {
+        "title": "Company's Information",
+        "desc": "Basic company information"
+      },
+      "2": {
+        "title": "Storage Units Information",
+        "desc": "Storage units setup"
+      },
+      "3": {
+        "title": "System's Users",
+        "desc": "System users"
+      },
+      "4": {
+        "title": "Email Configuration",
+        "desc": "Email configuration"
+      },
+      "5": {
+        "title": "Access Profiles",
+        "desc": "Access Profiles"
+      },
+      "6": {
+        "title": "Documents",
+        "desc": "Required documentation"
+      }
+    }
+  },
+  "base": {
+    "navbar": {
+      "title": "Clients Application Form",
+      "btn_home": "Home"
+    },
+    "footer": {
+      "desc": "Dynamic Forms System © 2025"
+    }
+  },
+  "index": {
+    "header": {
+      "title": "Client Forms",
+      "subtitle": "Dynamic system for new client configuration"
+    },
+    "clients_card": {
+      "title": "Available Clients",
+      "btn_new": "Create New Form"
+    },
+    "views": {
+      "grid": "Grid",
+      "list": "List"
+    },
+    "client_item": {
+      "progress": "Progress",
+      "step_of": "Step {{ current }} of 6"
+    },
+    "status": {
+      "completed": "Completed",
+      "in_progress": "In Progress",
+      "not_started": "Not Started"
+    },
+    "actions": {
+      "view": "View Form",
+      "continue": "Continue Form"
+    },
+    "empty": {
+      "title": "No clients available",
+      "desc": "Clients are configured from the administration panel."
+    },
+    "features": {
+      "secure": {
+        "title": "Secure",
+        "desc": "Data protected with encryption"
+      },
+      "fast": {
+        "title": "Fast",
+        "desc": "Optimized and responsive forms"
+      },
+      "auto": {
+        "title": "Automatic",
+        "desc": "Automatic progress saving"
+      },
+      "mobile": {
+        "title": "Mobile",
+        "desc": "Compatible with all devices"
+      }
+    }
+  },
+  "step1": {
+    "alert": {
+      "title": "Company Information",
+      "text": "Complete your company's basic details. All fields marked with (*) are required. This information will be used for the initial system setup."
+    },
+    "sections": {
+      "fiscal": "Tax Information",
+      "contact": "Contact Information",
+      "bank": "Bank Details",
+      "additional": "Additional Configuration"
+    },
+    "fields": {
+      "nombre": {
+        "label": "Company or Freelancer Name *",
+        "tooltip": "Full name of the company or freelancer as it appears on official documents",
+        "placeholder": "e.g., Madrid Storage S.L. | John Doe",
+        "error": "Please enter the company name."
+      },
+      "nif": {
+        "label": "Tax ID (NIF/CIF) *",
+        "tooltip": "Tax Identification Number (format: 12345678A or A12345678)",
+        "placeholder": "e.g., 12345678A",
+        "error": "Invalid Tax ID format. Use 12345678A or A12345678."
+      },
+      "direccion": {
+        "label": "Full Address *",
+        "tooltip": "Full address including street, number, floor, etc.",
+        "placeholder": "e.g., 123 Main St, 2nd Floor",
+        "error": "Please enter the full address."
+      },
+      "cp": {
+        "label": "Postal Code *",
+        "tooltip": "5-digit postal code",
+        "placeholder": "e.g., 28001",
+        "error": "Postal code must be 5 digits."
+      },
+      "provincia": {
+        "label": "Province *",
+        "tooltip": "Select the province where the company is located",
+        "default_option": "Select a province",
+        "error": "Please select a province."
+      },
+      "telefono": {
+        "label": "Phone *",
+        "tooltip": "Contact phone (format: +34 XXX XXX XXX)",
+        "placeholder": "e.g., +34 912 345 678",
+        "error": "Invalid phone format. Use +34 XXX XXX XXX."
+      },
+      "email": {
+        "label": "Corporate Email *",
+        "tooltip": "Primary company email address",
+        "placeholder": "e.g., info@company.com",
+        "error": "Please enter a valid email."
+      },
+      "web": {
+        "label": "Website",
+        "tooltip": "Company website URL (optional)",
+        "placeholder": "e.g., https://www.company.com",
+        "error": "Please enter a valid URL."
+      },
+      "banco": {
+        "label": "Bank Name",
+        "tooltip": "Name of the banking institution",
+        "placeholder": "e.g., Santander Bank"
+      },
+      "bic": {
+        "label": "BIC/SWIFT",
+        "tooltip": "International bank identifier. Found in your banking app (Account details) or statements. 8-11 characters",
+        "placeholder": "e.g., BSCHESMM",
+        "error": "Invalid BIC/SWIFT format."
+      },
+      "iban": {
+        "label": "Bank Account (IBAN)",
+        "tooltip": "Account number in IBAN format (ES + 22 digits)",
+        "placeholder": "e.g., ES91 2100 0418 4502 0005 1332",
+        "error": "Invalid Spanish IBAN format."
+      },
+      "sepa": {
+        "label": "SEPA Creditor ID",
+        "tooltip": "Unique identifier for SEPA direct debits (request from your bank)",
+        "placeholder": "e.g., ES98ZZZ12345678"
+      },
+      "facturacion": {
+        "label": "Invoice Numbering",
+        "tooltip": "Numbering format for invoices (e.g., INV-2024-)",
+        "placeholder": "If blank, we start at 0"
+      },
+      "rectificativas": {
+        "label": "Credit Note Numbering",
+        "tooltip": "Numbering format for credit notes (e.g., CN-2024-)",
+        "placeholder": "If blank, we start at 0"
+      }
+    }
+  },
+  "provincias": [
+    "Alava",
+    "Albacete",
+    "Alicante",
+    "Almeria",
+    "Asturias",
+    "Avila",
+    "Badajoz",
+    "Barcelona",
+    "Burgos",
+    "Caceres",
+    "Cadiz",
+    "Cantabria",
+    "Castellon",
+    "Ciudad Real",
+    "Cordoba",
+    "A Coruna",
+    "Cuenca",
+    "Girona",
+    "Granada",
+    "Guadalajara",
+    "Guipuzcoa",
+    "Huelva",
+    "Huesca",
+    "Balearic Islands",
+    "Jaen",
+    "La Rioja",
+    "Las Palmas",
+    "Leon",
+    "Lleida",
+    "Lugo",
+    "Madrid",
+    "Malaga",
+    "Murcia",
+    "Navarre",
+    "Ourense",
+    "Palencia",
+    "Pontevedra",
+    "Salamanca",
+    "Santa Cruz de Tenerife",
+    "Segovia",
+    "Seville",
+    "Soria",
+    "Tarragona",
+    "Teruel",
+    "Toledo",
+    "Valencia",
+    "Valladolid",
+    "Biscay",
+    "Zamora",
+    "Saragossa"
+  ],
+  "step2": {
+    "alert": {
+      "title": "Storage Unit Setup",
+      "text": "Configure the available storage units with their features and prices. You can add multiple units using the 'Add Storage Unit' button."
+    },
+    "btn_add": "Add Storage Unit",
+    "item": {
+      "title": "Unit",
+      "fields": {
+        "numero": {
+          "label": "Unit Number *",
+          "tooltip": "Unique ID number",
+          "placeholder": "e.g., T001",
+          "error": "Enter unit number."
+        },
+        "metros": {
+          "label": "Square Meters *",
+          "tooltip": "Surface area in sqm",
+          "placeholder": "0.00",
+          "error": "Enter area."
+        },
+        "cubicos": {
+          "label": "Cubic Meters",
+          "tooltip": "Volume in cbm - optional",
+          "placeholder": "0.00"
+        },
+        "precio_sin_iva": {
+          "label": "Price (excl. VAT) *",
+          "tooltip": "Monthly price without VAT",
+          "placeholder": "0.00",
+          "error": "Enter price."
+        },
+        "precio_con_iva": {
+          "label": "Price (incl. VAT)",
+          "tooltip": "Calculated automatically (21% VAT)",
+          "placeholder": "0.00",
+          "helper": "Calculated automatically (21% VAT)"
+        },
+        "fianza": {
+          "label": "Deposit",
+          "tooltip": "Security deposit amount",
+          "placeholder": "0.00"
+        }
+      }
+    },
+    "modal": {
+      "title": "Bulk Add Units",
+      "btn_cancel": "Cancel",
+      "btn_confirm": "Create Units",
+      "label_cantidad": "Number of units *",
+      "summary_part1": "There will be",
+      "summary_part2": "unit",
+      "verb_singular": "created",
+      "verb_plural": "created",
+      "suffix_plural": "s"
+    },
+    "empty": {
+      "title": "No units configured",
+      "desc": "Click 'Add Storage Unit' to start."
+    }
+  },
+  "step3": {
+    "alert": {
+      "title": "System Users",
+      "text": "Set up the users who will have access to the system. You can create up to 3 users based on your licenses."
+    },
+    "btn_add": "Add User",
+    "limit_info": "Maximum 3 users according to acquired licenses",
+    "item_title": "User",
+    "fields": {
+      "nombre": {
+        "label": "Full Name *",
+        "tooltip": "First and last name",
+        "placeholder": "e.g., John Doe",
+        "error": "Enter full name."
+      },
+      "email": {
+        "label": "User Email *",
+        "tooltip": "Unique login email",
+        "placeholder": "e.g., john@company.com",
+        "error": "Invalid or duplicate email."
+      },
+      "pass": {
+        "label": "Password *",
+        "tooltip": "Min 8 chars, uppercase, lowercase and number",
+        "placeholder": "Secure password",
+        "error": "Requirements not met."
+      },
+      "confirm": {
+        "label": "Confirm Password *",
+        "tooltip": "Repeat password",
+        "placeholder": "Confirm password",
+        "error": "Passwords do not match."
+      },
+      "rol": {
+        "label": "User Role",
+        "tooltip": "Access level",
+        "options": {
+          "estandar": "Standard User",
+          "principal": "Primary User"
+        }
+      },
+      "depto": {
+        "label": "Department",
+        "tooltip": "Work area (optional)",
+        "placeholder": "e.g., Sales"
+      }
+    },
+    "strength": {
+      "label": "Enter a password",
+      "v_weak": "Very weak",
+      "weak": "Weak",
+      "medium": "Moderate",
+      "strong": "Strong",
+      "v_strong": "Very strong"
+    },
+    "summary": {
+      "title": "Users Summary",
+      "total": "Total Users",
+      "principales": "Primary",
+      "estandar": "Standard",
+      "empty_title": "No users configured",
+      "empty_desc": "Click 'Add User' to start."
+    },
+    "note": "The number of users is limited by licenses. If you need more, contact support.",
+    "errors": {
+      "max_reached": "Maximum of 3 users allowed according to acquired licenses.",
+      "email_exists": "This email is already in use by another user."
+    }
+  },
+  "step4": {
+    "alert": {
+      "title": "Mail Server Configuration",
+      "text": "Select your provider or manually configure the outgoing server for notifications."
+    },
+    "provider": {
+      "title": "Email Provider",
+      "label": "Select your email provider",
+      "hint": "If you choose a known provider, we will fill in the technical details for you.",
+      "manual": "-- Other (Manual Configuration) --",
+      "hints": {
+        "gmail": "Note: Use an 'App Password' generated from your Google account.",
+        "outlook": "Note: Ensure authenticated SMTP access is enabled in Microsoft 365.",
+        "yahoo": "Note: Requires an app password generated in Yahoo Security.",
+        "icloud": "Note: Use your Apple ID and an app-specific password.",
+        "custom": "Manually configure your SMTP server details."
+      }
+    },
+    "technical": {
+      "title": "Outgoing Mail Server",
+      "smtp": "SMTP Server *",
+      "port": {
+        "label": "SMTP Port *",
+        "placeholder": "Select a port"
+      },
+      "address": "Server Address *",
+      "ssl_label": "Use SSL/TLS *"
+    },
+    "credentials": {
+      "title": "Authentication Credentials",
+      "email": "Email Address *",
+      "pass": "Password *"
+    },
+    "notifications": {
+      "label": "Email for Notifications *"
+    },
+    "summary": {
+      "title": "Configuration Summary",
+      "server": "Server",
+      "port": "Port",
+      "ssl": "SSL/TLS",
+      "user": "User",
+      "notif": "Notifications",
+      "status": "Status"
+    }
+  },
+  "step5": {
+    "alert": {
+      "title": "Access Profiles Configuration",
+      "text": "Define entry permissions. Each profile indicates which doors can be opened and at what time."
+    },
+    "btn_add": "Add Access Profile",
+    "card": {
+      "title": "Access Profile",
+      "fields": {
+        "nombre": {
+          "label": "Profile Name *",
+          "placeholder": "e.g., Cleaning Staff"
+        },
+        "desc": {
+          "label": "Profile Description *",
+          "placeholder": "Areas allowed to access..."
+        },
+        "doors": {
+          "label": "Permitted Doors",
+          "main": "Main Door",
+          "back": "Back Door",
+          "office": "Office",
+          "custom_placeholder": "Other door..."
+        },
+        "schedule": {
+          "label": "Access Schedule",
+          "all_day": "24/7 Access",
+          "start": "Start:",
+          "end": "End:"
+        }
+      }
+    }
+  },
+  "step6": {
+    "alert": {
+      "title": "Required Documentation",
+      "text": "Upload the necessary documents to complete the system configuration. Files will be stored securely and available for later consultation."
+    },
+    "sections": {
+      "contracts": {
+        "title": "Contracts",
+        "label": "Contracts in .docx Format",
+        "tooltip": "Upload rental contracts in Word format (.docx)"
+      },
+      "plans": {
+        "title": "Graphic Plans",
+        "label": "Facilities Graphic Plan",
+        "tooltip": "Architectural plans or facility layouts"
+      },
+      "logos": {
+        "title": "Company Logo",
+        "main_label": "Main Logo",
+        "main_tooltip": "Primary company logo for documents and system",
+        "alt_title": "Alternative Logo",
+        "alt_label": "Alternative Logo (Optional)",
+        "alt_tooltip": "Alternative logo or black and white version",
+        "select_logo": "Select Logo"
+      },
+      "additional": {
+        "title": "Additional Documentation",
+        "summary_sub_title": "Additionals",
+        "sub_title": "Additional Documentation",
+        "label": "Other Documents (Optional)",
+        "tooltip": "Any other relevant document for the setup"
+      },
+      "notes": {
+        "title": "Notes and Comments",
+        "label": "Additional Notes",
+        "tooltip": "Any additional information or special instructions",
+        "placeholder": "Write here any additional information, special instructions, or comments you consider relevant for the system setup...",
+        "char_limit": "characters"
+      }
+    },
+    "upload_zone": {
+      "drop_files": "Drag files here or click to select",
+      "drop_images": "Drag images here or click to select",
+      "formats": "Allowed formats",
+      "max_size": "Max size"
+    },
+    "summary": {
+      "title": "Documentation Summary",
+      "total_files": "Total files",
+      "total_size": "Total size"
+    },
+    "finish_alert": {
+      "title": "Last step!",
+      "text": "Once you have uploaded all the necessary documentation, you can complete the form and the system will be ready for use."
+    },
+    "toasts": {
+      "logo_deleted": "Logo deleted successfully",
+      "logo_error": "Error deleting the logo",
+      "format_error": "File format not allowed",
+      "size_error": "The file is too large"
+    }
+  }
+}

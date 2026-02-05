@@ -1,0 +1,566 @@
+{
+  "common": {
+    "saving": "Guardando...",
+    "important_note": "Nota importante:",
+    "buttons": {
+      "next": "Siguiente",
+      "back": "Anterior",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "delete": "Eliminar",
+      "finish": "Finalizar y Enviar",
+      "max_reached": "Máximo alcanzado"
+    },
+    "messages": {
+      "success_save": "Cambios guardados correctamente",
+      "success_complete": "¡Formulario completado exitosamente!",
+      "error_save": "Error al guardar",
+      "error_complete": "Error al completar el formulario",
+      "error_required": "Complete los campos obligatorios del paso actual",
+      "error_nav": "Debe completar los pasos anteriores antes de acceder a este",
+      "error_trasteros_min": "Debe agregar al menos un trastero",
+      "error_usuarios_min": "Debe agregar al menos un usuario",
+      "error_perfiles_min": "Debe agregar al menos un nivel de acceso",
+      "error_files_missing": "Faltan archivos obligatorios: {list}",
+      "error_email_exists": "Este email ya está siendo usado por otro usuario",
+      "auto_save_active": "Guardado automático activo"
+    },
+    "placeholders": {
+      "select": "Seleccione una opción..."
+    },
+    "yes": "SÍ",
+    "no": "NO",
+    "status": {
+      "configured": "Configurado",
+      "incomplete": "Incompleto",
+      "not_configured": "No configurado"
+    },
+    "files": "archivos",
+    "file": "archivo",
+    "uploading": "Subiendo...",
+    "error_upload": "Error al subir",
+    "select_files": "Seleccionar Archivos",
+    "delete": "Eliminar"
+  },
+  "layout": {
+    "total_progress": "Progreso Total",
+    "step_of": "Paso {{ current }} de {{ total }}",
+    "auto_save": "Guardado automático activo",
+    "view_mode": {
+      "title": "Modo Vista:",
+      "text": "Este formulario ya ha sido completado. Puedes navegar por los pasos y, si modificas algún dato, aparecerá el botón para guardar los cambios."
+    },
+    "confirm_modal": {
+      "title": "Confirmar Acción",
+      "message": "¿Está seguro de que desea continuar?",
+      "btn_cancel": "Cancelar",
+      "btn_confirm": "Confirmar"
+    }
+  },
+  "navigation": {
+    "steps": {
+      "1": {
+        "title": "Datos de la Empresa",
+        "desc": "Información básica de la empresa"
+      },
+      "2": {
+        "title": "Información de Trasteros",
+        "desc": "Configuración de trasteros"
+      },
+      "3": {
+        "title": "Usuarios de la Aplicación",
+        "desc": "Usuarios del sistema"
+      },
+      "4": {
+        "title": "Configuración de Correo",
+        "desc": "Configuración de correo"
+      },
+      "5": {
+        "title": "Perfiles de Acceso",
+        "desc": "Perfiles de acceso"
+      },
+      "6": {
+        "title": "Documentación",
+        "desc": "Documentación requerida"
+      }
+    }
+  },
+  "base": {
+    "navbar": {
+      "title": "Formularios de Clientes",
+      "btn_home": "Inicio"
+    },
+    "footer": {
+      "desc": "Sistema de Formularios Dinámicos © 2025"
+    }
+  },
+  "index": {
+    "header": {
+      "title": "Formularios de Clientes",
+      "subtitle": "Sistema dinámico para la configuración de nuevos clientes"
+    },
+    "clients_card": {
+      "title": "Clientes Disponibles",
+      "btn_new": "Crear Nuevo Formulario"
+    },
+    "views": {
+      "grid": "Grid",
+      "list": "Lista"
+    },
+    "client_item": {
+      "progress": "Progreso",
+      "step_of": "Paso {{ current }} de 6"
+    },
+    "status": {
+      "completed": "Completado",
+      "in_progress": "En Progreso",
+      "not_started": "Sin Iniciar"
+    },
+    "actions": {
+      "view": "Ver Formulario",
+      "continue": "Continuar Formulario"
+    },
+    "empty": {
+      "title": "No hay clientes disponibles",
+      "desc": "Los clientes se configuran desde el panel de administración."
+    },
+    "features": {
+      "secure": {
+        "title": "Seguro",
+        "desc": "Datos protegidos con encriptación"
+      },
+      "fast": {
+        "title": "Rápido",
+        "desc": "Formularios optimizados"
+      },
+      "auto": {
+        "title": "Automático",
+        "desc": "Guardado automático del progreso"
+      },
+      "mobile": {
+        "title": "Móvil",
+        "desc": "Compatible con dispositivos"
+      }
+    }
+  },
+  "step1": {
+    "alert": {
+      "title": "Información de la Empresa",
+      "text": "Complete los datos básicos de su empresa. Todos los campos marcados con (*) son obligatorios. Esta información se utilizará para la configuración inicial del sistema."
+    },
+    "sections": {
+      "fiscal": "Información Fiscal",
+      "contact": "Información de Contacto",
+      "bank": "Información Bancaria",
+      "additional": "Configuración Adicional"
+    },
+    "fields": {
+      "nombre": {
+        "label": "Nombre de la Empresa o Autónomo *",
+        "tooltip": "Nombre completo de la empresa o autónomo tal como aparece en documentos oficiales",
+        "placeholder": "Ej: Trasteros Madrid S.L. | Juan Perez",
+        "error": "Por favor, ingrese el nombre de la empresa."
+      },
+      "nif": {
+        "label": "NIF/CIF *",
+        "tooltip": "Número de Identificación Fiscal (formato: 12345678A o A12345678)",
+        "placeholder": "Ej: 12345678A",
+        "error": "Formato de NIF/CIF inválido. Use el formato 12345678A o A12345678."
+      },
+      "direccion": {
+        "label": "Dirección Completa *",
+        "tooltip": "Dirección completa incluyendo calle, número, piso, etc.",
+        "placeholder": "Ej: Calle Mayor, 123, 2º A",
+        "error": "Por favor, ingrese la dirección completa."
+      },
+      "cp": {
+        "label": "Código Postal *",
+        "tooltip": "Código postal de 5 dígitos",
+        "placeholder": "Ej: 28001",
+        "error": "El código postal debe tener 5 dígitos."
+      },
+      "provincia": {
+        "label": "Provincia *",
+        "tooltip": "Seleccione la provincia donde se encuentra la empresa",
+        "default_option": "Seleccione una provincia",
+        "error": "Por favor, seleccione una provincia."
+      },
+      "telefono": {
+        "label": "Teléfono *",
+        "tooltip": "Teléfono de contacto (formato: +34 XXX XXX XXX sin espacios)",
+        "placeholder": "Ej: +34912345678",
+        "error": "Formato de teléfono inválido. Use el formato +34 XXX XXX XXX."
+      },
+      "email": {
+        "label": "Email Corporativo *",
+        "tooltip": "Dirección de email principal de la empresa",
+        "placeholder": "Ej: info@empresa.com",
+        "error": "Por favor, ingrese un email válido."
+      },
+      "web": {
+        "label": "Página Web",
+        "tooltip": "URL de la página web de la empresa (opcional)",
+        "placeholder": "Ej: https://www.empresa.com",
+        "error": "Por favor, ingrese una URL válida."
+      },
+      "banco": {
+        "label": "Nombre del Banco",
+        "tooltip": "Nombre de la entidad bancaria",
+        "placeholder": "Ej: Banco Santander"
+      },
+      "bic": {
+        "label": "BIC/SWIFT",
+        "tooltip": "Es el identificador internacional del banco. Se puede encontrar en el app bancaria (sección 'Detalles de cuenta') o en los extractos mensuales. Debe contener de 8 a 11 caracteres",
+        "placeholder": "Ej: BSCHESMM",
+        "error": "Formato de BIC/SWIFT inválido."
+      },
+      "iban": {
+        "label": "Cuenta Bancaria (IBAN)",
+        "tooltip": "Número de cuenta en formato IBAN (ES + 22 dígitos)",
+        "placeholder": "Ej: ES91 2100 0418 4502 0005 1332",
+        "error": "Formato de IBAN español inválido."
+      },
+      "sepa": {
+        "label": "Identificador Acreedor SEPA (Solicitar al Banco)",
+        "tooltip": "Identificador único para domiciliaciones bancarias SEPA",
+        "placeholder": "Ej: ES98ZZZ12345678"
+      },
+      "facturacion": {
+        "label": "Numeración de Facturas",
+        "tooltip": "Formato de numeración para las facturas (ej: FAC-2024-)",
+        "placeholder": "En caso de no indicar, comenzamos en 0"
+      },
+      "rectificativas": {
+        "label": "Numeración de Facturas Rectificativas",
+        "tooltip": "Formato de numeración para las facturas (ej: FAC-2024-)",
+        "placeholder": "En caso de no indicar, comenzamos en 0"
+      }
+    }
+  },
+  "provincias": [
+    "Álava",
+    "Albacete",
+    "Alicante",
+    "Almería",
+    "Asturias",
+    "Ávila",
+    "Badajoz",
+    "Barcelona",
+    "Burgos",
+    "Cáceres",
+    "Cádiz",
+    "Cantabria",
+    "Castellón",
+    "Ciudad Real",
+    "Córdoba",
+    "A Coruña",
+    "Cuenca",
+    "Girona",
+    "Granada",
+    "Guadalajara",
+    "Guipúzcoa",
+    "Huelva",
+    "Huesca",
+    "Illes Balears",
+    "Jaén",
+    "La Rioja",
+    "Las Palmas",
+    "León",
+    "Lleida",
+    "Lugo",
+    "Madrid",
+    "Málaga",
+    "Murcia",
+    "Navarra",
+    "Ourense",
+    "Palencia",
+    "Pontevedra",
+    "Salamanca",
+    "Santa Cruz de Tenerife",
+    "Segovia",
+    "Sevilla",
+    "Soria",
+    "Tarragona",
+    "Teruel",
+    "Toledo",
+    "Valencia",
+    "Valladolid",
+    "Vizcaya",
+    "Zamora",
+    "Zaragoza"
+  ],
+  "step2": {
+    "alert": {
+      "title": "Configuración de Trasteros",
+      "text": "Configure los trasteros disponibles con sus características y precios. Puede agregar múltiples trasteros usando el botón 'Agregar Trastero'."
+    },
+    "btn_add": "Agregar Trastero",
+    "item": {
+      "title": "Trastero",
+      "fields": {
+        "numero": {
+          "label": "Número de Trastero *",
+          "tooltip": "Número identificativo único",
+          "placeholder": "Ej: T001",
+          "error": "Ingrese el número."
+        },
+        "metros": {
+          "label": "Metros Cuadrados *",
+          "tooltip": "Superficie en m²",
+          "placeholder": "0.00",
+          "error": "Ingrese los metros."
+        },
+        "cubicos": {
+          "label": "Metros Cúbicos",
+          "tooltip": "Volumen en m³ - opcional",
+          "placeholder": "0.00"
+        },
+        "precio_sin_iva": {
+          "label": "Precio sin IVA *",
+          "tooltip": "Precio mensual sin IVA",
+          "placeholder": "0.00",
+          "error": "Ingrese el precio."
+        },
+        "precio_con_iva": {
+          "label": "Precio con IVA",
+          "tooltip": "Se calcula automáticamente (21% IVA)",
+          "placeholder": "0.00",
+          "helper": "Calculado automáticamente (21% IVA)"
+        },
+        "fianza": {
+          "label": "Fianza",
+          "tooltip": "Importe de la fianza",
+          "placeholder": "0.00"
+        }
+      }
+    },
+    "modal": {
+      "title": "Agregar trasteros en lote",
+      "btn_cancel": "Cancelar",
+      "btn_confirm": "Crear trasteros",
+      "label_cantidad": "Cantidad de trasteros *",
+      "summary_part1": "Se",
+      "summary_part2": "trastero",
+      "verb_singular": "creará",
+      "verb_plural": "crearán",
+      "suffix_plural": "s"
+    },
+    "empty": {
+      "title": "No hay trasteros configurados",
+      "desc": "Haga clic en 'Agregar Trastero' para comenzar."
+    }
+  },
+  "step3": {
+    "alert": {
+      "title": "Usuarios del Sistema",
+      "text": "Configure los usuarios que tendrán acceso al sistema. Puede crear hasta 3 usuarios según las licencias adquiridas."
+    },
+    "btn_add": "Agregar Usuario",
+    "limit_info": "Máximo 3 usuarios según licencias adquiridas",
+    "item_title": "Usuario",
+    "fields": {
+      "nombre": {
+        "label": "Nombre Completo *",
+        "tooltip": "Nombre y apellidos",
+        "placeholder": "Ej: Juan Pérez",
+        "error": "Ingrese el nombre."
+      },
+      "email": {
+        "label": "Email del Usuario *",
+        "tooltip": "Email único de acceso",
+        "placeholder": "Ej: juan@empresa.com",
+        "error": "Email inválido o duplicado."
+      },
+      "pass": {
+        "label": "Contraseña *",
+        "tooltip": "Mínimo 8 caracteres, mayúscula, minúscula y número",
+        "placeholder": "Contraseña segura",
+        "error": "Requisitos no cumplidos."
+      },
+      "confirm": {
+        "label": "Confirmar Contraseña *",
+        "tooltip": "Repita la contraseña",
+        "placeholder": "Confirmar contraseña",
+        "error": "Las contraseñas no coinciden."
+      },
+      "rol": {
+        "label": "Rol del Usuario",
+        "tooltip": "Nivel de acceso",
+        "options": {
+          "estandar": "Usuario Estándar",
+          "principal": "Usuario Principal"
+        }
+      },
+      "depto": {
+        "label": "Departamento",
+        "tooltip": "Área de trabajo (opcional)",
+        "placeholder": "Ej: Ventas"
+      }
+    },
+    "strength": {
+      "label": "Ingrese una contraseña",
+      "v_weak": "Muy débil",
+      "weak": "Débil",
+      "medium": "Moderada",
+      "strong": "Fuerte",
+      "v_strong": "Muy fuerte"
+    },
+    "summary": {
+      "title": "Resumen de Usuarios",
+      "total": "Total Usuarios",
+      "principales": "Principales",
+      "estandar": "Estándar",
+      "empty_title": "No hay usuarios configurados",
+      "empty_desc": "Haga clic en 'Agregar Usuario' para comenzar."
+    },
+    "note": "El número de usuarios está limitado por las licencias. Si necesita más, contacte con soporte.",
+    "errors": {
+      "max_reached": "Máximo 3 usuarios permitidos según las licencias adquiridas.",
+      "email_exists": "Este email ya está siendo usado por otro usuario."
+    }
+  },
+  "step4": {
+    "alert": {
+      "title": "Configuración del Servidor de Correo",
+      "text": "Seleccione su proveedor o configure manualmente el servidor de salida para notificaciones."
+    },
+    "provider": {
+      "title": "Proveedor de Correo",
+      "label": "Seleccione su proveedor de email",
+      "hint": "Si elige un proveedor conocido, completaremos los datos técnicos por usted.",
+      "manual": "-- Otro (Configuración manual) --",
+      "hints": {
+        "gmail": "Nota: Use una 'Contraseña de aplicación' generada desde su cuenta de Google.",
+        "outlook": "Nota: Asegúrese de tener habilitado el acceso SMTP autenticado en Microsoft 365.",
+        "yahoo": "Nota: Requiere una contraseña de aplicación generada en Yahoo Security.",
+        "icloud": "Nota: Use su ID de Apple y una contraseña específica de aplicación.",
+        "custom": "Configure manualmente los datos de su servidor SMTP."
+      }
+    },
+    "technical": {
+      "title": "Servidor de Correo Saliente",
+      "smtp": "Servidor SMTP *",
+      "port": {
+        "label": "Puerto SMTP *",
+        "placeholder": "Seleccione un puerto"
+      },
+      "address": "Dirección del Servidor *",
+      "ssl_label": "Usar SSL/TLS *"
+    },
+    "credentials": {
+      "title": "Credenciales de Autenticación",
+      "email": "Dirección Email *",
+      "pass": "Contraseña *"
+    },
+    "notifications": {
+      "label": "Email para Notificaciones *"
+    },
+    "summary": {
+      "title": "Resumen de Configuración",
+      "server": "Servidor",
+      "port": "Puerto",
+      "ssl": "SSL/TLS",
+      "user": "Usuario",
+      "notif": "Notificaciones",
+      "status": "Estado"
+    }
+  },
+  "step5": {
+    "alert": {
+      "title": "Configuración de Perfiles de Acceso",
+      "text": "Defina los permisos de entrada. Cada perfil indica qué puertas se pueden abrir y en qué horario."
+    },
+    "btn_add": "Agregar Perfil de Acceso",
+    "card": {
+      "title": "Perfil de Acceso",
+      "fields": {
+        "nombre": {
+          "label": "Nombre del Perfil *",
+          "placeholder": "Ej: Personal de Limpieza"
+        },
+        "desc": {
+          "label": "Descripción del perfil *",
+          "placeholder": "Áreas a las que tiene permitido acceder..."
+        },
+        "doors": {
+          "label": "Puertas Permitidas",
+          "main": "P. Principal",
+          "back": "P. Trasera",
+          "office": "Oficina",
+          "custom_placeholder": "Otra puerta..."
+        },
+        "schedule": {
+          "label": "Horario de Acceso",
+          "all_day": "Acceso 24/7",
+          "start": "Inicio:",
+          "end": "Fin:"
+        }
+      }
+    }
+  },
+  "step6": {
+    "alert": {
+      "title": "Documentación Requerida",
+      "text": "Suba los documentos necesarios para completar la configuración del sistema. Los archivos se almacenarán de forma segura."
+    },
+    "sections": {
+      "contracts": {
+        "title": "Contratos",
+        "label": "Contratos en Formato .docx",
+        "tooltip": "Suba los contratos de alquiler en formato Word (.docx)"
+      },
+      "plans": {
+        "title": "Planos Gráficos",
+        "label": "Plano Gráfico de las Instalaciones",
+        "tooltip": "Planos arquitectónicos o esquemas de las instalaciones"
+      },
+      "logos": {
+        "title": "Logo de la Empresa",
+        "main_label": "Logo Principal",
+        "main_tooltip": "Logo para documentos y sistema",
+        "alt_title": "Logo Alternativo",
+        "alt_label": "Logo Alternativo (Opcional)",
+        "alt_tooltip": "Versión en blanco y negro o alternativa",
+        "select_logo": "Seleccionar Logo"
+      },
+      "additional": {
+        "title": "Documentación Adicional",
+        "summary_sub_title": "Adicionales",
+        "sub_title": "Documentos Adicionales",
+        "label": "Otros Documentos (Opcional)",
+        "tooltip": "Cualquier otro documento relevante"
+      },
+      "notes": {
+        "title": "Notas y Comentarios",
+        "label": "Notas Adicionales",
+        "tooltip": "Información adicional o instrucciones especiales",
+        "placeholder": "Escriba aquí cualquier información relevante...",
+        "char_limit": "caracteres"
+      }
+    },
+    "upload_zone": {
+      "drop_files": "Arrastre archivos aquí o haga clic para seleccionar",
+      "drop_images": "Arrastre imágenes aquí o haga clic para seleccionar",
+      "formats": "Formatos permitidos",
+      "max_size": "Tamaño máximo"
+    },
+    "summary": {
+      "title": "Resumen de Documentación",
+      "total_files": "Total de archivos",
+      "total_size": "Tamaño total"
+    },
+    "finish_alert": {
+      "title": "¡Último paso!",
+      "text": "Una vez subida la documentación, podrá completar el formulario y el sistema estará listo."
+    },
+    "toasts": {
+      "logo_deleted": "Logo eliminado correctamente",
+      "logo_error": "Error eliminando el logo",
+      "format_error": "Formato de archivo no permitido",
+      "size_error": "El archivo es demasiado grande"
+    }
+  }
+}
+
+

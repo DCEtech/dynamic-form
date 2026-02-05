@@ -5,8 +5,8 @@
             <div class="alert alert-info d-flex align-items-center">
                 <i class="bi bi-shield-lock me-3 fs-4"></i>
                 <div>
-                    <strong>Configuración de Perfiles de Acceso</strong><br>
-                    Defina los permisos de entrada. Cada perfil indica qué puertas se pueden abrir y en qué horario.
+                    <strong>{{ t.step5.alert.title }}</strong><br>
+                    {{ t.step5.alert.text }}
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <button type="button" class="btn btn-success" id="add-nivel">
-                <i class="bi bi-plus-circle me-2"></i>Agregar Perfil de Acceso
+                <i class="bi bi-plus-circle me-2"></i>{{ t.step5.btn_add }}
             </button>
         </div>
     </div>
@@ -25,7 +25,7 @@
         <div class="nivel-item card mb-4 shadow-sm" style="display: none;" id="nivel-template">
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 fw-bold text-primary">
-                    <i class="bi bi-key me-2"></i>Perfil de Acceso
+                    <i class="bi bi-key me-2"></i><span class="nivel-title-text">{{ t.step5.card.title }}</span>
                 </h6>
                 <button type="button" class="btn btn-sm btn-outline-danger remove-nivel">
                     <i class="bi bi-trash"></i>
@@ -34,36 +34,37 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <label class="form-label fw-bold">Nombre del Perfil *</label>
-                        <input type="text" class="form-control nivel-nombre" placeholder="Ej: Personal de Limpieza"
+                        <label class="form-label fw-bold">{{ t.step5.card.fields.nombre.label }}</label>
+                        <input type="text" class="form-control nivel-nombre"
+                               placeholder="{{ t.step5.card.fields.nombre.placeholder }}"
                                required>
                     </div>
                     <div class="col-12 mb-3">
-                        <label class="form-label fw-bold">Descripción del perfil *</label>
+                        <label class="form-label fw-bold">{{ t.step5.card.fields.desc.label }}</label>
                         <textarea class="form-control nivel-descripcion" rows="2"
-                                  placeholder="Áreas a las que tiene permitido acceder..." required></textarea>
+                                  placeholder="{{ t.step5.card.fields.desc.placeholder }}" required></textarea>
                     </div>
                 </div>
 
                 <div class="row">
                     <!-- Puertas -->
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Puertas Permitidas</label>
+                        <label class="form-label fw-bold">{{ t.step5.card.fields.doors.label }}</label>
                         <div class="puertas-grid p-2 border rounded bg-light">
                             <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                           name="puerta_principal"><label class="form-check-label">P.
-                                Principal</label></div>
+                                                           name="puerta_principal"><label
+                                    class="form-check-label">{{ t.step5.card.fields.doors.main }}</label></div>
                             <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                           name="puerta_trasera"><label class="form-check-label">P.
-                                Trasera</label></div>
+                                                           name="puerta_trasera"><label
+                                    class="form-check-label">{{ t.step5.card.fields.doors.back }}</label></div>
                             <div class="form-check"><input class="form-check-input" type="checkbox"
                                                            name="puerta_oficina"><label
-                                    class="form-check-label">Oficina</label></div>
+                                    class="form-check-label">{{ t.step5.card.fields.doors.office }}</label></div>
                         </div>
                         <div class="mt-2">
                             <div class="input-group input-group-sm mb-2">
                                 <input type="text" class="form-control puerta-personalizada-input"
-                                       placeholder="Otra puerta...">
+                                       placeholder="{{ t.step5.card.fields.doors.custom_placeholder }}">
                                 <button class="btn btn-outline-secondary add-puerta-btn" type="button">+</button>
                             </div>
                             <div class="puertas-personalizadas-list d-flex flex-wrap gap-1"></div>
@@ -72,19 +73,19 @@
 
                     <!-- Horarios -->
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Horario de Acceso</label>
+                        <label class="form-label fw-bold">{{ t.step5.card.fields.schedule.label }}</label>
                         <div class="form-check form-switch mb-2">
                             <input class="form-check-input acceso-24h" type="checkbox" checked>
-                            <label class="form-check-label">Acceso 24/7</label>
+                            <label class="form-check-label">{{ t.step5.card.fields.schedule.all_day }}</label>
                         </div>
                         <div class="horarios-restringidos" style="display: none;">
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <small class="d-block text-muted">Inicio:</small>
+                                    <small class="d-block text-muted">{{ t.step5.card.fields.schedule.start }}</small>
                                     <input type="time" class="form-control form-control-sm hora-inicio" value="08:00">
                                 </div>
                                 <div class="col-6">
-                                    <small class="d-block text-muted">Fin:</small>
+                                    <small class="d-block text-muted">{{ t.step5.card.fields.schedule.end }}</small>
                                     <input type="time" class="form-control form-control-sm hora-fin" value="18:00">
                                 </div>
                             </div>
@@ -98,6 +99,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const t = window.I18N.step5;
         const container = document.getElementById('niveles-container');
         const template = document.getElementById('nivel-template');
 
@@ -105,6 +107,8 @@
             const el = template.cloneNode(true);
             el.id = "";
             el.style.display = 'block';
+
+            el.querySelector('.nivel-title-text').textContent = t.card.title;
 
             // Eventos básicos
             el.querySelector('.remove-nivel').onclick = () => el.remove();
@@ -144,7 +148,7 @@
                     data.puertas.forEach(p => {
                         const chk = el.querySelector(`input[name="${p}"]`);
                         if (chk) chk.checked = true;
-                        else createDoorBadge(pList, p); // Si no es estándar, es personalizada
+                        else createDoorBadge(pList, p);
                     });
                 }
             }

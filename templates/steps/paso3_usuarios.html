@@ -5,10 +5,8 @@
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="bi bi-info-circle me-3 fs-4"></i>
                 <div>
-                    <strong>Usuarios del Sistema</strong><br>
-                    Configure los usuarios que tendrán acceso al sistema. Puede crear hasta 3 usuarios según las
-                    licencias adquiridas.
-                    Cada usuario necesita un email único y una contraseña segura.
+                    <strong>{{ t.step3.alert.title }}</strong><br>
+                    {{ t.step3.alert.text }}
                 </div>
             </div>
         </div>
@@ -18,9 +16,9 @@
     <div class="row mb-4">
         <div class="col-12">
             <button type="button" class="btn btn-success" id="add-usuario">
-                <i class="bi bi-person-plus me-2"></i>Agregar Usuario
+                <i class="bi bi-person-plus me-2"></i>{{ t.step3.btn_add }}
             </button>
-            <small class="text-muted ms-3">Máximo 3 usuarios según licencias adquiridas</small>
+            <small class="text-muted ms-3">{{ t.step3.limit_info }}</small>
         </div>
     </div>
 
@@ -31,7 +29,7 @@
             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">
                     <i class="bi bi-person me-2"></i>
-                    Usuario <span class="usuario-number">1</span>
+                    {{ t.step3.item_title }}<span class="usuario-number">1</span>
                 </h6>
                 <button type="button" class="btn btn-sm btn-outline-danger remove-usuario">
                     <i class="bi bi-trash"></i>
@@ -41,50 +39,50 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Nombre Completo *
+                            {{ t.step3.fields.nombre.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Nombre y apellidos del usuario"></i>
+                               title="{{ t.step3.fields.nombre.tooltip }}"></i>
                         </label>
                         <input type="text"
                                class="form-control usuario-nombre"
                                name="nombre_usuario"
-                               placeholder="Ej: Juan Pérez García"
+                               placeholder="{{ t.step3.fields.nombre.placeholder }}"
                                required>
                         <div class="invalid-feedback">
-                            Por favor, ingrese el nombre completo.
+                            {{ t.step3.fields.nombre.error }}
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Email del Usuario *
+                            {{ t.step3.fields.email.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Email único para acceso al sistema"></i>
+                               title="{{ t.step3.fields.email.tooltip }}"></i>
                         </label>
                         <input type="email"
                                class="form-control usuario-email"
                                name="email_usuario"
-                               placeholder="Ej: juan.perez@empresa.com"
+                               placeholder="{{ t.step3.fields.email.placeholder }}"
                                required>
                         <div class="invalid-feedback">
-                            Por favor, ingrese un email válido y único.
+                            {{ t.step3.fields.email.error }}
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Contraseña *
+                            {{ t.step3.fields.pass.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Mínimo 8 caracteres, incluir mayúscula, minúscula y número"></i>
+                               title="{{ t.step3.fields.pass.tooltip }}"></i>
                         </label>
                         <div class="input-group">
                             <input type="password"
                                    class="form-control usuario-password"
                                    name="password_usuario"
-                                   placeholder="Contraseña segura"
+                                   placeholder="{{ t.step3.fields.pass.placeholder }}"
                                    minlength="8"
                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$"
                                    required>
@@ -93,86 +91,86 @@
                             </button>
                         </div>
                         <div class="invalid-feedback">
-                            La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.
+                            {{ t.step3.fields.pass.error }}
                         </div>
                         <div class="password-strength mt-1">
                             <div class="progress" style="height: 4px;">
                                 <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                             </div>
-                            <small class="text-muted strength-text">Ingrese una contraseña</small>
+                            <small class="text-muted strength-text">{{ t.step3.strength.label }}</small>
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Confirmar Contraseña *
+                            {{ t.step3.fields.confirm.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Repita la contraseña para confirmar"></i>
+                               title="{{ t.step3.fields.confirm.tooltip }}"></i>
                         </label>
                         <input type="password"
                                class="form-control usuario-confirm-password"
                                name="confirm_password_usuario"
-                               placeholder="Confirmar contraseña"
+                               placeholder="{{ t.step3.fields.confirm.placeholder }}"
                                required>
                         <div class="invalid-feedback">
-                            Las contraseñas no coinciden.
+                            {{ t.step3.fields.confirm.error }}
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Rol del Usuario
+                            {{ t.step3.fields.rol.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Nivel de acceso del usuario en el sistema"></i>
+                               title="{{ t.step3.fields.rol.tooltip }}"></i>
                         </label>
                         <select class="form-select usuario-rol" name="rol_usuario">
-                            <option value="estandar">Usuario Estándar</option>
-                            <option value="principal">Usuario Principal</option>
+                            <option value="estandar">{{ t.step3.fields.rol.options.estandar }}</option>
+                            <option value="principal">{{ t.step3.fields.rol.options.principal }}</option>
                         </select>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">
-                            Departamento
+                            {{ t.step3.fields.depto.label }}
                             <i class="bi bi-question-circle tooltip-icon ms-1"
                                data-bs-toggle="tooltip"
-                               title="Departamento o área de trabajo (opcional)"></i>
+                               title="{{ t.step3.fields.depto.tooltip }}"></i>
                         </label>
                         <input type="text"
                                class="form-control usuario-departamento"
                                name="departamento_usuario"
-                               placeholder="Ej: Administración, Ventas, Operaciones">
+                               placeholder="{{ t.step3.fields.depto.placeholder }}">
                     </div>
 
                 </div>
 
                 <!-- Resumen del usuario -->
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="alert alert-light border">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <strong>Nombre</strong><br>
-                                    <span class="text-primary usuario-resumen-nombre">-</span>
-                                </div>
-                                <div class="col-md-3">
-                                    <strong>Email</strong><br>
-                                    <span class="text-primary usuario-resumen-email">-</span>
-                                </div>
-                                <div class="col-md-3">
-                                    <strong>Rol</strong><br>
-                                    <span class="badge bg-info usuario-resumen-rol">-</span>
-                                </div>
-                                <div class="col-md-3">
-                                    <strong>Departamento</strong><br>
-                                    <span class="text-primary usuario-resumen-departamento">-</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {#                <div class="row mt-3">#}
+                {#                    <div class="col-12">#}
+                {#                        <div class="alert alert-light border">#}
+                {#                            <div class="row">#}
+                {#                                <div class="col-md-3">#}
+                {#                                    <strong>{{ t.step3.fields.nombre.title }}</strong><br>#}
+                {#                                    <span class="text-primary usuario-resumen-nombre">-</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-3">#}
+                {#                                    <strong>{{ t.step3.fields.email.label }}</strong><br>#}
+                {#                                    <span class="text-primary usuario-resumen-email">-</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-3">#}
+                {#                                    <strong>Rol</strong><br>#}
+                {#                                    <span class="badge bg-info usuario-resumen-rol">-</span>#}
+                {#                                </div>#}
+                {#                                <div class="col-md-3">#}
+                {#                                    <strong>{{ t.step3.fields.depto.label }}</strong><br>#}
+                {#                                    <span class="text-primary usuario-resumen-departamento">-</span>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
     </div>
@@ -180,28 +178,28 @@
     <!-- Mensaje cuando no hay usuarios -->
     <div id="no-usuarios-message" class="text-center py-5">
         <i class="bi bi-people display-1 text-muted mb-3"></i>
-        <h5 class="text-muted">No hay usuarios configurados</h5>
-        <p class="text-muted">Haga clic en "Agregar Usuario" para comenzar a configurar los usuarios del sistema.</p>
+        <h5 class="text-muted">{{ t.step3.summary.empty_title }}</h5>
+        <p class="text-muted">{{ t.step3.summary.empty_desc }}</p>
     </div>
 
     <!-- Resumen de usuarios -->
     <div id="resumen-usuarios" class="card bg-primary text-white mt-4" style="display: none;">
         <div class="card-body">
             <h5 class="card-title">
-                <i class="bi bi-people me-2"></i>Resumen de Usuarios
+                <i class="bi bi-people me-2"></i>{{ t.step3.summary.title }}
             </h5>
             <div class="row text-center">
                 <div class="col-md-3">
-                    <h6>Total Usuarios</h6>
+                    <h6>{{ t.step3.summary.total }}</h6>
                     <h4 id="total-usuarios">0</h4>
                 </div>
                 <div class="col-md-3">
-                    <h6>Principales</h6>
+                    <h6>{{ t.step3.summary.principales }}</h6>
                     <h4 id="total-principales">0</h4>
                 </div>
 
                 <div class="col-md-3">
-                    <h6>Usuarios Estándar</h6>
+                    <h6>{{ t.step3.summary.estandar }}</h6>
                     <h4 id="total-usuarios-estandar">0</h4>
                 </div>
             </div>
@@ -213,9 +211,7 @@
         <div class="col-12">
             <div class="alert alert-warning">
                 <i class="bi bi-exclamation-triangle me-2"></i>
-                <strong>Nota importante:</strong> El número de usuarios está limitado por las licencias de software
-                adquiridas.
-                Si necesita más usuarios, contacte con el soporte técnico.
+                <strong>{{ t.common.important_note if t.common else "Nota:" }}</strong> {{ t.step3.note }}
             </div>
         </div>
     </div>
@@ -223,13 +219,15 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+            const t = window.I18N.step3;
+
             let usuarioCounter = 0;
             const maxUsuarios = 3;
 
             // Función para agregar un nuevo usuario
             function addUsuario(data = null) {
                 if (usuarioCounter >= maxUsuarios) {
-                    alert('Máximo 3 usuarios permitidos según las licencias adquiridas.');
+                    alert(t.errors.max_reached);
                     return;
                 }
 
@@ -300,7 +298,7 @@
                     const btn = document.getElementById('add-usuario');
                     btn.disabled = true;
                     btn.innerHTML =
-                        '<i class="bi bi-exclamation-triangle me-2"></i>Máximo alcanzado';
+                        `<i class="bi bi-exclamation-triangle me-2"></i>${t.item_title} Max`;
                 }
 
                 updateResumenUsuarios();
@@ -374,7 +372,7 @@
                 const strengthText = usuarioElement.querySelector('.strength-text');
 
                 let strength = 0;
-                let text = 'Muy débil';
+                let text = t.strength.v_weak;
                 let color = 'bg-danger';
 
                 if (password.length >= 8) strength += 25;
@@ -383,18 +381,22 @@
                 if (/\d/.test(password)) strength += 25;
 
                 if (strength >= 100) {
-                    text = 'Muy fuerte';
+                    text = t.strength.v_strong;
                     color = 'bg-success';
                 } else if (strength >= 75) {
-                    text = 'Fuerte';
+                    text = t.strength.v_strong;
                     color = 'bg-info';
                 } else if (strength >= 50) {
-                    text = 'Moderada';
+                    text = t.strength.v_medium;
                     color = 'bg-warning';
                 } else if (strength >= 25) {
-                    text = 'Débil';
+                    text = t.strength.v_weak;
                     color = 'bg-warning';
                 }
+
+                if (password.length === 0) text = t.strength.label;
+
+                strengthText.textContent = text;
 
                 progressBar.style.width = strength + '%';
                 progressBar.className = `progress-bar ${color}`;
@@ -431,7 +433,7 @@
 
                     let feedback = emailField.parentNode.querySelector('.invalid-feedback');
                     if (feedback) {
-                        feedback.textContent = 'Este email ya está siendo usado por otro usuario.';
+                        feedback.textContent = t.errors.email_exists;
                     }
                 } else if (email) {
                     emailField.classList.add('is-valid');
@@ -460,7 +462,7 @@
 
                 resumenNombre.textContent = nombreInput?.value || '—';
                 resumenEmail.textContent = emailInput?.value || '—';
-                resumenRol.textContent = rolInput?.value || '—';
+                resumenRol.textContent = t.fields.rol.options[rolValue] || '—';
                 resumenDepartamento.textContent = departamentoInput?.value || '—';
             }
 
